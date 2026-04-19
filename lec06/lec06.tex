@@ -1,0 +1,124 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ctex}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\input{../preamable/preamable.tex}
+
+\declaretheorem[style=thmgreenbox, name=定义]{cndefinition}
+\declaretheorem[style=thmredbox, name=定理]{cntheorem}
+\declaretheorem[style=thmbluebox, name=性质]{cnproperty}
+\declaretheorem[style=thmredbox, name=引理]{cnlemma}
+\declaretheorem[style=thmredbox, numbered=no, name=推论]{cncorollary}
+\declaretheorem[style=thmbluebox, numbered=no, name=例]{cnexample}
+
+\title{近世代数笔记(Lec 06)：Sylow定理与有限阿贝尔群的结构}
+\author{Raysance}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Sylow 定理}
+
+在拉格朗日定理中，我们知道有限群子群的阶必定整除群的阶，但是反过来，如果 $d \mid |G|$，是否一定存在阶为 $d$ 的子群？Sylow 定理对这种逆问题给出了在特定素数幂情况下的肯定回答。
+
+\begin{cntheorem}[Sylow 第一定理]
+设 $G$ 是有限群，且 $|G|=p^n m$，其中 $p$ 是素数，$n \ge 1$，且 $\gcd(p,m)=1$。则 $G$ 一定存在阶为 $p^n$ 的子群。
+
+通常，我们将这样的阶为群阶中包含 $p$ 的最高次幂的子群称为 \textbf{Sylow $p$-子群}。
+\end{cntheorem}
+
+\begin{proof}
+我们可以通过群作用来证明此定理。
+
+令集合 $\mathcal{S}$ 为 $G$ 中所有大小为 $p^n$ 的子集构成的集合，即：
+\[ \mathcal{S} = \{ S \subset G \mid |S| = p^n \} \]
+其势为组合数 $|\mathcal{S}| = \binom{p^n m}{p^n}$。可以证明，该组合数不能被 $p$ 整除（即 $|\mathcal{S}| \not\equiv 0 \pmod p$）。
+
+定义群 $G$ 在集合 $\mathcal{S}$ 上的左乘作用：对于 $g \in G, S \in \mathcal{S}$，定义 $g \cdot S = \{ gs \mid s \in S \}$。
+由于 $G$ 作用在 $\mathcal{S}$ 上，$\mathcal{S}$ 可以划分为若干个轨道。因为 $|\mathcal{S}|$ 不是 $p$ 的倍数，所以必定存在至少一个轨道 $C$，它的长度 $|C|$ 也不是 $p$ 的倍数。
+
+取该轨道中的一个元素 $S \in C$，令 $H = \text{Stab}(S)$ 是 $S$ 在 $G$ 中的稳定子群，即 $H = \{ g \in G \mid gS = S \}$。
+根据轨道-稳定子定理：
+\[ |C| = \frac{|G|}{|H|} = \frac{p^n m}{|H|} \]
+因为 $|C|$ 不被 $p$ 整除，故 $p^n$ 必须整除 $|H|$，这意味着 $|H| \ge p^n$。
+
+另一方面，对于任意 $s \in S$，由于 $H S = S$，必然有 $H s \subseteq S$，从而 $|H| = |Hs| \le |S| = p^n$。
+综合以上两点结果，我们得出 \textbf{$|H| = p^n$}。
+因此，有限群 $G$ 必然存在阶为 $p^n$ 的子群 $H$。
+\end{proof}
+
+\begin{cntheorem}[Sylow 第二定理]
+设 $G$ 是有限群，且 $|G|=p^n m$（$p \nmid m$）。则 $G$ 中任意两个 Sylow $p$-子群都是共轭的。而且，$G$ 的任何 $p$-子群都包含在某个 Sylow $p$-子群中。
+\end{cntheorem}
+
+\begin{proof}[直观理解与部分证明]
+设 $P$ 和 $Q$ 都是 $G$ 的 Sylow $p$-子群。考虑 $Q$ 在 $G/P$ (即 $P$ 的全体左陪集组成的集合 $\mathcal{S} = \{ g_1 P, \dots, g_m P \}$，注意这不一定是商群，因为 $P$ 不一定是正规子群) 上的左乘群作用：
+对于 $q \in Q$，$q \cdot (g_iP) = (qg_i)P$。
+
+这里 $|\mathcal{S}| = [G:P] = m$，而 $p \nmid m$。因为 $Q$ 的阶是 $p$ 的幂次，根据 $p$-群作用的性质，必定存在不动点。
+即存在一个陪集 $gP$，使得 \mbox{$\forall q \in Q$，$qgP = gP$}，即 $g^{-1}qgP = P$，这就意味着 $g^{-1}Qg \subseteq P$。
+但 $|Q| = |P| = p^n$，因而 $g^{-1}Qg = P$，也就是 $Q$ 和 $P$ 是共轭的。
+\end{proof}
+
+\begin{cntheorem}[Sylow 第三定理]
+设 $G$ 是有限群，且 $|G|=p^n m$（$p \nmid m$）。令 $r_p$ 为 $G$ 中所有 Sylow $p$-子群的个数，则有：
+\[ r_p \mid m \quad \text{并且} \quad r_p \equiv 1 \pmod p \]
+\end{cntheorem}
+
+直观理解：Sylow 第三定理给出了在寻找或者限制一定阶数群的 Sylow $p$-子群数量的极强约束条件。利用前两条性质：$r_p$ 其实等于正规化子群的指数指数或由共轭类的性质推导出。
+
+\section{直和与循环群}
+
+\begin{cntheorem}[循环群的直和性质]
+设 $\mathbb{Z}_m$ 和 $\mathbb{Z}_n$ 分别是阶为 $m$ 和 $n$ 的循环群，则直和 $\mathbb{Z}_m \oplus \mathbb{Z}_n$ 也是循环群（且同构于 $\mathbb{Z}_{mn}$），当且仅当 $\gcd(m,n)=1$。
+\end{cntheorem}
+
+性质理解：如果 $\gcd(m,n) > 1$，则所有元素的阶的最大值是 $\text{lcm}(m,n) < mn$，此时不可能生成包含 $mn$ 个元素的整个群。这也是下面将有限阿贝尔群继续分解的基础。
+
+\section{有限阿贝尔群的结构定理}
+
+有限阿贝尔群具有极其良好的结构，可以使用一组唯一的数（或其直和分解）来完全刻画任意有限阿贝尔群的同构类。
+
+\begin{cntheorem}[有限阿贝尔群的基本定理]
+任何有限阿贝尔群都同构于若干个循环群（其阶均为素数的幂次）的直和。 
+
+设 $|G| = n = p_1^{k_1} p_2^{k_2} \cdots p_m^{k_m}$ 是群阶的素因数分解。则存在唯一的一组正整数 $a_{ij} \ge 1$，其中针对每个 $i \in \{1,2,\dots,m\}$ 有：
+\[ k_i = a_{i1} + a_{i2} + \dots + a_{it_i} \]
+使得 $G$ 同构于：
+\[ G \cong \left( \mathbb{Z}_{p_1^{a_{11}}} \oplus \dots \oplus \mathbb{Z}_{p_1^{a_{1t_1}}} \right) \oplus \dots \oplus \left( \mathbb{Z}_{p_m^{a_{m1}}} \oplus \dots \oplus \mathbb{Z}_{p_m^{a_{mt_m}}} \right) \]
+这组数序列 $\big( p_1^{a_{11}}, p_1^{a_{12}}, \dots, p_m^{a_{mt_m}} \big)$ 被称为 $G$ 的 \textbf{初等因子组 (Elementary Divisors)}。
+\end{cntheorem}
+
+利用该结构定理，我们可以在给定群的阶时，分类出所有可能的有限阿贝尔群的同构类。
+
+\begin{cnexample}
+求所有 36 阶的阿贝尔群的同构类。
+\end{cnexample}
+\textbf{解}：我们将群阶 36 进行素因子分解：$36 = 2^2 \times 3^2$。
+
+素因子 2 的指数为 2，它对应的所有拆分（Partition）有：
+\begin{enumerate}
+    \item $2 = 2$ ，此时对应 $\mathbb{Z}_{2^2} = \mathbb{Z}_4$
+    \item $2 = 1+1$ ，此时对应 $\mathbb{Z}_{2^1} \oplus \mathbb{Z}_{2^1} = \mathbb{Z}_2 \oplus \mathbb{Z}_2$
+\end{enumerate}
+
+素因子 3 的指数也为 2，它对应的所有拆分有：
+\begin{enumerate}
+    \item $2 = 2$ ，此时对应 $\mathbb{Z}_{3^2} = \mathbb{Z}_9$
+    \item $2 = 1+1$ ，此时对应 $\mathbb{Z}_{3^1} \oplus \mathbb{Z}_{3^1} = \mathbb{Z}_3 \oplus \mathbb{Z}_3$
+\end{enumerate}
+
+将上面独立的情况组合，总共有 $2 \times 2 = 4$ 种不同的群结构组合（在同构意义下）：
+\begin{enumerate}
+    \item $\mathbb{Z}_4 \oplus \mathbb{Z}_9 \cong \mathbb{Z}_{36}$ ——(对应的初等因子为 4 和 9)
+    \item $\mathbb{Z}_2 \oplus \mathbb{Z}_2 \oplus \mathbb{Z}_9 \cong \mathbb{Z}_2 \oplus \mathbb{Z}_{18}$ ——(对应的初等因子为 2, 2, 9)
+    \item $\mathbb{Z}_4 \oplus \mathbb{Z}_3 \oplus \mathbb{Z}_3 \cong \mathbb{Z}_3 \oplus \mathbb{Z}_{12}$ ——(对应的初等因子为 4, 3, 3)
+    \item $\mathbb{Z}_2 \oplus \mathbb{Z}_2 \oplus \mathbb{Z}_3 \oplus \mathbb{Z}_3 \cong \mathbb{Z}_6 \oplus \mathbb{Z}_6$ ——(对应的初等因子为 2, 2, 3, 3)
+\end{enumerate}
+上述这四种结构刻画了所有可能的 36 阶有限阿贝尔群。
+
+\end{document}

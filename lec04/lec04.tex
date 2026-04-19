@@ -1,0 +1,191 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ctex}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\input{../preamable/preamable.tex}
+
+\declaretheorem[style=thmgreenbox, name=定义]{cndefinition}
+\declaretheorem[style=thmredbox, name=定理]{cntheorem}
+\declaretheorem[style=thmbluebox, name=性质]{cnproperty}
+\declaretheorem[style=thmredbox, name=引理]{cnlemma}
+\declaretheorem[style=thmredbox, numbered=no, name=推论]{cncorollary}
+\declaretheorem[style=thmbluebox, numbered=no, name=例]{cnexample}
+\title{近世代数笔记(Lec 04)：对称群、交错群与群作用}
+\author{Raysance}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{对称群与置换群}
+
+\begin{cndefinition}[对称群与置换群]
+    设 $\Sigma$ 是一个非空集合，$\Sigma$ 上的所有双射（置换）在映射的复合运算下构成一个群，称为 $\Sigma$ 上的\textbf{对称群} (Symmetric Group)，记为 $S(\Sigma)$ 或 $S_n$（当 $|\Sigma| = n$ 时）。  
+    对称群的任意子群称为\textbf{置换群} (Permutation Group)。
+\end{cndefinition}
+
+在对称群 $S_n$ 中，最基本的元素形式是\textbf{轮换} (Cycle) 与\textbf{对换} (Transposition)。
+\begin{cndefinition}[轮换与对换]
+    \begin{itemize}
+        \item \textbf{轮换}：形如 $(a_1, a_2, \dots, a_k)$ 的置换，它将 $a_1$ 映射到 $a_2$，$a_2$ 映射到 $a_3$，$\dots$，$a_k$ 映射到 $a_1$，并且保持其余元素不变。$k$ 称为该轮换的长度。
+        \item \textbf{对换}：长度为 $2$ 的轮换，形式为 $(i, j)$，只交换这两个元素的位置，其余元素保持不变。
+    \end{itemize}
+\end{cndefinition}
+
+\begin{cntheorem}[置换的轮换分解]
+    任意一个置换都可以表示为若干个\textbf{不相交的}轮换的乘积。
+\end{cntheorem}
+\textbf{直观理解}：把有限集中的元素及其在置换作用下的像用有向边连接起来，由于置换是双射，每个元素的入度和出度均为 1，因此该置换的作用必定会把所有元素分解成若干个互不相交的有向环，这些环就是不相交的轮换。
+
+\begin{cntheorem}[轮换的对换分解]
+    任意一个长度为 $k$ 的轮换都可以表示为若干个对换的乘积。具体地，有分解：
+    \[
+        (a_1, a_2, \dots, a_k) = (a_1, a_k)(a_1, a_{k-1}) \dots (a_1, a_2)
+    \]
+\end{cntheorem}
+\begin{proof}
+    验证两个映射是否相等，只需看它们对每个元素的作用是否相同。从右向左依次作用映射：
+    对于 $a_1$：最右侧的 $(a_1,a_2)$ 将 $a_1$ 映为 $a_2$，此后左侧所有的对换都不包含 $a_2$，因此最终 $a_1 \mapsto a_2$；
+    对于任意的 $a_i~(1 < i < k)$：它首先在 $(a_1,a_i)$ 这项中被映化为 $a_1$，随后立刻在它的左侧紧邻的一项 $(a_1, a_{i+1})$ 中被映射成了 $a_{i+1}$，其余的对换都不再包含它，因此最终 $a_i \mapsto a_{i+1}$；
+    对于 $a_k$：它首先在最左侧的项 $(a_1, a_k)$ 中被映作 $a_1$，保持不变，最终 $a_k \mapsto a_1$。
+    这与原来的轮换作用完全一致，分解成立。
+\end{proof}
+
+\begin{cncorollary}
+    任何 $S_n$ 中的置换都可以表示成若干个对换的乘积。
+\end{cncorollary}
+\begin{proof}
+    由前面的定理，置换等于若干不相交轮换之积，而每个轮换都能分解为对换的乘积，所以任意置换也是对换之积。
+\end{proof}
+
+\begin{cnproperty}[对称群的生成元集]
+    任意对换 $(i, j)$ 可以用仅含有形式 $(1, x)$ 的对换相乘得到，具体形式为：
+    \[
+        (i, j) = (1, i)(1, j)(1, i)
+    \]
+    因此，集合 $\{(1, 2), (1, 3), \dots, (1, n)\}$ 是对称群 $S_n$ 的一个\textbf{生成元系}。
+\end{cnproperty}
+\begin{proof}
+    还是通过验证作用，对于 $(1, i)(1, j)(1, i)$，从右至左：
+    当元素为 $i$ 时，$i \mapsto 1 \mapsto j \mapsto j$，于是 $i \mapsto j$；
+    当元素为 $j$ 时，$j \mapsto j \mapsto 1 \mapsto i$，于是 $j \mapsto i$；
+    当元素为 $1$ 时，$1 \mapsto i \mapsto i \mapsto 1$，于是 $1 \mapsto 1$；
+    其余元素不变。说明该乘积确实等同于 $(i, j)$。
+\end{proof}
+
+\section{奇偶置换与交错群 $\mathcal{A}_n$}
+
+虽然一个置换可以有多种不同写成对换乘积的方式，但对换个数的奇偶性是不变的。
+
+\begin{cndefinition}[奇置换与偶置换]
+    若一个置换 $\sigma$ 可以表示为偶数个对换的乘积，则称其为\textbf{偶置换}；若表示为奇数个对换的乘积，则称为\textbf{奇置换}。特别地，恒等映射（单位元）恒为偶置换（当 $n \ge 2$ 时，可以人为写成 $(1,2)(1,2)$ 的形式；$n=1$ 时可直接规定）。
+\end{cndefinition}
+
+\begin{cntheorem}
+    任意一个置换不能同时表示为偶数个对换的乘积和奇数个对换的乘积（即奇偶性是唯一确定的）。
+\end{cntheorem}
+
+为了证明这个重要的定理，我们需要先引入一个引理来评估对换如何改变不相交轮换的数量。
+\begin{cnlemma}
+    设在 $S_n$ 中，若 $\sigma$ 分解为不相交轮换的表示中含有 $c(\sigma)$ 个轮换（包含长度为 1 的平庸轮换），$t = (i, j)$ 是一个对换，那么 $t\sigma$ 的轮换数与 $\sigma$ 的轮换数恰好相差 1，即 $c(t\sigma) = c(\sigma) \pm 1$。
+\end{cnlemma}
+\begin{proof}
+    将 $1$ 到 $n$ 中的所有元素写作 $\sigma$ 的互不相交的轮换的并。这里我们分两种情况讨论 $i, j$ 在 $\sigma$ 分解中的位置：
+    \begin{itemize}
+        \item \textbf{情形一}：$i, j$ 属于同一个轮换。不妨设这个轮换为 $(i, a_1, \dots, a_m, j, b_1, \dots, b_k)$。
+        那么在这个轮换的左侧乘上 $(i, j)$，结果为：
+        \[
+            (i, j)(i, a_1, \dots, a_m, j, b_1, \dots, b_k) = (i, a_1, \dots, a_m)(j, b_1, \dots, b_k)
+        \]
+        即原本包含 $i$ 和 $j$ 的 $1$ 个轮换分裂成了 $2$ 个轮换，此时轮换总数增加了 1。
+        \item \textbf{情形二}：$i, j$ 属于不同的轮换。不妨设这两个轮换为 $(i, a_1, \dots, a_m)$ 和 $(j, b_1, \dots, b_k)$。
+        那么在这个轮换的左侧乘上 $(i, j)$，结果为：
+        \[
+            (i, j)(i, a_1, \dots, a_m)(j, b_1, \dots, b_k) = (i, a_1, \dots, a_m, j, b_1, \dots, b_k)
+        \]
+        即原本分开的 $2$ 个轮换合并成了 $1$ 个大的轮换，此时轮换总数减少了 1。
+    \end{itemize}
+    综上，$t\sigma$ 和 $\sigma$ 的轮换数绝对差值必定为 1。
+\end{proof}
+
+\begin{proof}[置换奇偶性定理的证明]
+    假设某置换 $\sigma$ 既可以被表示为 $r$ 个对换的积，也可以被表示为 $s$ 个对换的积。我们期望证明 $r \equiv s \pmod 2$。
+    考虑恒等变换 $\mathrm{id}$，显然它的不相交轮换总数 $c(\mathrm{id}) = n$（每个元素自己构成长度为 1 的轮换）。
+    依据引理，每次把一个对换作用于右侧已有的置换中，相应的“不相交轮换数”都会改变 1，所以必定改变其奇偶性。
+    从恒等变换 $\mathrm{id}$ 开始起，经过 $r$ 次相乘对换之后，终态轮换数 $c(\sigma) \equiv c(\mathrm{id}) - r \pmod 2$；同样地，$c(\sigma) \equiv c(\mathrm{id}) - s \pmod 2$。
+    这要求 $r \equiv s \pmod 2$，这也证明了奇子空间和偶子空间必定是不相交的。
+\end{proof}
+
+由于置换的奇偶性是唯一固定的，我们可以把整个对称群 $S_n$ 分为奇偶两块部分。
+\begin{cndefinition}[交错群]
+    对称群 $S_n$ 中所有偶置换构成的集合称为\textbf{交错群} (Alternating Group)，记为 $A_n$ 或 $\mathcal{A}_n$。奇置换构成的集合通常记为 $B_n$。
+\end{cndefinition}
+
+\begin{cnproperty}
+    对于 $n \ge 2$，集合 $A_n$ 和 $B_n$ 的大小相等，即 $|A_n| = |B_n| = \frac{n!}{2}$。
+\end{cnproperty}
+\begin{proof}
+    在偶置换集合 $A_n$ 内任取一元素 $\sigma \in A_n$，我们乘以一个固定的对换如 $(1, 2)$，构造映射 $f: A_n \to B_n$，$f(\sigma) = (1, 2)\sigma$。 显然 $f$ 的逆映射就是再左乘一次 $(1, 2)$（自身即逆）。
+    由于它是一个双射，所以 $|A_n| = |B_n|$，且 $A_n \cup B_n = S_n$，从而 $|A_n| = \frac{n!}{2}$。
+\end{proof}
+
+利用同态核的角度也能很好地导出这个性质：
+定义置换群到 $\{-1, 1\}$ 构成的乘法群的映射 $\operatorname{sgn}: S_n \to \{-1, 1\}$，偶置换映射到 $1$，奇置换映射到 $-1$。可以验证这个映射保持乘法律（因为奇偶相乘遵循类似正负号相乘的结果），所以它是一个同态映射，而且显然是满同态。核 $\operatorname{ker}(\operatorname{sgn})$ 恰好等于 $A_n$。因为同态的核必须是正规子群，从而 $A_n \triangleleft S_n$ 是一个正规子群。依据第一同构定理，$S_n / A_n \cong \{-1, 1\}$，进一步说明了指数为 $2$。
+
+关于子群的指数为 2，其实有一个更普遍的结论。
+\begin{cntheorem}
+    若子群 $H$ 满足 $[G: H] = 2$ (即含有整个群中一半的元素或指数为2)，那么 $H$ 一定是 $G$ 的正规子群 ($H \triangleleft G$)。
+\end{cntheorem}
+\begin{proof}
+    因为 $[G: H] = 2$，所以 $G$ 只有两个左陪集，其中之一是 $H$ 本身。设另一左陪集为 $aH$（其中 $a \notin H$）；同理也只有两个右陪集，为 $H$ 和 $Ha$。
+    显然，无论是左陪集的划分还是右陪集的划分，都有集合的运算法则使得 $H \cup aH = G = H \cup Ha$。因为不相交，必然有 $aH = Ha$。
+    这对于所有的 $a \notin H$ 都成立。而当 $a \in H$ 时，$aH = H = Ha$ 自然成立。
+    由于对所有 $g \in G$，恒有 $gH = Hg$，从而 $H$ 为正规子群。
+\end{proof}
+
+\begin{cndefinition}[单群]
+    若一个群 $G$ 只有平庸的正规子群（即只有 $\{e\}$ 和 $G$ 自身为它的正规子群），则称 $G$ 为\textbf{单群} (Simple Group)。
+\end{cndefinition}
+单群在群论的结构中犹如“质数”一般重要，因为它们是构成一般群的基础。对于对称群正规子群的分析有如下重要的断言：
+\begin{cntheorem}
+    \begin{enumerate}
+    \item \textbf{结论1}：当 $n \ge 5$ 时，$A_n$ 是 $S_n$ 的\textbf{唯一}非平凡正规子群。
+    \item \textbf{结论2}：当 $n \ge 5$ 时，交错群 $A_n$ 是单群。
+    \end{enumerate}
+\end{cntheorem}
+\textit{注：因为当 $n \ge 5$ 时，$A_n$ 的单群这一根本属性，导致五次及以上一般代数方程没有根式解（Galois 理论基础）。}
+
+\section{群在集合上的作用}
+
+将群作为一个抽象代数结构放归它的原始起源，它经常描述着对于具体对象的一些对称操作（变换）。
+
+\begin{cndefinition}[群在集合上的作用的置换表示]
+    设群 $G$，集合 $\Sigma$。给出一个群同态 $f: G \to S(\Sigma)$，即将 $G$ 中的每个元素映为一个在 $\Sigma$ 上的置换，且满足群的乘法保持对应的映射复合。则称 $f$ 是 $G$ 的一个\textbf{置换表示} (Permutation Representation)。
+    
+    如果 $f$ 是单射，即 $\text{ker}(f) = \{e\}$，不同的群元素必然给出集合 $\Sigma$ 上不同的变换，我们称 $f$ 是一个\textbf{忠实表示} (Faithful Representation)。
+\end{cndefinition}
+
+“群作用”和“置换表示”有着内在的等价性。
+记群 $G$ 作用在集合上的操作为 $g \cdot a \in \Sigma$。只要满足 $(g_1 g_2)\cdot a = g_1 \cdot(g_2 \cdot a)$ 以及 $e \cdot a = a$，那这就定义了一个群作用。根据群元素的作用结果定义映射 $f(g): a \mapsto g \cdot a$，就可以相互转换。
+
+\begin{cntheorem}[Cayley 定理及其正则表示]
+    任何一个群 $G$ 都同构于某个对称群的一个子群。（即每个群至少能忠实地作用在自己的元素集合上）。
+\end{cntheorem}
+\textbf{左正则表示 (Left Regular Representation)}：
+    令群作用集合 $\Sigma = G$ 本身。对于每一个 $g \in G$ 定义一个置换 $f(g)$ 使得对任意元素 $a \in G$ 满足，
+    \[
+        f(g)(a) = ga
+    \]
+    容易验证 $f(g_1)(f(g_2)(a)) = g_1(g_2 a) = (g_1g_2)a = f(g_1 g_2)(a)$，且由于消去律的存在，若 $g_1 \neq g_2$，则 $g_1 a \neq g_2 a$，即它是单射，故为忠实表示。
+
+\textbf{右正则表示 (Right Regular Representation)}：
+    如果希望作用依然维持这种群态射同态，在乘右侧元素时写法应为运用逆元素：
+    \[
+        f(g)(a) = a g^{-1}
+    \]
+    验证同态性，$f(g_1)(f(g_2)(a)) = f(g_1)(a g_2^{-1}) = a g_2^{-1} g_1^{-1} = a (g_1 g_2)^{-1} = f(g_1 g_2)(a)$。这同样也是一个忠实表示。
+
+\end{document}

@@ -1,0 +1,43 @@
+cayley定理：任意群同构于一个置换群
+
+记号：共轭子集 A\subset G, g^{-1}Ag；共轭子群 A<G, g^{-1}Ag
+
+G, \Sigma={aH|a\in G},  f:G->S(\Sigma),(f的左诱导表示) f(g)==def==f(g)(aH)==def==gaH,可以证明f(g)为置换（单射+满射），且f为同态
+
+记号：M<G N_G(M)==def=={g\in G|g^{-1}Mg=M},成为M的正规化子，且为G的子群
+
+G,H<G,\Sigma={aGa^{-1}|a\in G}, f:G->S(\Sigma), f(g)(aHa^{-1})==def==gaHa^{-1}g^{-1}=(ga)H(ga)^{-1},可以证明f(g)为置换，且f为同态。称f为G在\Sigma上的共轭表示。 
+这里的ker(f)：g\in ker(f)<==>(a^{-1}ga)G(a^{-1}ga)^{-1}=H,\forall a, <==> (a^{-1}ga)\in N_G(H),\forall a, <==>  g\in \cap_{a\in G}aN_G(H)a^{-1},即H的正规化子的共轭子群的交。
+
+定义等价关系：G,\Sigma, \forall a,b\in \Sigma, 称a~b,如果\exists g\in G, ga=b
+
+定义：\forall a\in G, a所在的等价类称为a的轨道，记为[a]或orb(a)
+
+例：平面上的二次曲线，一定是某个群在R^2上作用的一个轨道
+对于y=x^2
+R在R^2上的作用，\forall a\in R, (x,y)\in R^{-1}, 定义作用a(x,y)==def==(x+a,y+2ax+a^2)(验证满足作用的2个定义)
+orb((0,0))={a(0,0)|a\in R}={(a,a^2)|a\in R}
+orb((c,d))={(a,a^2-(c^2-d))|a\in R}
+对于xy=1
+定义作用a(x,y)==def==(ax,a^{-1}y)
+orb((0,0))={(0,0)}
+orb((c,0))=x轴-{(0,0)}
+orb((0,d))=y轴-{(0,0)}
+
+定义stab(a)=G_a==def=={g\in G|ga=a}称为a的固定/稳定子群，且stab(a)为G的子群。
+将G分为左陪集：G=g_1 stab(a)\cup....\cup g_n stab(a)
+定理：若|G|<\inf, 则|G|=|stab(a)||orb(a)|
+证明：设g_1,...g_n为stab(a)意义下的完全代表系，设g_i a=a_i，则orb(a)>{a_1,...,a_n},还需要证明ga=a_i以及a_i两两不同：
+1.g=g_i h(其中h为stab(a)中的一个元素)，则g(a)=(g_i h)(a)=g_i(a)=a_i
+2.若a_i=a_j，则g_i a=g_j a, 则g_i g_j等价，与g_1,...,g_n为完全代表系矛盾，则两两不同
+则|orb(a)|=n
+
+\Sigma=\cup orb(a_i)
+记\Sigma_G=轨道长度为1的元素的集合={a\in \Sigma|orb(a)={a}}
+定理：|G|=p^n, 则|\Sigma|=|\Sigma_G| mod p
+证明：Sigma可以由长度为1de轨道和长度大于等于2的轨道组成，对于长度大于等于2的轨道，其大小必定为p的正整数次幂（由子群整除原群的阶），证毕
+
+定理：柯西：|G|<\inf, P||G|, 则G中有一个p阶元（G有一个P阶循环子群），
+特例：|G|为偶数，G中必有二阶元，否则G={1}\cup{a,a^{-1}}\cup....\cup{b,b^{-1}}，与偶数矛盾。
+证明：构造一个由 $G$ 中 $p$ 个元素组成的序列集合：$$X = \{ (g_1, g_2, \dots, g_p) \mid g_i \in G, g_1 g_2 \dots g_p = e \}$$。前 $p-1$ 个元素 $g_1, \dots, g_{p-1}$ 可以从 $G$ 中任意选取（共有 $|G|^{p-1}$ 种选法）。一旦选定，为了满足乘积为 $e$，最后一个元素 $g_p$ 必须等于 $(g_1 g_2 \dots g_{p-1})^{-1}$。因此，$|X| = |G|^{p-1}$。由于 $p \mid |G|$，显然有 $p \mid |X|$。考虑循环群 $C_p = \langle \sigma \rangle$ 作用在集合 $X$ 上。对于 $\sigma \in C_p$，定义其作用为循环移位：$$\sigma \cdot (g_1, g_2, \dots, g_p) = (g_2, g_3, \dots, g_p, g_1)$$
+利用定理（定理：|G|=p^n, 则|\Sigma|=|\Sigma_G| mod p），这里的G是循环群C_p,则P||\Sigma_{C_p}|，又P||\Sigma|.

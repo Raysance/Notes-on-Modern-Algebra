@@ -1,0 +1,240 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ctex}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\input{../preamable/preamable.tex}
+
+\declaretheorem[style=thmgreenbox, name=定义]{cndefinition}
+\declaretheorem[style=thmredbox, name=定理]{cntheorem}
+\declaretheorem[style=thmbluebox, name=性质]{cnproperty}
+\declaretheorem[style=thmredbox, name=引理]{cnlemma}
+\declaretheorem[style=thmredbox, numbered=no, name=推论]{cncorollary}
+\declaretheorem[style=thmbluebox, numbered=no, name=例]{cnexample}
+
+\title{近世代数笔记(Lec 05)：群作用、轨道稳定子定理与柯西定理}
+\author{Raysance}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Cayley 定理与共轭作用}
+
+\subsection{Cayley 定理回顾}
+
+\begin{cntheorem}[Cayley 定理]
+    任意群 $G$ 都同构于某个置换群。特别地，若 $G$ 为有限群，则 $G$ 同构于对称群 $S_n$ 的一个子群。
+\end{cntheorem}
+
+\textbf{直观理解}：Cayley 定理告诉我们，抽象的“群”实际上可以看作是某个集合上的置换（即双射）。最自然的方式是让群 $G$ 作用在其自身元素上。在下面我们将看到更多群作用的例子，群的表示（例如左诱导表示）是理解群结构的重要手段。
+
+\subsection{共轭子集与正规化子}
+
+\begin{cndefinition}[共轭子集与共轭子群]
+    设 $G$ 是一个群，
+    \begin{itemize}
+        \item 对于集合 $A \subset G$，称 $g^{-1}Ag = \{g^{-1}ag \mid a \in A\}$ 为 $A$ 的一个\textbf{共轭子集}。
+        \item 若 $A < G$（即 $A$ 是 $G$ 的子群），则其共轭子集 $g^{-1}Ag$ 也是 $G$ 的子群，称为 $A$ 的\textbf{共轭子群}。
+    \end{itemize}
+\end{cndefinition}
+
+为了研究子群的共轭性，我们引入正规化子的概念，它衡量了“哪些元素能使子群在共轭意义下保持不变”。
+
+\begin{cndefinition}[正规化子]
+    设 $M < G$，$M$ 在 $G$ 中的\textbf{正规化子}定义为：
+    \[
+    N_G(M) \triangleq \{g \in G \mid g^{-1}Mg = M\}
+    \]
+\end{cndefinition}
+
+\begin{cnproperty}
+    $N_G(M)$ 是 $G$ 的子群，且 $M \triangleleft N_G(M)$（$M$ 是其正规化子的正规子群）。
+\end{cnproperty}
+
+\subsection{群的作用与表示}
+
+\begin{cntheorem}[左乘诱导的表示]
+    设 $G$ 为群，$H < G$，令 $\Sigma = \{aH \mid a \in G\}$ 为 $H$ 在 $G$ 中的所有左陪集构成的集合。
+    定义映射 $f: G \to S(\Sigma)$ 为 $f(g)(aH) \triangleq gaH$。
+    那么 $f(g)$ 是 $\Sigma$ 上的置换，$f$ 是群同态。
+\end{cntheorem}
+
+\begin{proof}
+    首先，证明 $f(g)$ 是双射。由于 $g(g^{-1}aH) = aH$ 故为满射；若 $gaH = gbH$，左乘 $g^{-1}$ 得 $aH = bH$，故为单射。
+    其次，验证同态性质：对于任意 $g_1, g_2 \in G$，$aH \in \Sigma$，有：
+    \[
+    f(g_1 g_2)(aH) = (g_1 g_2)aH = g_1(g_2 aH) = f(g_1)(f(g_2)(aH)) = (f(g_1) \circ f(g_2))(aH)
+    \]
+    从而 $f(g_1 g_2) = f(g_1) \circ f(g_2)$，说明 $f$ 保持了群的乘法结构，它是从 $G$ 到对称群 $S(\Sigma)$ 的同态。
+\end{proof}
+
+\begin{cntheorem}[共轭表示]
+    设 $G$ 为群，$H < G$，令 $\Sigma = \{aHa^{-1} \mid a \in G\}$ 为 $H$ 的所有共轭子群构成的集合。
+    定义映射 $f: G \to S(\Sigma)$ 为 $f(g)(aHa^{-1}) \triangleq gaHa^{-1}g^{-1} = (ga)H(ga)^{-1}$，那么 $f(g)$ 为置换，且 $f$ 为同态。
+\end{cntheorem}
+
+\textbf{核的分析}：求该共轭表示的核 $\ker(f)$。
+根据定义，$g \in \ker(f) \iff f(g)$ 是恒等置换。
+也就是对于所有的 $a \in G$，都有 $gaHa^{-1}g^{-1} = aHa^{-1}$。
+这等价于 $(a^{-1}g a)H(a^{-1}g a)^{-1} = H$，即对于任意 $a \in G$，有 $a^{-1}g a \in N_G(H)$。
+进一步转化为 $g \in a N_G(H) a^{-1}$，由于这对所有的 $a$ 成立，因此：
+\[
+\ker(f) = \bigcap_{a \in G} a N_G(H) a^{-1}
+\]
+这说明共轭表示的核，是 $H$ 正规化子的所有共轭子群的交，是 $G$ 的一个正规子群。
+
+\section{群作用：等价类与轨道}
+
+在集合上的群同态表示可以引出一个等价关系。设群 $G$ 作用在集合 $\Sigma$ 上：
+
+\begin{cndefinition}[等价关系与轨道]
+    对于任意 $a, b \in \Sigma$，定义等价关系 $a \sim b \iff \exists g \in G, ~ ga = b$。
+    
+    对于 $\forall a \in \Sigma$，$a$ 所在的等价类称为 $a$ 的\textbf{轨道} (Orbit)，记为 $[a]$ 或 $\operatorname{orb}(a)$：
+    \[
+    \operatorname{orb}(a) = \{ga \mid g \in G\}
+    \]
+\end{cndefinition}
+
+这样，原来杂乱无章的集合 $\Sigma$ 就被划分为一个个互不相交的等价类（轨道）。
+
+\begin{cnexample}[二次曲线的群作用视角]
+    平面 $\mathbb{R}^2$ 的二次曲线可以视为加法群 $\mathbb{R}$ 在平面上某种作用的轨道。
+    \begin{enumerate}
+        \item \textbf{抛物线 $y=x^2$ 的平移轨道} \\
+        定义作用：对任意 $a \in \mathbb{R}$ 与坐标 $(x, y) \in \mathbb{R}^2$，令 $a \cdot (x, y) = (x+a, y+2ax+a^2)$。可以验证满足群作用的封闭率与恒等元。\\
+        它的轨道分别对应抛物线的平移：
+        \begin{itemize}
+            \item 原点轨道：$\operatorname{orb}((0,0)) = \{ (a, a^2) \mid a \in \mathbb{R} \}$ （标准的抛物线）。
+            \item 任意点轨道：$\operatorname{orb}((c,d)) = \{ (a+c, d+2ac+a^2) \mid a \in \mathbb{R} \} = \{ (x, x^2 - (c^2-d)) \mid x \in \mathbb{R} \}$ （上下平移的抛物线族）。
+        \end{itemize}
+        
+        \item \textbf{双曲线 $xy=1$ 的缩放轨道} \\
+        定义作用：使用非零乘法群 $(\mathbb{R}^{\times}, \cdot)$ 作用。对任意 $a \in \mathbb{R}^{\times}$，令 $a \cdot (x, y) = (ax, a^{-1}y)$。\\
+        相应的轨道：
+        \begin{itemize}
+            \item 原点轨道：$\operatorname{orb}((0,0)) = \{(0,0)\}$ （孤立点）。
+            \item 轴上的轨道：$\operatorname{orb}((c,0))$ 是一整条由原点截断的 $x$ 轴一半；同理 $\operatorname{orb}((0,d))$ 是 $y$ 轴一半。
+            \item 不在轴上的点：形成形如 $xy=k$ 的双曲线族。
+        \end{itemize}
+    \end{enumerate}
+\end{cnexample}
+
+\section{轨道-稳定子定理}
+
+对于轨道内的性质，需要考察什么元素让 $a$ 保持不动：
+
+\begin{cndefinition}[固定子群 / 稳定子群]
+    对于 $a \in \Sigma$，由群 $G$ 中使 $a$ 保持不动的元素构成的子集称为 $a$ 的\textbf{稳定子群} (Stabilizer)，记为 $\operatorname{stab}(a)$ 或 $G_a$：
+    \[
+    \operatorname{stab}(a) = G_a \triangleq \{g \in G \mid ga = a\}
+    \]
+    易证 $\operatorname{stab}(a) \le G$ 总是 $G$ 的一个子群。
+\end{cndefinition}
+
+借由陪集分解，我们得到群作用理论中最重要也是最美的定理之一。
+
+\begin{cntheorem}[轨道-稳定子定理 (Orbit-Stabilizer Theorem)]
+    设群 $G$ 作用在有限集合 $\Sigma$ 上。如果 $|G| < \infty$，则对任意 $a \in \Sigma$ 有：
+    \[
+    |G| = |\operatorname{stab}(a)| \cdot |\operatorname{orb}(a)|
+    \]
+\end{cntheorem}
+
+\begin{proof}
+    由拉格朗日定理，子群的阶必定整除母群的阶，将 $G$ 按子群 $\operatorname{stab}(a)$ 进行左陪集分解：
+    \[
+    G = g_1 \operatorname{stab}(a) \cup g_2 \operatorname{stab}(a) \cup \dots \cup g_n \operatorname{stab}(a)
+    \]
+    其中 $\{g_1, \dots, g_n\}$ 为 $\operatorname{stab}(a)$ 的一个完全代表系，易知 $|G| = n \cdot |\operatorname{stab}(a)|$（因此只需要证明 $n = |\operatorname{orb}(a)|$ 即可）。
+    
+    对于 $\operatorname{orb}(a)$，设 $a_i = g_i a$。我们断定 $\operatorname{orb}(a) = \{a_1, \dots, a_n\}$，且这 $n$ 个元素两两不同。
+    \begin{itemize}
+        \item \textbf{尽在其中}：对任意 $g \in G$，其必然属于某个左陪集，即 $g = g_i h$，其中 $h \in \operatorname{stab}(a)$。于是 $ga = (g_i h)a = g_i (ha) = g_i a = a_i$。这说明 $\operatorname{orb}(a)$ 中所有的结果均在 $\{a_1, \dots, a_n\}$ 中。
+        \item \textbf{两两不同}：若存在 $a_i = a_j$，即 $g_i a = g_j a$，同左乘 $g_j^{-1}$ 可得 $(g_j^{-1}g_i)a = a$，说明 $g_j^{-1}g_i \in \operatorname{stab}(a)$。于是 $g_i \operatorname{stab}(a) = g_j \operatorname{stab}(a)$。由于 $\{g_k\}$ 是一个完全代表系，这推出 $i=j$。
+    \end{itemize}
+    综合以上两点，$|\operatorname{orb}(a)| = n = |G| / |\operatorname{stab}(a)|$，从而 $|G| = |\operatorname{stab}(a)| \cdot |\operatorname{orb}(a)|$ 得证。
+\end{proof}
+
+\textbf{推论直观理解}：群作用在一个元素 $a$ 上产生的不同结果的数量（即轨道长度），恰好等于这个群“被由于不动作用塌缩的剩余结构”（由于不动，陪集中的元素作用结果都一样），也就是陪集的个数。
+
+\section{共轭类方程与 Cauchy 定理}
+
+我们可以把整个集合 $\Sigma$ 分解为所有不交的轨道的并：$\Sigma = \bigcup_{i} \operatorname{orb}(a_i)$。
+记 $\Sigma_G$ 为轨道长度为 1 的元素的集合，即作用下的固定点：
+\[
+\Sigma_G = \{a \in \Sigma \mid \operatorname{orb}(a) = \{a\}\}
+\]
+
+如果考虑群 $G$ 是具有质数幂形式的 $p$-群，则可以得到极强的约束关系定理：
+
+\begin{cntheorem}[$p$-群的固定点同余定理]
+    设有限群 $G$ 作用在有限集合 $\Sigma$ 上。如果 $|G| = p^n$（$p$ 为素数），则
+    \[
+    |\Sigma| \equiv |\Sigma_G| \pmod p
+    \]
+\end{cntheorem}
+
+\begin{proof}
+    集合 $\Sigma$ 可以划分为所有等价类（轨道）的无交并集，包括长度为 $1$ 的轨道（总计 $|\Sigma_G|$ 个元素），以及长度大于等于 $2$ 的轨道 $\operatorname{orb}(a_j)$。
+    由轨道稳定子定理，对于长度 $\ge 2$ 的轨道：
+    \[
+    |\operatorname{orb}(a_j)| = \frac{|G|}{|\operatorname{stab}(a_j)|}
+    \]
+    既然 $|G|=p^n$，那么 $|\operatorname{orb}(a_j)|$ 必须是整除 $|G|$ 的一个因子。由于其大于 1，则必定为 $p$ 的某个正整数次幂（形如 $p^k, k \ge 1$）。
+    于是有：
+    \[
+    |\Sigma| = |\Sigma_G| + \sum_{|\operatorname{orb}(a_j)| \ge 2} |\operatorname{orb}(a_j)| 
+    \]
+    由于后面的求和式中每一项都是 $p$ 的倍数，在模运算下为 0，这立即得出 $|\Sigma| \equiv |\Sigma_G| \pmod p$。
+\end{proof}
+
+由上述群作用的知识，我们可以用来证明群论中判断子群与元素存在性的重要定理。
+
+\begin{cntheorem}[Cauchy 定理 (柯西定理)]
+    设 $G$ 是有限群。如果素数 $p \bigm| |G|$，则 $G$ 中至少存在一个阶为 $p$ 的元素（等价地说，$G$ 包含一个 $p$ 阶循环子群）。
+\end{cntheorem}
+
+\begin{cncorollary}
+    作为特例，如果 $|G|$ 为偶数，则群 $G$ 中必定包含至少一个 2 阶元（即 $a \neq e$ 且 $a^2 = e$）。\\
+    直观证法：假设没有2阶元，那么除了恒等元 $e$ 外，所有元素 $b \neq b^{-1}$ 都成对出现。可以将群分解为 $G = \{e\} \cup \{a_1, a_1^{-1}\} \cup \dots \cup \{a_k, a_k^{-1}\}$。
+    这要求 $|G| = 2k + 1$ 为奇数，与 $|G|$ 为偶数矛盾！
+\end{cncorollary}
+
+对于一般的柯西定理，我们可以巧妙地利用群作用来进行证明。
+
+\begin{proof}[Cauchy 定理的群作用证明]
+    构建所有长度为 $p$ 且乘积为恒等元的字母序列集合：
+    \[
+    X = \{ (g_1, g_2, \dots, g_p) \mid g_i \in G, ~ g_1 g_2 \dots g_p = e \}
+    \]
+    显然，前 $p-1$ 个元素 $g_1, \dots, g_{p-1}$ 可以从 $G$ 中独立任意选取，一旦给定，由方程要求可得 $g_p = (g_1 g_2 \dots g_{p-1})^{-1}$，因此被唯一决定。
+    故该集合中元素的总数为 $|X| = |G|^{p-1}$。
+    
+    既然 $p \bigm| |G|$，必然有 $p \bigm| |X|$ (因为 $p - 1 \ge 1$)。
+    
+    现在考虑由生成元 $\sigma$ 的 $p$ 阶循环群 $C_p = \langle \sigma \rangle$ 作用于 $X$。定义 $\sigma$ 的作用为元素的循环移位：
+    \[
+    \sigma \cdot (g_1, g_2, \dots, g_p) = (g_2, g_3, \dots, g_p, g_1)
+    \]
+    （易证若 $g_1 \dots g_p = e$，则 $g_2 \dots g_p g_1 = g_1^{-1} g_1 = e$，故移位运算是封闭的，确为作用）。
+    
+    应用 $p$-群固定点同余定理（这里作用群为 $C_p$，其阶为 $p^1$；被作用集合为 $X$）：
+    \[
+    |\Sigma_{C_p}| \equiv |X| \pmod p
+    \]
+    由于 $p$ 整除 $|X|$，所以 $p \bigm| |\Sigma_{C_p}|$，即固定点的数量要是 $p$ 的倍数。
+    
+    什么是此作用下的固定点呢？固定点要求一次移位后维持不变，这意味着所有坐标必须相同，即 $(g, g, \dots, g) \in X$，满足 $g^p = e$。
+    
+    我们知道恒等元数列 $(e, e, \dots, e)$ 是一个显而易见的固定点，那么 $|\Sigma_{C_p}| \ge 1$。
+    因为数量是 $p$ 的倍数，这意味着必定存在除了 $(e, e, \dots, e)$ 之外的固定点（至少还有 $p-1$ 个）！
+    从而存在某个 $g \neq e$ 使得 $g^p = e$。这个 $g$ 就是我们要找的阶为 $p$ 的元素（且 $p$ 为素数，故这不能是由更小阶幂产生，其精确阶即为 $p$）。
+    定理得证。
+\end{proof}
+
+\end{document}

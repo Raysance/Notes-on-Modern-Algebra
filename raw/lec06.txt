@@ -1,0 +1,26 @@
+Sylow 定理：
+1st Sylow: |G|=mp^n,则G一定有阶为p^n的子群。
+证：S==def=={s\subset G||S|=p^n}
+定义G在S上的作用：gs==def==g·s={g·a|a\in S}
+并且p不整除|S|，则存在至少一个S的轨道，其基数不是p的倍数，记为C，\forall s\in C，令H=stab(s),则|C|=|G|/|H|,由于|C|不被p整除，|G|=mp^n，则|H|>=p^n。
+则|H|=p^n，称H为Sylow p-子群
+
+2st Sylow: |G|=mp^n，则所有的Sylow p-子群都共轭。
+令S={g1H,...,gmH}
+定义G在S上的作用：ggiH==def==ggiH，作用只有1个轨道
+
+3rd Sylow：|G|=mp^n，令r为Sylow p-子群的个数，则r|m且r=1(mod p)
+
+直和：Z_m+Z_n是循环群 iff gcd(m,n)=1
+
+有限阿贝尔群的结构定理：任何有限阿贝尔群同构于若干个循环群的直和。
+|G|=n=p1^k1...pm^km，存在一组数：a11,...,a1t1>=1,a21,...,a2t2>=1,...,am1,...amtm>=1,ai1+...+aiti=ki
+则G同构于Z_{p1^a11}⊕...⊕Z_{p1^a1t1}⊕...⊕Z_{pm^am1}⊕...⊕Z_{pm^amtm}
+称(p1^a11,p1^{a1t1},...,pm^{am1},pm^{amtm})为G的初等因子组。
+
+e.g. 任意36阶阿贝尔群：36=(2^2)*(3^2)
+同构于以下4种之一
+Z4 Z9
+Z2 Z2 Z9
+Z4 Z3 Z3
+Z2 Z2 Z3 Z3

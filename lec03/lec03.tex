@@ -1,0 +1,184 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ctex}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\input{../preamable/preamable.tex}
+
+\declaretheorem[style=thmgreenbox, name=定义]{cndefinition}
+\declaretheorem[style=thmredbox, name=定理]{cntheorem}
+\declaretheorem[style=thmbluebox, name=性质]{cnproperty}
+\declaretheorem[style=thmredbox, name=引理]{cnlemma}
+\declaretheorem[style=thmredbox, numbered=no, name=推论]{cncorollary}
+\declaretheorem[style=thmbluebox, numbered=no, name=例]{cnexample}
+\title{近世代数笔记(Lec 03)：生成子群、循环群与同态基本定理}
+\author{Raysance}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{生成子群与循环群}
+
+\subsection{生成子群}
+
+\begin{cndefinition}[生成子群]
+设 $G$ 是一个群，$S$ 为 $G$ 的一个子集。定义包含 $S$ 的最小子群为由 $S$ 生成的子群，记作 $\langle S \rangle$。
+即 $\langle S \rangle$ 是 $G$ 中所有包含 $S$ 的子群的交集。
+若 $S$ 是有限集，则称 $\langle S \rangle$ 为有限生成子群。此时 $S$ 称为该子群的生成元系。
+\end{cndefinition}
+
+为了具体描述 $\langle S \rangle$ 中的元素，我们引入集合 $S^{-1}$ 的定义：
+\begin{cndefinition}[逆元集合]
+设 $S$ 是群 $G$ 的子集，定义 $S^{-1} = \{ \alpha^{-1} \mid \alpha \in S \}$。
+\end{cndefinition}
+
+\begin{cntheorem}[生成子群的充分必要刻画]
+设 $S$ 为群 $G$ 的非空子集，则 $\langle S \rangle$ 正是由 $S \cup S^{-1}$ 中元素的任意有限次乘积构成的集合。
+换言之，$\langle S \rangle = \{ s_1 s_2 \cdots s_k \mid s_i \in S \cup S^{-1}, k \ge 1 \}$。
+\end{cntheorem}
+\begin{proof}
+设 $H = \{ s_1 s_2 \cdots s_k \mid s_i \in S \cup S^{-1}, k \ge 1 \}$。
+首先证明 $H$ 构成 $G$ 的子群。
+显然 $H$ 非空。对于任意 $x, y \in H$，有 $x = a_1 \cdots a_m$，$y = b_1 \cdots b_n$（其中 $a_i, b_j \in S \cup S^{-1}$）。
+则 $y^{-1} = b_n^{-1} \cdots b_1^{-1}$，由于 $b_j \in S \cup S^{-1}$，其逆元 $b_j^{-1}$ 同样属于 $S \cup S^{-1}$。
+因此 $xy^{-1} = a_1 \cdots a_m b_n^{-1} \cdots b_1^{-1} \in H$。由子群判定定理，$H \le G$。
+其次，因为 $H$ 包含 $S$，且 $\langle S \rangle$ 是包含 $S$ 的最小子群，故 $\langle S \rangle \subseteq H$。
+另一方面，由于 $\langle S \rangle$ 是子群且包含 $S$，它必然包含 $S^{-1}$ 以及它们的任意有限次乘积，即 $H \subseteq \langle S \rangle$。
+综上可得 $\langle S \rangle = H$。
+\end{proof}
+
+\subsection{循环群}
+
+\begin{cndefinition}[循环群]
+若群 $G$ 可由单一元素 $\alpha$ 生成，即 $G = \langle \alpha \rangle = \{ \alpha^k \mid k \in \mathbb{Z} \}$，则称 $G$ 为循环群。元素 $\alpha$ 称为 $G$ 的生成元。
+\end{cndefinition}
+
+\begin{cnproperty}[循环群的同构性质]
+循环群按其生成元 $\alpha$ 的阶（$\mathrm{order}(\alpha)$）分为两类：
+\begin{itemize}
+    \item 若 $\mathrm{order}(\alpha) = \infty$，即 $G$ 是无限循环群，则 $G$ 与整数加法群 $(\mathbb{Z}, +)$ 同构。
+    \item 若 $\mathrm{order}(\alpha) = n < \infty$，即 $G$ 是有限循环群，则 $G$ 与整数模 $n$ 加法群 $(\mathbb{Z}_n, +)$ 同构。
+\end{itemize}
+\end{cnproperty}
+\textbf{直观理解：} 循环群的结构极其简单，完全由其大小决定。不论是写成乘法形式还是加法形式，它们的本质就是通过不断重复某一种运算来生成所有元素，这与整数不断加 $1$（或模 $n$ 加 $1$）的行为完全一致。
+
+\subsection{生成元的选择与子群结构}
+
+对于循环群的生成元和元素的阶，我们有以下重要性质：
+
+\begin{cnproperty}[循环群中元素的阶]
+设 $G = \langle \alpha \rangle$ 为有限循环群，$\mathrm{order}(\alpha) = n$。对于任意整数 $k$，元素 $\alpha^k$ 的阶为：
+$$ \mathrm{order}(\alpha^k) = \frac{n}{\gcd(n, k)} $$
+\end{cnproperty}
+\begin{proof}
+设 $\gcd(n, k) = d$，$n = d n_1$，$k = d k_1$，其中 $\gcd(n_1, k_1) = 1$。
+我们需要寻找最小的正整数 $m$，使得 $(\alpha^k)^m = 1$，即 $\alpha^{km} = 1$。
+由元素的阶的性质知，若 $\alpha^{km} = 1$，则必须有 $n \mid km$，即 $d n_1 \mid d k_1 m$，从而 $n_1 \mid k_1 m$。
+因为 $n_1$ 与 $k_1$ 互质，故必定有 $n_1 \mid m$。满足该条件的最小正整数即为 $m = n_1 = \frac{n}{d}$。
+\end{proof}
+
+\begin{cncorollary}[生成元的个数]
+若 $G$ 是 $n$ 阶循环群，则它恰好有 $\varphi(n)$ 个生成元（其中 $\varphi$ 为欧拉函数）。
+\end{cncorollary}
+\textbf{直观理解：} $G$ 中的元素 $\alpha^k$ 能成为生成元的充要条件是它的阶等于群的阶 $n$。由上一个性质得 $\frac{n}{\gcd(n, k)} = n$，即 $\gcd(n, k) = 1$。这就说明在 $1$ 到 $n$ 中与 $n$ 互质的数有几个，生成元就有几个，也就是 $\varphi(n)$。
+
+\section{循环群的子群定理}
+
+循环群的子群依然是循环群，并且对于无限和有限的情形都能被完全刻画。
+
+\begin{cntheorem}[无限循环群的子群]
+设 $G = \langle \alpha \rangle$ 为无限循环群（$|G| = \infty$）。
+则 $G$ 的全部子群为 $\{1\}$ 以及所有形如 $\langle \alpha^m \rangle$（$m \ge 1$）的子群。
+此外，$\langle \alpha^m \rangle$ 在 $G$ 中的指数（index）为 $m$。
+\end{cntheorem}
+
+\begin{cntheorem}[有限循环群的子群]
+设 $G = \langle \alpha \rangle$ 为 $n$ 阶有限循环群（$|G| = n$）。
+则 $G$ 的每一个子群均形如 $\langle \alpha^m \rangle$，其中 $m$ 是 $n$ 的正因子。对于每一个正因子 $m$，$G$ 恰有一个这样的子群，并且该子群在 $G$ 中的指数为 $m$，该子群的阶为 $\frac{n}{m}$。
+\end{cntheorem}
+\textbf{直观理解：} 在有限循环群中，群的大小是 $n$。我们只能以能整除 $n$ 的“步长” $m$ 来跳跃生成子群，步长多大，对应的子群被分出的陪集就有多少个（即 index 为 $m$）。
+
+\section{循环群的应用与自同构}
+
+\subsection{离散对数问题与密码学}
+
+\begin{cndefinition}[离散对数问题, DLP]
+假设我们有一个阶极大的有限循环群 $G$，其生成元为 $g$。对于群中的任意已知元素 $a$，寻找一个整数 $x$ 使得：
+$$ g^x \equiv a \pmod{p} $$
+这一问题被称为离散对数问题。若 $G$ 选取得当且足够大，计算 $g^x$ 很容易（常利用快速幂），但求其逆向运算（即求 $x$）在计算上极为困难。
+\end{cndefinition}
+
+基于上述问题的困难性，我们可构造非对称加密算法。\textbf{ELGAMAL算法} 便是一个著名的建立在离散对数问题之上的公钥加密算法。
+
+\begin{cnproperty}[整数模 $n$ 乘法群 $(\mathbb{Z}_n^*, \cdot)$ 成为循环群的条件]
+乘法群 $(\mathbb{Z}_n^*, \cdot)$ 是循环群的充要条件为 $n = 2, 4, p^k, 2p^k$，其中 $p$ 为任意奇素数，$k \ge 1$。此时这个群的生成元被称为模 $n$ 的原根。
+\end{cnproperty}
+
+\subsection{循环群的自同构}
+
+\begin{cntheorem}[循环群的自同构]
+设 $G$ 为循环群。
+\begin{itemize}
+    \item 若 $G$ 为无限循环群，则它只有两个自同构映射：恒等映射 ($x \mapsto x$) 和求逆映射 ($x \mapsto x^{-1}$)。
+    \item 若 $G$ 为 $n$ 阶有限循环群，则它的所有自同构构成的群同构于 $(\mathbb{Z}_n^*, \cdot)$。具体地，每一个自同构映射形如 $x \mapsto x^k$，其中 $\gcd(k, n) = 1$。
+\end{itemize}
+\end{cntheorem}
+\begin{proof}
+自同构是将生成元映射到其它生成元上的同构。\\
+对于无限循环群 $\mathbb{Z}$，其生成元只有 $1$ 和 $-1$。因此自同构只能将 $1$ 映射给 $1$ 或 $-1$，对应于 $x \mapsto x$ 和 $x \mapsto -x$（乘法表示即为 $x^{-1}$）。\\
+对于 $n$ 阶有限循环群，生成元有 $\varphi(n)$ 个（即所有 $\alpha^k$ 中 $\gcd(k, n) = 1$ 的元素）。自同构必然将 $\alpha$ 映满所有的生成元，因此映射即为 $\alpha \mapsto \alpha^k$ 且 $\gcd(k, n) = 1$。
+\end{proof}
+
+\section{商群}
+
+商群是利用同余关系对原群进行“粗粒化”或“分类”所得到的更为简单的群结构。
+
+\begin{cndefinition}[商集与陪集乘法]
+设 $N$ 为群 $G$ 的子群。我们在群 $G$ 的陪集集合 $G/N$ 上定义陪集乘法：
+$$ (\alpha N) \cdot (\beta N) \overset{\mathrm{def}}{=} (\alpha \beta) N $$
+\end{cndefinition}
+
+但这个运算未必总是 well-defined (良定义的)，即结果可能因代表元的选取不同而不同。为了保证它是良定义的（即若 $\alpha N = \alpha' N, \beta N = \beta' N$，则 $\alpha\beta N = \alpha'\beta' N$），必须满足一定条件。
+这一条件等价于对任意的 $\beta \in G$，都有 $\beta^{-1}N\beta = N$，或者写作 $\beta N = N \beta$。
+
+\begin{cndefinition}[正规子群与商群]
+若子群 $N \le G$ 满足 $\forall \beta \in G$，都有 $\beta N = N \beta$（即左陪集与右陪集总是相等），则称 $N$ 是 $G$ 的\textbf{正规子群}（Normal Subgroup），记作 $N \triangleleft G$。\\
+当 $N \triangleleft G$ 时，陪集集合 $G/N$ 在上述陪集乘法下构成一个群，该群被称为 \textbf{商群}（Quotient Group），记为 $(G/N, \cdot)$。
+\end{cndefinition}
+\textbf{直观理解：} 正规子群是一种“表现很好”的子群，它在共轭作用下是不变的。对于阿贝尔群（交换群）来说，任意元素相乘均可交换，所以自然有 $\beta N = N \beta$，即\textbf{阿贝尔群的所有子群都是正规子群}。商群就如同是把原本群内的子群收缩为一个点（单位元），并将平行于这个子群的子集当做一个整体来看待。
+
+\section{同态基本定理}
+
+同态基本定理建立了两个群同态与商群之间的深刻联系。
+
+\begin{cntheorem}[同态基本定理 (First Isomorphism Theorem)]
+设 $f : G \to H$ 为群的满同态（Surjective Homomorphism）。则有：
+\begin{enumerate}
+    \item $f$ 的核，即 $\ker(f) = \{ x \in G \mid f(x) = 1_H \}$，是 $G$ 的正规子群（$\ker(f) \triangleleft G$）。
+    \item 可以构造映射 $\phi : G/\ker(f) \to H$，定义为 $\phi(\alpha \ker(f)) = f(\alpha)$。
+    \item 映射 $\phi$ 是一个群同构映射。故商群 $G/\ker(f)$ 与 $H$ 同构，记作 $G/\ker(f) \cong H$。
+\end{enumerate}
+\end{cntheorem}
+\begin{proof}
+首先，证明 $\ker(f) \triangleleft G$。设 $x \in \ker(f)$，$\beta \in G$。我们需要证明 $\beta^{-1} x \beta \in \ker(f)$。
+计算其在 $f$ 下的像：
+$$ f(\beta^{-1} x \beta) = f(\beta^{-1}) f(x) f(\beta) = f(\beta)^{-1} \cdot 1_H \cdot f(\beta) = 1_H $$
+此即说明 $\beta^{-1} \ker(f) \beta \subseteq \ker(f)$。由此易得 $\ker(f)$ 为正规子群。因为它是正规子群，所以商群 $G/\ker(f)$ 是存在的且良定义的。\\
+
+其次，我们检查 $\phi$ 是否良定义。设 $\alpha \ker(f) = \alpha' \ker(f)$，则存在 $x \in \ker(f)$ 使 $\alpha' = \alpha x$。
+则 $f(\alpha') = f(\alpha x) = f(\alpha) f(x) = f(\alpha) \cdot 1_H = f(\alpha)$。于是 $\phi(\alpha' \ker(f)) = \phi(\alpha \ker(f))$。即 $\phi$ 不依赖于代表元的选取。\\
+
+接着，验证 $\phi$ 是一个同态：
+$$ \phi((\alpha \ker(f)) \cdot (\beta \ker(f))) = \phi(\alpha\beta \ker(f)) = f(\alpha\beta) = f(\alpha) f(\beta) = \phi(\alpha \ker(f)) \phi(\beta \ker(f)) $$
+因此 $\phi$ 保持运算结构。\\
+
+最后，验证 $\phi$ 是双射。因为 $f$ 是满同态，对于任意 $h \in H$，存在 $\alpha \in G$ 使 $f(\alpha) = h$，此时 $\phi(\alpha \ker(f)) = h$，故 $\phi$ 满射。
+若 $\phi(\alpha \ker(f)) = 1_H$，则 $f(\alpha) = 1_H$，这意味着 $\alpha \in \ker(f)$，即 $\alpha \ker(f) = \ker(f)$（商群的单位元）。因此 $\ker(\phi)$ 仅包含单位元，说明 $\phi$ 单射。\\
+综合上述得证 $\phi : G/\ker(f) \cong H$。
+\end{proof}
+
+\end{document}

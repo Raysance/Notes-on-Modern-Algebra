@@ -1,0 +1,49 @@
+群中元素的幂次运算的定义
+元素的阶的定义（满足alpha^n=1的最小正整数n）
+子群的定义，子群的幺元和逆元=原群（行列式为1的n阶可逆方阵<n阶可逆方阵/{0,2}<{0,1,2,3}(mod4)）
+倍集，拉格朗日定理
+陪集的定义（H<G, 称alpha~beita,若alpha^-1beita\in H），满足等价关系（自反，对称，传递），因此可划分原集合（用特定子群决定的等价类）
+
+左陪集 alphaH==def=={alpha h|h\in H} (所有与alpha的等价元素构成的集合 alpha~beita=>alpha^{-1}beita\in H=>beita\in alphaH)
+(beita\in alphaH=>alpha^{-1}beita\in H=> alpha~beita)
+(G可划分为等价类的并，{alpha_1H,alpha_2H,...})(只有H拥有幺元能构成群)
+(从H到alpha_i H的映射为双射，则|H|=|alpha_i H|,则|G|=n|H|(n为等价类个数，每个等价类的大小都等于子集的大小))
+
+
+
+右陪集 Halpha==def==
+
+AB==def=={ab|a\in A, b\in B}
+
+拉格朗日定理：子群的大小为群大小的因数（使用陪集证明）
+
+由于alpha^i在G中，由G的有限性以及，鸽巢原理，存在i,j,alpha^i=alpha^j,于是存在阶n=|j-i|，且alpha^n=1
+ 
+于是使用拉格朗日定理可证明，对于有限群G：alpha^|G|=alpha^{n}^{|G|/n}=1^{|G|/n}=1 （其中n为alpha的阶）（且为0-阶次方构成子群）
+
+使用拉格朗日定理证明欧拉定理/费马小定理
+
+群同态的定义：f为G到H的映射，若对于任意G中元素a,b，有f(ab)=f(a)f(b),则称f为群同态
+群同态保持 单位元/逆： f(1)=1/ f(a^{-1})=f(a)^{-1}
+并且f(G)也是一个群：通过验证封闭性，结合律，幺元，逆元。即f(G)为H的子群
+kernel(f)==def==f^{-1}(1)，即所有映射到1的原群中的元素
+
+验证子集合是一个群：
+\forall a,b\in H, ab\in H			（1）
+1\in H						（2）
+forall a\in H, a^{-1}\in H			（3）
+等价于
+\forall a,b\in H, ab^{-1}\in H			（4）
+
+通过（4）可更方便地验证kernel(f)为群
+
+f为单同态（单射）<==>kernal(f)={1}
+
+典范映射（模运算）
+
+n阶循环群同构于（等价于）Zn
+
+如果一个群 $G$ 中的每一个元素都可以表示为该群内某一个固定元素 $a$ 的幂次，则称 $G$ 为循环群
+
+自同构群
+

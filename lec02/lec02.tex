@@ -1,0 +1,166 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ctex}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\input{../preamable/preamable.tex}
+
+% 重定义带有中文名称的环境，借助 preamable 中的 style
+\declaretheorem[style=thmgreenbox, name=定义]{cndefinition}
+\declaretheorem[style=thmredbox, name=定理]{cntheorem}
+\declaretheorem[style=thmbluebox, name=性质]{cnproperty}
+\declaretheorem[style=thmredbox, name=引理]{cnlemma}
+\declaretheorem[style=thmredbox, numbered=no, name=推论]{cncorollary}
+\declaretheorem[style=thmbluebox, numbered=no, name=例]{cnexample}
+
+\title{近世代数笔记(Lec 02)：子群、陪集、拉格朗日定理与同态}
+\author{Raysance}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{元素的幂次与阶}
+
+\begin{cndefinition}[群中元素的幂次运算]
+    设 $G$ 是一个群，$a \in G$。对于任意正整数 $n$，定义 $a$ 的 $n$ 次幂为 $n$ 个 $a$ 的乘积：$a^n = \underbrace{a \cdot a \cdots a}_{n \text{ 个}}$。特别地，定义 $a^0 = 1$（$1$ 为单位元），而 $a^{-n} = (a^{-1})^n$。自然地，幂次运算满足通常的指数乘法法则：$a^m a^n = a^{m+n}$ 与 $(a^m)^n = a^{mn}$，对任意 $m, n \in \Z$ 成立。
+\end{cndefinition}
+
+\begin{cndefinition}[元素的阶]
+    设 $G$ 是一个群，$\alpha \in G$。若存在正整数 $n$，使得 $\alpha^n = 1$，则称满足此条件的\textbf{最小正整数} $n$ 为元素 $\alpha$ 的阶（Order），记为 $|\alpha|$ 或 $\operatorname{ord}(\alpha)$。若不存在这样的正整数，则称 $\alpha$ 的阶为无穷大。
+\end{cndefinition}
+
+\section{子群及其验证条件}
+
+\begin{cndefinition}[子群]
+    设 $G$ 是一个群，$H$ 为 $G$ 的一个非空子集。若 $H$ 在 $G$ 的二元运算之下同样构成一个群，则称 $H$ 是 $G$ 的\textbf{子群}（Subgroup），记为 $H \le G$；对于真子群，记为 $H < G$。
+\end{cndefinition}
+
+子群必须拥有自身的单位元和逆元映射。实际上，子群的单位元及元素的逆元与原群 $G$ 中的单位元和逆元是完全相同的。
+
+\begin{cntheorem}[子群的等价验证条件]
+    要想证明 $G$ 的非空子集 $H$ 构成子群，只需验证以下三条基本性质：
+    \begin{enumerate}
+        \item 封闭性：$\forall a, b \in H, \, ab \in H$
+        \item 单位元：$1 \in H$
+        \item 逆元：$\forall a \in H, \, a^{-1} \in H$
+    \end{enumerate}
+    上述三条等价于下面更方便验证的两步法：
+    \begin{enumerate}
+        \item $\forall a, b \in H, \, ab^{-1} \in H$ 
+    \end{enumerate}
+    （被称为\textbf{一步子群判别法}，只需非空和以此条件即可。）
+\end{cntheorem}
+
+\begin{cnexample}[子群实例]
+    \begin{itemize}
+        \item 在所有 $n$ 阶实数可逆方阵群 $GL_n(\R)$ 中，行列式为 $1$ 的矩阵构成子群，记为特殊线性群 $SL_n(\R)$。
+        \item 在模 $4$ 乘法群 $\{0,1,2,3\} \pmod 4$ 的加法群 $Z_4$ 中，子集 $\{0, 2\}$ 构成加法子群，记为 $\{0, 2\} \le \Z_4$。
+    \end{itemize}
+\end{cnexample}
+
+\section{陪集与拉格朗日定理}
+
+\begin{cndefinition}[集合乘法]
+    定义两个群的子集 $A, B$ 的集合乘积为
+    $$ AB \coloneqq \{ab \mid a \in A, b \in B\} $$
+\end{cndefinition}
+
+\begin{cndefinition}[陪集]
+    设 $H \le G$ 是 $G$ 的一个子群，$\alpha \in G$。定义 $\alpha$ 所在的主导向对应的\textbf{左陪集}（Left Coset）为：
+    $$ \alpha H \coloneqq \{\alpha h \mid h \in H\} $$
+    同样地，定义对应的\textbf{右陪集}（Right Coset）为：
+    $$ H\alpha \coloneqq \{h\alpha \mid h \in H\} $$
+\end{cndefinition}
+
+我们可以用群上的等价关系来统一刻画左陪集。在群 $G$ 上对于给定的子群 $H$，定义关系 $\sim$ 如下：
+$$ \alpha \sim \beta \iff \alpha^{-1}\beta \in H $$
+
+\begin{cnproperty}[陪集的等价关系和划分]
+    定义在群 $G$ 上的上述关系 $\sim$ 是一个等价关系，对应等价类恰好是所有左陪集。
+\end{cnproperty}
+\begin{proof}
+    \begin{itemize}
+        \item \textbf{自反性}：$\alpha^{-1}\alpha = 1 \in H$ (因为 $H$ 包含单位元)，因此 $\alpha \sim \alpha$；
+        \item \textbf{对称性}：若 $\alpha \sim \beta$，则 $\alpha^{-1}\beta \in H$。由 $H$ 是子群，逆元 $(\alpha^{-1}\beta)^{-1} = \beta^{-1}\alpha \in H$，即 $\beta \sim \alpha$；
+        \item \textbf{传递性}：若 $\alpha \sim \beta$ 且 $\beta \sim \gamma$，则 $\alpha^{-1}\beta \in H, \, \beta^{-1}\gamma \in H$。由于 $H$ 运算封闭，故有 $(\alpha^{-1}\beta)(\beta^{-1}\gamma) = \alpha^{-1}\gamma \in H$，即 $\alpha \sim \gamma$。
+    \end{itemize}
+    由于此关系构成等价关系，它必定会对原集合 $G$ 构成划分。因此整个群 $G$ 可表示为不相交等价类的并，即所有由于特定的子群决定的等价类集合：
+    $$ G = \alpha_1 H \cup \alpha_2 H \cup \dots $$
+    并且在所有的等价类映射 $\alpha H$ 当中，只有当 $\alpha \in H$ 即代表元包含么元 $1$ 的主类 $1H = H$ 本身由于含有原单位元而能成为一个群（因为单位元必须包含在这个类中）。
+    
+    更进一步地，考察右乘映射 $f: H \to \alpha_i H, \, h \mapsto \alpha_i h$ 是一个显然的双射（因消去律），因此 $|H| = |\alpha_i H|$ 总是成立。即所有陪集的大小相等。
+\end{proof}
+
+\begin{cntheorem}[拉格朗日定理 (Lagrange's Theorem)]
+    对于有限群 $G$ 及其任意子群 $H$，子群的大小 $|H|$（也称阶）必然整除群 $G$ 的大小 $|G|$，即 $|G| = n |H|$，其中 $n$ 为等价类（陪集）的个数（记为 $[G:H]$ 或称指数）。
+\end{cntheorem}
+\begin{proof}
+    由前文的陪集等价关系可知左陪集是等价类，等价类构成了集合的划分（互不相交且并集为全集）。由于各等价类之间存在双射从而必然互相势等大，若等价类的个数为 $n$，则显然总元素数为等价类大小乘以个数：
+    $$ |G| = n|H| \implies |H| \mid |G| $$
+\end{proof}
+
+对于任意元素 $\alpha \in G$ 及其任意次幂 $\alpha^i$，由已知 $G$ 是有限群（有限集合不能容纳无限个不同的元素），结合鸽巢原理，必定存在 $i > j > 0$ 使得 $\alpha^i = \alpha^j$。两边同乘 $\alpha^{-j}$ 即可得 $\alpha^{i-j} = 1$。所以必然存在一最小自然数 $n \le |G|$ 使得 $\alpha^n = 1$，此即 \textbf{元素 $\alpha$ 的阶} $n$。
+
+所有以 $\alpha$ 为底数、由不同次幂生成的有限集合形成 $G$ 中的循环子群 $\langle \alpha \rangle$ = $\{1, \alpha, \alpha^2, \dots, \alpha^{n-1}\}$。其大小即为元素的阶 $n$。由于应用拉格朗日定理，$ |\langle \alpha \rangle| = n$ 必定能够整除总群的阶 $|G|$。
+于是对于所有元素可引出如下重要性质：
+\begin{cncorollary}[元素的阶与其整除性]
+    在有限群 $G$ 中，任意元素 $\alpha$ 的阶 $n$ 都整除 $|G|$。从而：
+    $$ \alpha^{|G|} = \alpha^{n \cdot (|G|/n)} = (a^n)^{|G|/n} = 1^{|G|/n} = 1 $$
+\end{cncorollary}
+这为著名的欧拉定理与费马小定理提供了纯群论视角的统率证明：取互质剩余类组成的乘法群 $\Z_p^\times$，其大小为 $p-1$，因而 $\forall a \in \Z_p^\times, a^{p-1} \equiv 1 \pmod p$。
+
+\section{群同态与核}
+
+\begin{cndefinition}[群同态]
+    设 $(G, \cdot)$ 与 $(H, *)$ 是两个群。对于映射 $f: G \to H$，如果在对任意的 $a, b \in G$ 都有：
+    $$ f(ab) = f(a) * f(b) $$
+    则称 $f$ 维持了群结构运作运算规律的一致性，将其称为\textbf{群同态}（Group Homomorphism）。如果同态映射同时还是双射（单射且满射），则称为\textbf{群同构}。此外，还可以顺带引出由于运算特性保留的一些代数同态特征。
+\end{cndefinition}
+
+\begin{cnproperty}[群同态的基本保持性]
+    同态一定保持：
+    \begin{enumerate}
+        \item \textbf{维持单位元}：$f(1_G) = 1_H$。 (将 $f(1)=f(1\cdot 1)=f(1)f(1)$ 左右消去得到映射至幺元)。
+        \item \textbf{维持逆元}：$f(a^{-1}) = f(a)^{-1}$。(证明： $f(a)f(a^{-1})=f(a\cdot a^{-1})=f(1_G)=1_H$)
+    \end{enumerate}
+    并且像集 $f(G)$ 是 $H$ 里面的一个子群，由于其同样符合封闭性，结合律并自带了映射过的幺元和逆元。
+\end{cnproperty}
+
+我们在刻画与“零星缩减”相关联的代数同态映射时引入核定义，其能够刻画映射的差异程度：
+
+\begin{cndefinition}[同态的核]
+    定义同态 $f: G \to H$ 的\textbf{核}（Kernel） $\ker(f)$，为所有直接反映射或者抹除至 $H$ 中幺元的原像集：
+    $$ \ker(f) \coloneqq f^{-1}(1_H) = \{x \in G \mid f(x) = 1_H\} $$
+\end{cndefinition}
+
+核同样也是群，其封闭性和子群证明可用一步子群判别法方便地推断得出：对于 $\forall a,b \in \ker(f)$有：
+$$ f(ab^{-1}) = f(a)f(b^{-1}) = f(a)(f(b))^{-1} = 1_H \cdot (1_H)^{-1} = 1_H $$
+因而 $ab^{-1} \in \ker(f)$，即核能够形成 $G$ 中的子群。
+
+\begin{cntheorem}[同态单射定理]
+    $f$ 为单同态（即单射） 当且仅当 $\ker(f) = \{1\}$。
+\end{cntheorem}
+\begin{proof}
+    \begin{itemize}
+        \item $\implies$ （仅当）：因为单射下每个原像唯一对应，而 $f(1) = 1$，故所有映射成 $1$ 的只能有本身 $1$。故 $\ker(f)=\{1\}$。
+        \item $\impliedby$ （当）：假设 $f(a) = f(b)$，则 $f(ab^{-1}) = f(b)f^{-1}(b) = 1_H \implies ab^{-1} \in \ker(f)$。既然 $\ker(f)=\{1\}$，则意味着 $ab^{-1} = 1 \implies a = b$。单射得证。
+    \end{itemize}
+\end{proof}
+
+由此推想出了诸如所谓从群到商群进行模余等价的\textbf{典范映射} (Canonical map/模运算)：即把带子群偏移的所有的元素模掉，归约成为剩余系的一种自然态满射机制。
+
+\section{循环群与自同构群初探}
+
+\begin{cndefinition}[循环群]
+    如果一个群 $G$ 中的完全的每一个元素都可以直接表示为群内某些固定的一个单独的种子元素 $a$ 的特定连乘幂次迭代（包含正负指数），则称该群为\textbf{循环群}，且称 $a$ 是循环群的生成元，记作 $G = \langle a \rangle$。
+\end{cndefinition}
+
+在有限循环群的世界里，通过对模意义与加群加法映射性质比对发现，其核心均可通过一一对应的方式与同位阶整数加法的机制相协调映射，即任何一阶 $n$ 循环群最终结构均与剩余代表系统构成的加权模表示法相一统。即： \textbf{$n$ 阶循环群（本质上）同构于（等价于） $\Z_n$} 这样一个模 $n$ 剩余抽象出的运算骨架之中。
+
+同时还可研究在同样一个原始群上面本身映射到自己构成的\textbf{自同构群} (Automorphism group $\operatorname{Aut}(G)$)。它是所有将 $G$ 保持原结构的内部重组映射之全集构建起的更高级别的双射集合群结构。
+
+\end{document}
