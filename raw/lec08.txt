@@ -1,0 +1,74 @@
+在环论中，并不是所有的子环都能用来构造商环，只有满足“吸收律”的子集 $S$（即理想），才有资格作为商运算的“分母”。
+\overline{α}·\overline{β}==def==?
+定理：R, S<R, 如上定义de乘法s.t.(R/S,+,·)是环，当且仅当S满足如下条件：
+\forall α\in S, \forall r\in R, rα,αr\in S
+并且商群上乘法的定义well_defined且满足分配律
+定义： R, I<R 如果\forall α\in I, r\in R, rα,αr\in I,则称I为理想
+（加法交换律保证是加法正规子群）
+理想 $S$ 是环 $R$ 的一个具有特殊性质的子环。
+
+
+例:(Z,+,·)
+(Z,+)的所有子群是(mZ,+),m>=0
+(mZ,+,·)是子环（理想）
+
+环同构：f:R-->S 环满同态
+ker(f)=f^{-1}(0)
+ker(f)是R的正规子群
+\phi R/ker(f)-->S
+\overline(α) α+ker(f)-->f(α)
+验证ker(f)是理想
+f(αr)=f(α)f(r)=0
+(R/ker(f),+,·)
+\phi为一一映射且为加法同态
+\forall α\in I,r\in R, αr,rα\in ker(f)
+\forall overline{a},overline{b},\phi(\overline{α}\overline{β})=\phi(\overline{αβ})=f(αβ)=f(α)f(β)=phi(overline{α})phi(overline{β})
+=>乘法同态
+
+环同构定理：
+f: R-->S 为环满同态
+\phi R/ker(f)-->S
+\overline{α}  -->f(α)
+α+ker(f)
+
+e.g. f: Z-->Z_n, α-->\overline{α} 则Z/nZ同构于Z_n
+
+
+由一个子集生成的理想
+定义： X\subset R, R中包含X的最小理想，称为X生成的理想（X称为生成元系），记为<X>，（等价于所有包含X的理想的交） 
+性质：I_i为R的ideal，则\cap I_i为ideal
+
+写法：A_1+...+A_n==def=={a_1+...+a_n|a_i\in A_i,\forall i}
+
+对于<X>（可能无限），<X>\parentset ZX==def==\cup_{{x_1,...,x_n}\subset X}(Zx_1,...,Zx_n)
+<X>\parentset RX==def==\cup_{{x_1,...,x_n}\subset X}(Rx_1+...+Rx_n) (由理想的吸收性，每一个RX_i都在<X>中 )
+<X>\parentset XR
+<X>\parentset RXR
+ZX+RX+XR+RXR <= <X>(至少包含这些内容)
+只需验证左侧项为理想(即ZX+RX+XR+RXR >= <X>)，即可证明左侧项为<X>
+
+
+特例：若X={α},<X>记为<α>主理想principal ideal
+如果R是交换环，RX=XR,RXR\subset RX, <X>=ZX+RX
+如果R含幺交换环， <X>=RX
+
+定义：R是整环，R中每个理想都是主理想，则称R是主理想整环（PID）
+e.g. Z mZ(m>=0)=<m>, Z是PID
+
+<m,n>=mZ+nZ=<d>=dZ, d=gcd(m,n)
+
+
+交换环中的因子分解（除法理论）
+定义： a,b\in R, a\neq 0, b=ac,称b是a的倍元，a是b的因子，a整除b（a|b）,否则a不整除b
+a,b\neq 0,如果a|b, b|a， 称a,b相伴，a~b
+
+R为含幺交换环，b=ac，a、c不是单位，则称a（或c）为b的真因子，a~b为等价关系
+
+a,b,u\neq 0
+a|b ==> <b> < <a>
+a~b ==> <b> = <a>
+u\in U(R) ==> u~1  <==> <u>=<1>  <==> \forall r\in R, u|r
+
+R是整环 \exists u,v, b=au,a=bv
+==>a=auv a(uv-1)=0 uv=1 a~b a和b差一个unit
+e.g.Z a~-a Z[i]的unit=±1/±i

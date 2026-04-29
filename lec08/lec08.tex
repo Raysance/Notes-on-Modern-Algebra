@@ -1,0 +1,146 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ctex}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\input{../preamable/preamable_sep.tex}
+
+\declaretheorem[style=thmgreenbox, name=定义]{cndefinition}
+\declaretheorem[style=thmredbox, name=定理]{cntheorem}
+\declaretheorem[style=thmbluebox, name=性质]{cnproperty}
+\declaretheorem[style=thmredbox, name=引理]{cnlemma}
+\declaretheorem[style=thmredbox, numbered=no, name=推论]{cncorollary}
+\declaretheorem[style=thmbluebox, numbered=no, name=例]{cnexample}
+\title{近世代数笔记(Lec 08)：理想与环同构，除法理论}
+\author{Raysance}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{理想与商环}
+
+在群论中，我们通过正规子群构造了商群。为了将这一思想推广到环论，我们寻找能够构造“商环”的子集。由于环既有加法又有乘法，商环 $(R/S, +, \cdot)$ 不仅需要加法运算良好定义（这要求 $S$ 是加法正规子群，而由于环加法是交换的，任何加法子部分自然是正规的），还需要使得乘法运算良定义。这就引入了“理想”的概念。
+
+\begin{cntheorem}
+设 $R$ 是一个环，$S$ 是 $R$ 的加法子群。定义商群 $R/S$ 上的乘法为 
+$$ (a+S)(b+S) = ab + S $$
+则 $(R/S, +, \cdot)$ 构成一个环，当且仅当 $S$ 满足吸收律，即：
+$$ \forall \alpha \in S, \forall r \in R \implies r\alpha \in S, \alpha r \in S $$
+\end{cntheorem}
+\begin{proof}
+商群 $R/S$ 在加法下已经是交换群。我们要验证上述乘法是良定义的（well-defined），即与其代表元的选取无关。\\
+选取 $a' = a + s_1, b' = b + s_2$ 其中 $s_1, s_2 \in S$，我们有：
+$$ a'b' = (a+s_1)(b+s_2) = ab + as_2 + s_1b + s_1s_2 $$
+要使乘法良定义，需要 $a'b' + S = ab + S$，等价于 $a'b' - ab \in S$，即 $as_2 + s_1b + s_1s_2 \in S$。\\
+($\Rightarrow$) 若乘法良定义，令 $a=r, s_2=\alpha, b=0, s_1=0$，则得到 $r\alpha \in S$；同理令 $a=0, s_2=0, b=r, s_1=\alpha$，则得到 $\alpha r \in S$。这就是所谓的吸收律。\\
+($\Leftarrow$) 若吸收律成立，由于 $s_2 \in S, r=a \in R$，故 $as_2 \in S$；同理 $s_1b \in S$。加上 $S$ 封闭（$s_1 s_2 \in S$），从而它们的和都在 $S$ 中，证明了乘法良定义。分配律自然由 $R$ 继承，故 $R/S$ 构成环。
+\end{proof}
+
+\begin{cndefinition}
+设 $R$ 是环，$I$ 是 $R$ 的一个子环。如果 $\forall \alpha \in I, r \in R$，都有 $r\alpha \in I$ 且 $\alpha r \in I$，则称 $I$ 为 $R$ 的\textbf{理想 (Ideal)}。
+直观理解：理想就像一个黑洞，当环里面的任何元素乘以理想里面的元素时，结果都会被“吸收”到理想中。
+\end{cndefinition}
+
+\begin{cnexample}
+在以整数加法和乘法构成的环 $(\mathbb{Z}, +, \cdot)$ 中，其所有的加法子群都是形如 $m\mathbb{Z}$ ($m \ge 0$) 的集合。由于对于任意 $k \in \mathbb{Z}$ 和任意 $mq \in m\mathbb{Z}$，它们之积 $k(mq) = m(kq)$ 仍然有因子 $m$，因此落在 $m\mathbb{Z}$ 中。故 $m\mathbb{Z}$ 不仅是子环，也是 $\mathbb{Z}$ 的一个理想。
+\end{cnexample}
+
+\section{环同态基本定理}
+
+\begin{cntheorem}
+设 $f: R \to S$ 是环满同态，记其核（Kernel）为 $\ker(f) = f^{-1}(0_S) = \{x \in R \mid f(x) = 0_S\}$。则 $\ker(f)$ 是 $R$ 的理想，且存在唯一的环同构映射 $\phi: R/\ker(f) \to S$，使得 $\phi(a + \ker(f)) = f(a)$。
+\end{cntheorem}
+\begin{proof}
+（1）由于 $f$ 是加法群满同态，由群同态基本定理 $\ker(f)$ 是加法正规子群。\\
+（2）验证 $\ker(f)$ 是理想（即满足吸收律）： 对于任意 $\alpha \in \ker(f)$（即 $f(\alpha)=0$）及任意 $r \in R$，我们有：
+$$ f(r\alpha) = f(r)f(\alpha) = f(r) \cdot 0 = 0 $$
+$$ f(\alpha r) = f(\alpha)f(r) = 0 \cdot f(r) = 0 $$
+故 $r\alpha \in \ker(f)$ 且 $\alpha r \in \ker(f)$，所以 $\ker(f)$ 是理想。\\
+（3）根据群同态基本定理，存在加法群同构 $\phi: (R/\ker(f), +) \to (S, +)$，其定义为 $\phi(\bar{a}) = f(a)$。我们只需验证它也是乘法同态。对任意 $\bar{\alpha} = \alpha + \ker(f), \bar{\beta} = \beta + \ker(f)$：
+$$ \phi(\bar{\alpha}\bar{\beta}) = \phi(\overline{\alpha\beta}) = f(\alpha\beta) = f(\alpha)f(\beta) = \phi(\bar{\alpha})\phi(\bar{\beta}) $$
+故 $\phi$ 为环同构映射。
+\end{proof}
+
+\begin{cnexample}
+考虑典型的同态映射 $f: \mathbb{Z} \to \mathbb{Z}_n$，其规则为 $\alpha \mapsto \bar{\alpha}$ (对 $n$ 取模)。显然 $\ker(f) = n\mathbb{Z}$，从而 $\mathbb{Z}/n\mathbb{Z} \cong \mathbb{Z}_n$。
+\end{cnexample}
+
+
+\section{由子集生成的理想}
+
+\begin{cndefinition}
+设 $X$ 是环 $R$ 的子集，包含 $X$ 的所有理想的交集依然是一个理想，它被称为由 $X$ 生成的理想要（或 $X$ 称为生成元系），记为 $\langle X \rangle$。即 $\langle X \rangle$ 是 $R$ 中包含 $X$ 的最小理想。
+\end{cndefinition}
+\begin{cnproperty}
+任意一组理想的交集 $\bigcap_{i} I_i$ 依然是 $R$ 的理想。这保证了生成理想的定义是合理且存在的。
+\end{cnproperty}
+
+我们在环论中常常通过对子集的运算来构造集合，其形式化写法为： 
+$$ \sum_{i=1}^{n} A_i := \left\{ \sum_{i=1}^{n} a_i \ \middle|\ a_i \in A_i \right\} $$
+
+下面分析任意通过集合 $X$ 生成的理想 $\langle X \rangle$ 的显式结构。为了使其成为理想且包含 $X$，至少应该包含以下形式的元素：
+\begin{itemize}
+    \item $X$ 中元素的整数倍即 $\mathbb{Z}X = \left\{ \sum n_i x_i \mid n_i \in \mathbb{Z}, x_i \in X \right\}$ (以组成加法群)
+    \item 能够吸收从左侧乘以 $R$ 的性质，需要包含 $RX = \left\{ \sum r_i x_i \mid r_i \in R, x_i \in X \right\}$
+    \item 能够吸收从右侧乘以 $R$ 的性质，需要包含 $XR = \left\{ \sum x_i r_i \mid r_i \in R, x_i \in X \right\}$
+    \item 双边吸收性，需要包含 $RXR = \left\{ \sum r_i x_i s_i \mid r_i, s_i \in R, x_i \in X \right\}$
+\end{itemize}
+
+实际上可以证明，由 $X$ 生成的理想即为上述所有的有限和组合构成：
+$$ \langle X \rangle = \mathbb{Z}X + RX + XR + RXR $$
+即 $\mathbb{Z}X + RX + XR + RXR \subseteq \langle X \rangle$ 是显然的。只需验证左侧本身已经构成了一个理想，即可由于 $\langle X \rangle$ 的最小性完成证明。
+
+针对特定环的简化情形如下：
+\begin{itemize}
+    \item 若 $R$ 为\textbf{交换环}，则 $RX=XR$，且 $RXR \subseteq RX$，因而 $\langle X \rangle = \mathbb{Z}X + RX$。
+    \item 若 $R$ 为\textbf{含幺环（有主单位元 1）}，则因为 $1 \in R$，必然有 $\mathbb{Z}X \subseteq RX$（通过选择 $r = n \cdot 1$ 可将整数倍替代为环元乘法），因此 $\langle X \rangle = RX + XR + RXR$。
+    \item 若 $R$ 既为\textbf{交换环}又为\textbf{含幺环}，则生成理想公式最简，化为 $\langle X \rangle = RX$。
+\end{itemize}
+
+\begin{cndefinition}
+若 $X = \{a\}$ 仅有一个元素，则生成的理想记为 $\langle a \rangle$，称为\textbf{主理想 (Principal Ideal)}。如果 $R$ 是个整环，并且 $R$ 中的每个理想都是主理想，则称 $R$ 是\textbf{主理想整环}（Principal Ideal Domain，简称 PID）。
+\end{cndefinition}
+
+\begin{cnexample}
+整数环 $\mathbb{Z}$ 是大家熟知的 PID，因为其中的每一理想均为某整数的倍数形式 $\langle m \rangle = m\mathbb{Z}$。\\
+在此基础上考虑 $\langle m, n \rangle = m\mathbb{Z} + n\mathbb{Z}$。根据贝祖定理及 PID 性质，必然存在 $d \in \mathbb{Z}$ 使得 $\langle d \rangle = m\mathbb{Z} + n\mathbb{Z}$，其中 $d = \gcd(m, n)$。
+\end{cnexample}
+
+
+\section{交换环中的因子分解（除法理论）}
+
+为了推广数论中的许多优良性质，我们在含幺交换环内讨论乘法和除法。
+\begin{cndefinition}
+设 $R$ 为含幺交换环，$a, b \in R$。\\
+(1) \textbf{整除与因子}：若 $a \neq 0$，且存在 $c \in R$ 使 $b=ac$，则称 $a$ 是 $b$ 的因子（或 $b$ 被 $a$ 整除，记作 $a|b$），$b$ 称作 $a$ 的倍元。\\
+(2) \textbf{相伴元（Associated elements）}：若 $a|b$ 并且 $b|a$，则称 $a$ 与 $b$ 是相伴的，记作 $a \sim b$。相伴关系是一种等价关系。\\
+(3) \textbf{真因子}：若 $b=ac$ 且 $a$ 与 $c$ 均不为该环的单位（可逆元），则称 $a$（或 $c$）为 $b$ 的真因子。
+\end{cndefinition}
+
+\begin{cnproperty}[整除关系与理想的对应]
+我们用主理想的包含关系可重新刻画除法性质。
+\begin{itemize}
+    \item $a | b \iff b \in \langle a \rangle \iff \langle b \rangle \subseteq \langle a \rangle$ 
+    \item $a \sim b \iff \langle b \rangle = \langle a \rangle$
+    \item $u$ 为单位 ($u \in U(R)$) $\iff u \sim 1 \iff \langle u \rangle = \langle 1 \rangle = R \iff \forall r \in R, u|r$
+\end{itemize}
+\end{cnproperty}
+
+\begin{cntheorem}
+在\textbf{整环}中，非零元素 $a \sim b$ 等价于它们之间相差一个可逆元（单位），即存在单位 $u$ 满足 $b = au$。
+\end{cntheorem}
+\begin{proof}
+“$\Leftarrow$”是显然的，若 $b = au$ 且 $u$ 可逆，有 $a = b u^{-1}$，故 $a|b$ 且 $b|a$。\\
+“$\Rightarrow$”若 $a \sim b$，存在 $u, v \in R$ 使且 $b=au$ 且 $a=bv$。于是 $a = auv$。因为在整环中消去律成立（无零因子），对于非零的 $a$，由 $a(uv-1)=0$ 得到 $uv=1$。所以 $u, v$ 都是单位。
+\end{proof}
+
+\begin{cnexample}
+在 $\mathbb{Z}$ 中单位只有 $\pm 1$，因此 $a \sim b \iff a = \pm b$。\\
+在高斯整数环 $\mathbb{Z}[i]$ 中，其单位为 $\{\pm 1, \pm i\}$，故在此环中与 $a$ 相伴的元素有四个，分别为 $a, -a, ia, -ia$。
+\end{cnexample}
+
+\end{document}
