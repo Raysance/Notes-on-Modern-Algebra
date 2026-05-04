@@ -1,0 +1,57 @@
+R为含幺交换环
+定义：α\in R, α\neq 0, a\neq unit, 如果α=βγ ==> β为unit or γ为unit，则称α为不可约元
+如果α|βγ==> α|β or α|γ，则称α为素元
+例子：Z 素数（整数环中素元和不可约元重叠）
+性质：R为整环，则素元一定是不可约元
+Proof: p为素, p=ab, p|ab,不妨 p|a,则a=pc,代入得p=pcb,移项p(cb-1)=0, cb=1,则b为unit
+整环中，不可约元不一定是素元
+e.g.Z[-\sqrt{5}]中3为不可约元(使用模长Norm乘积证明)，但是不是素元（3|9=(2+sqrt{-5})(2-sqrt{-5})）
+定义：α,β\in R-{0}, \exists d\in R, 如果 d|α, d|β, 且\forall d'|α, d'|β,有d'|d,记d为α,β的最大公约数，记为gcd(α,β)或(α,β)
+性质：最大公约数未必唯一。d为gcd(α,β),z则d*~d也为gcd(α,β)
+任何gcd(α,β),一定与d相伴
+定义：α,β\in R-{0}, \exists c\in R, 如果 α|c, β|c, 且\forall α|c', β|c',有c|c',记c为α,β的最小公倍数，记为lcm(α,β)
+定义：唯一分解整环（UFD），R为整环，α\neq 0, α\neq unit, α=c1c2...cn，(ci不可约)，如果α=d1d2...dm(di不可约)，则n=m,且存在置换σ:[m]->[n], c_i=d_{σ(i)}
+e.g.Z Z[\sqrt{-1}] Z[\sqrt{α}]
+性质：在UFD中，素元等价于不可约元
+e.g.Z[sqrt{-5}]不是UFD， 6=2·3=(1+\sqrt{-5})(1-\sqrt{-5})
+2/3/1±\sqrt{-5}均是不可约元(使用Norm模长证明)，且2/3不与1±\sqrt{-5}相伴（不是相互的因子）
+定理：PID ==> UFD
+Proof:......
+e.g. Z:(每个理想都是<mZ>形式)；Z[\sqrt{-1}]
+性质：在整数环中，UFD <==> PID
+一般时：UFD ==/=> PID
+e.g. Z[\sqrt{10}]是UFD，但是其中<2,4+sqrt{10}>生成的理想不是主理想
+反证 ：：......
+定义：欧式环(ED)：R是整环，有一个函数φ:R->N={0,1,2,....}(欧几里得函数)
+1.φ(r)=0 <==> r=0
+2.\forall α,β\neq 0 \exists q,r \in R, α=βq+r且φ(r)<φ(β)
+e.g. Z中(r)=|r|
+定理：ED ==> PID
+Proof:......
+反例：PID ==/=> ED： Z[(1+\sqrt{-19})/2]
+定义：极大理想：R是整环，I称为R的极大理想，如果I,J为理想，I\subset J,则I=J (I,J\neq R)(没有一个J真包含I)
+性质：如果<p>是极大，则p不可约
+反证：假设p可约，若p=a·b, (a,b非unit),则p\in <a>,  <p>\subset <a>\neq R(极大的定义)，<p>=<a>, a\in <p>, a=p·c,p=pcb,则cb=1, b为unit，矛盾。
+性质：R是PID，如果p不可约，则<p>为极大
+反证：<p>不是极大==> <p>\subsetneq I\neq R==> <p>\subsetneq <α>\neq R(由PID性质)且α不与p伴随，p\in <α>, α|p, p可约，矛盾
+e.g. Z为整环，p为素数，pZ=<p>, pZ为极大
+定理：I为含幺交换环，I是极大理想，则R/I是域 \iff I是极大理想
+域：Q char(Q)=0, |Z_p|=p
+定义：R为整环，I\neq R, 称为素理想，如果ab\in I, 则a\in I or b\in I,
+性质:<p>是素理想 <==> p为素元
+==> p|ab, ab\in <p>, a\in <p> or b\in <p> ==> p|a or p|b
+<== ab\in <p>,p|ab ==> p|a or p|b ==> a\in <p> or b\in <p>
+定理：R/I是整环\iff I是素理想
+推论：极大理想是素理想
+I,J I+J={a+b|a\in I,b\in J}
+I\cap J 为理想，IJ={\sigma_i a_ib_i|a_i\in I,b_i\in J}, IJ为理想
+e.g. I=<a1,...,an>, J=<b1,...,bm>,则I+J=<a1,...,an,b1,...,bm>, IJ=<aibj>(1<=i<=n,1<=j<=m)
+e.g. Z[sqrt{-5}],在理想上分解具有唯一分解性质
+<6>=<2><3>
+<6>=<1+sqrt{-5}><1-sqrt{-5}>
+定义a1=<3,1+sqrt{-5}>, a2=<3,1-sqrt{-5}>,a1a2=<9,6,3(1+sqrt{-5}),3(1-sqrt{-5})> = a+b\sqrt{-5} (3|a, 3|b)=3(a'+b'\sqrt{-5}) ==> a1a2\subset <3>
+又有3\in a1a2 ==> <3>\subset a1a2
+则a1a2 = <3>
+令b=<2,1+sqrt{-5}> b^2=<2>
+则<6>=<2><3>=a1a2b^2 (a1,a2,b为素)
+<1+\sqrt{-5}>=a1b, <a-\sqrt{-5}>=a2b

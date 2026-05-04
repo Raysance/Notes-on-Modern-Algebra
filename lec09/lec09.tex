@@ -1,0 +1,294 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ctex}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\input{../preamable/preamable_sep.tex}
+
+\declaretheorem[style=thmgreenbox, name=定义]{cndefinition}
+\declaretheorem[style=thmredbox, name=定理]{cntheorem}
+\declaretheorem[style=thmbluebox, name=性质]{cnproperty}
+\declaretheorem[style=thmredbox, name=引理]{cnlemma}
+\declaretheorem[style=thmredbox, numbered=no, name=推论]{cncorollary}
+\declaretheorem[style=thmbluebox, numbered=no, name=例]{cnexample}
+
+\title{近世代数笔记(Lec 09)：环的因子分解与理想理论}
+\author{Raysance}
+\date{}
+
+\begin{document}
+\maketitle
+
+% 本节笔记主要讨论含幺交换环（特别是整环）中的因子分解理论。探讨不可约元与素元、最大公约数与最小公倍数，以及几种重要环（UFD、PID、ED）的定义与性质。最后介绍极大理想与素理想并补充理想运算的基础知识。
+
+\section{不可约元与素元}
+在本节中，我们默认 $R$ 为一个含幺交换环，通常情况下讨论上下文为整环。
+
+\begin{cndefinition}[不可约元]
+设 $\alpha \in R$，$\alpha \neq 0$，且 $\alpha$ 不是单位（unit）。如果存在 $\beta, \gamma \in R$ 使得 $\alpha = \beta \gamma$ 且必有 $\beta$ 为单位或 $\gamma$ 为单位，则称 $\alpha$ 为不可约元 (Irreducible element)。
+\end{cndefinition}
+\noindent \textbf{动机与理解：} 不可约元代表了在环内“不能再被非平凡分解”的元素，这推广了整数环中素数的概念，但在一般环中性质更为复杂。
+
+\begin{cndefinition}[素元]
+设 $\alpha \in R$，$\alpha \neq 0$，且 $\alpha$ 不是单位。如果对于任意 $\beta, \gamma \in R$，只要有 $\alpha \mid \beta\gamma$ 成立，必然能推导出 $\alpha \mid \beta$ 或 $\alpha \mid \gamma$，则称 $\alpha$ 为素元 (Prime element)。
+\end{cndefinition}
+\noindent \textbf{动机与理解：} 素元是对数论中欧几里得引理的推广，反映了整除关系上的不可分割性。
+
+\begin{cnexample}
+在整数环 $\mathbb{Z}$ 中，素数（如 $2,3,5$）既是素元也是不可约元。这两个概念在 $\mathbb{Z}$ 中是重合的。
+\end{cnexample}
+
+\begin{cnproperty}
+若 $R$ 为整环，则 $R$ 中的素元一定为不可约元。
+\end{cnproperty}
+\begin{proof}
+设 $p \in R$ 为素元。假设 $p = ab$，接下来证明因子中必有一个是单位。
+显然有 $p \mid ab$。由素元定义，必然有 $p \mid a$ 或 $p \mid b$。
+不妨设 $p \mid a$，由此得存在 $c \in R$ 使得 $a = pc$。
+将 $a = pc$ 代回分解式中，得 $p = pcb$。
+因为 $p \neq 0$ 且 $R$ 为整环，我们可以利用消去律得 $1 = cb$（即 $p(cb - 1) = 0 \implies cb = 1$）。
+因此 $b$ 是单位（unit）。同理，若 $p \mid b$，则可得 $a$ 是单位。故 $p$ 只能有平凡分解，因此为不可约元。
+\end{proof}
+
+但在一般整环中，由“不可约元”无法必然推导出“素元”。
+\begin{cnexample}
+在环 $\mathbb{Z}[\sqrt{-5}]$ 中，$3$ 是不可约元，但不是素元。
+\end{cnexample}
+\begin{proof}
+引入乘性范数映射 $N(a+b\sqrt{-5}) = a^2+5b^2$ ($a,b \in \mathbb{Z}$)，易知 $N(\alpha\beta) = N(\alpha)N(\beta)$。该环中的单位元 $\epsilon$ 满足 $N(\epsilon)=1$，故仅有 $\pm 1$。
+\begin{itemize}
+    \item \textbf{$3$ 是不可约元：} 假设 $3 = xy$ 且 $x,y$ 不是单位。取范数得 $9 = N(x)N(y)$。由于 $N(x), N(y) > 1$，必有 $N(x)=3, N(y)=3$。由 $a^2+5b^2=3$ 在整数中显然无解，导致矛盾。因此 $3$ 只能进行平凡分解，是不可约元。
+    \item \textbf{$3$ 不是素元：} 我们有 $(2+\sqrt{-5})(2-\sqrt{-5}) = 4 - (-5) = 9$，显然有 $3 \mid 9$。若 $3$ 为素元，必应有 $3 \mid (2+\sqrt{-5})$ 或 $3 \mid (2-\sqrt{-5})$，即存在整数 $c,d$ 使得 $3(c+d\sqrt{-5}) = 2\pm \sqrt{-5}$，这要求 $3c = 2$，在整数中无解。因此 $3$ 不是素元。
+\end{itemize}
+除了 $3$ 之外，$2$ 以及 $1\pm \sqrt{-5}$ 在 $\mathbb{Z}[\sqrt{-5}]$ 中也都是不可约元。
+\end{proof}
+
+\section{最大公约数与最小公倍数}
+\begin{cndefinition}[最大公约数 (GCD)]
+设 $\alpha, \beta \in R\setminus\{0\}$。如果存在 $d \in R$ 满足：
+1. $d \mid \alpha$ 并且 $d \mid \beta$；（$d$ 属于公因子）
+2. 对任意的公因子 $d' \in R$ （即 $d' \mid \alpha$ 且 $d' \mid \beta$），都有 $d' \mid d$；
+则称 $d$ 为 $\alpha, \beta$ 的最大公约数，记为 $\gcd(\alpha, \beta)$ 或 $(\alpha, \beta)$。
+\end{cndefinition}
+\begin{cnproperty}
+最大公约数在环中未必唯一。如果 $d$ 是 $\gcd(\alpha, \beta)$，且 $u$ 是单位，则 $ud$ 也是 $\gcd(\alpha, \beta)$。即，环中的最大公约数在“相伴 (associate)”的意义下是唯一的。
+\end{cnproperty}
+\begin{proof}
+设 $d$ 为 $\alpha, \beta$ 的最大公约数，且 $u$ 为 $R$ 中的单位，即存在 $u^{-1} \in R$。
+因为 $d \mid \alpha$ 且 $d \mid \beta$，即存在 $k_1, k_2$ 使 $\alpha = d k_1 = (ud)(u^{-1} k_1)$，$\beta = d k_2 = (ud)(u^{-1} k_2)$，因而 $ud \mid \alpha$ 且 $ud \mid \beta$，证明 $ud$ 也是公因子。
+若 $d'$ 为任意公因子，由极大公约数定义有 $d' \mid d$。因 $d = u^{-1}(ud)$，可知 $d \mid ud$，从而传递得出 $d' \mid ud$。
+这证明了 $ud$ 同样满足最大公约数的定义。反之，若 $d_1, d_2$ 同为最大公约数，依据定义必然有 $d_1 \mid d_2$ 和 $d_2 \mid d_1$，这意味着他们必定相伴。
+\end{proof}
+
+\begin{cndefinition}[最小公倍数 (LCM)]
+设 $\alpha, \beta \in R\setminus\{0\}$。如果存在 $c \in R$ 满足：
+1. $\alpha \mid c$ 并且 $\beta \mid c$；（$c$ 属于公倍式）
+2. 对任意的公倍式 $c' \in R$ （即 $\alpha \mid c'$ 且 $\beta \mid c'$），都有 $c \mid c'$；
+则称 $c$ 为 $\alpha, \beta$ 的最小公倍数，记为 $\operatorname{lcm}(\alpha, \beta)$。
+\end{cndefinition}
+
+\section{UFD, PID 与 ED}
+\subsection{唯一分解整环 (UFD)}
+\begin{cndefinition}[唯一分解整环]
+设 $R$ 为整环。如果对于任何非零非单位元素 $\alpha \in R$，都满足：
+1. $\alpha$ 可以分解为有限个不可约元的乘积，即存在不可约元 $c_1, c_2, \dots, c_n$ 使得 $\alpha = c_1 c_2 \dots c_n$；
+2. 这种分解在相伴及次序意义上是唯一的。即若存在另一组不可约元 $d_1, d_2, \dots, d_m$ 使得 $\alpha = d_1 d_2 \dots d_m$，必有 $n = m$，且存在一个置换 $\sigma: \{1, \dots, n\} \to \{1, \dots, n\}$，使得 $c_i$ 与 $d_{\sigma(i)}$ 互相相伴（即相差一个单位因子）。
+满足上述两条件的环 $R$ 称为唯一分解整环 (Unique Factorization Domain, 简称 UFD)。
+\end{cndefinition}
+\begin{cnexample}
+$\mathbb{Z}$，$\mathbb{Z}[\sqrt{-1}]$ (高斯整数环) 均是 UFD。但前文提到的 $\mathbb{Z}[\sqrt{-5}]$ 不是 UFD，因为 $6 = 2 \cdot 3 = (1+\sqrt{-5})(1-\sqrt{-5})$ 展示了两种不同形式的不可约分支且这两组因子彼此并不相伴。
+\end{cnexample}
+\begin{cnproperty}
+在 UFD 中，素元与不可约元是相互等价的。即 $\alpha$ 为素元当且仅当 $\alpha$ 为不可约元。
+\end{cnproperty}
+\begin{proof}
+在任何整环中，素元必为不可约元（见前文证明）。我们仅需证明在 UFD 中不可约元必为素元。
+设 $p$ 为 UFD 中的不可约元，且 $p \mid ab$。由此存在 $c \in R$ 使得 $pc = ab$。
+将 $a, b, c$ 分解为不可约元的乘积：$a = \prod p_i, b = \prod q_j, c = \prod r_k$。
+代入等式得 $p \prod r_k = \prod p_i \prod q_j$。
+这是 $ab$ 的两种不可约元分解方式。由于 UFD 中的分解满足唯一性（相伴意义下），等式左边出现的不可约元 $p$ 必与右边某个不可约元相伴。即 $p$ 要么与某个 $p_i$ 相伴（从而 $p \mid a$），要么与某个 $q_j$ 相伴（从而 $p \mid b$）。因此 $p$ 满足素元的定义。
+\end{proof}
+
+\subsection{主理想整环 (PID)}
+主理想整环是从理想视角出发的，若一个环的所有理想都可以由单一生成元生成（即为主理想），则称为 PID。
+\begin{cntheorem}
+主理想整环 (PID) 必定是唯一分解整环 (UFD)。即 $\text{PID} \implies \text{UFD}$。
+\end{cntheorem}
+\begin{proof}
+分两步证明：分解的存在性与唯一性。
+\textbf{存在性：} 首先证明分解必定终止，即满足主理想的升链条件（ACCP）。假设存在无限严格上升的理想链 $\langle a_1 \rangle \subsetneq \langle a_2 \rangle \subsetneq \dots$。令 $I = \bigcup_{i=1}^{\infty} \langle a_i \rangle$，由于 $R$ 是 PID，则理想 $I$ 必为某个主理想 $\langle a \rangle$。由于 $a \in I$，必存在某个整数 $k$ 使得 $a \in \langle a_k \rangle$。那么对于所有 $n \ge k$，均有 $\langle a_n \rangle \subseteq \langle a \rangle \subseteq \langle a_k \rangle$，这与理想链严格上升产生矛盾。这说明环中任何非零非单位元素均能分解为有限个不可约元之积（否则会无穷拆分下去导致上述矛盾）。
+\textbf{唯一性：} 对于 PID，所有的不可约元生成的理想都是极大理想（定理后文有详细证明），进而必定都是素元。而在整环中，若两种分解均由素元构成，依据素元的整除性质，可在两边不断对应消去相伴基元的方式，最终得出两种分解在相伴意义下是完全一样的。
+\end{proof}
+\noindent \textbf{理解：} PID 的主理想性质强有力地保证了升链条件（Noetherian性）提供分解的存在性，且任何不可约元生成的理想是极大的，保证了不可约元必须是素元，从而证明了唯一性。
+\begin{cnexample}
+$\mathbb{Z}$ 是 PID（其中的极验理想形如 $\langle n \rangle = n\mathbb{Z}$），因此必为 UFD；同理 $\mathbb{Z}[\sqrt{-1}]$ 是 PID。
+反之，在整环的层级下，$\text{UFD} \not\implies \text{PID}$。例如多项式环 $\mathbb{Z}[x]$ 是 UFD，但不是 PID（如其中由 $\langle 2, x \rangle$ 生成的理想不是主理想）。针对形如 $\mathbb{Z}[\sqrt{d}]$ 的二次数环，一般情况：UFD 通常不是 PID，例如 $\mathbb{Z}[\sqrt{10}]$ 中 $\langle 2, 4+\sqrt{10} \rangle$ 不是主理想。
+\end{cnexample}
+
+\subsection{欧几里得环 (ED)}
+\begin{cndefinition}[欧几里得环]
+若整环 $R$ 上存在一个函数（欧几里得测度）$\varphi: R \to \mathbb{N} = \{0, 1, 2, \dots\}$，使得：
+1. $\varphi(r) = 0 \iff r = 0$；
+2. 对于任意非零元素 $\alpha, \beta \in R$，总存在 $q, r \in R$，使得 $\alpha = \beta q + r$，且满足 $\varphi(r) < \varphi(\beta)$；
+则称 $R$ 为欧几里得环 (Euclidean Domain, 简称 ED)。
+\end{cndefinition}
+\noindent \textbf{理解动机：} ED 是可以通过“带余除法”运行欧几里得算法的环。在整数环 $\mathbb{Z}$ 中，$\varphi(r) = |r|$ 即为欧拉测度。
+
+\begin{cntheorem}
+欧几里得环 (ED) 必定是主理想整环 (PID)。即 $\text{ED} \implies \text{PID}$。
+\end{cntheorem}
+\begin{proof}[直观证明]
+设 $I$ 是 $R$ 中的非零理想，从中挑出一个 $\varphi(a)$ 最小的非零元素 $a \in I$。对于任意 $b \in I$，根据带余除法存在 $q,r$ 使得 $b = aq+r$, $\varphi(r)<\varphi(a)$。由于 $I$ 是理想，$r = b - aq \in I$。由于 $\varphi(a)$ 的最小性，必须要满足 $r=0$，因此 $a \mid b$，得到 $I = \langle a \rangle$，结论得证。
+\end{proof}
+\noindent \textbf{注意：} PID 并不能反推 ED。其反例如二次数环 $\mathbb{Z}\left[\frac{1+\sqrt{-19}}{2}\right]$，它是一个 PID，但无论如何定义不能作为一个欧几里得环进行带余除法。
+
+层级关系：$\text{Fields} \subsetneq \text{ED} \subsetneq \text{PID} \subsetneq \text{UFD} \subsetneq \text{Integral Domains}$
+
+\section{极大理想与素理想}
+理想不仅为同态核提供了抽象刻画，也成为分解理论在新语境下（例如代数数论）的基础对象。
+\begin{cndefinition}[极大理想]
+设 $R$ 是一个含幺交换环。非全环构成的理想 $I \subsetneq R$ 被称为极大理想，如果不存在任意的理想 $J$ 满足 $I \subsetneq J \subsetneq R$。
+\end{cndefinition}
+
+\begin{cnproperty}
+若主理想 $\langle p \rangle$ 是极大理想，则 $p$ 是不可约元。
+\end{cnproperty}
+\begin{proof}
+假设 $p$ 可约，即存在非单位的小于 $p$ 的分解 $p=a \cdot b$。故此 $p \in \langle a \rangle$ 从而 $\langle p \rangle \subset \langle a \rangle$。
+由于 $a, b$ 都不是单位，我们可知 $\langle a \rangle \neq R$ 且 $\langle p \rangle \neq \langle a \rangle$ 否则会导致 $b$ 是单位。这样构建出了 $\langle p \rangle \subsetneq \langle a \rangle \subsetneq R$，与 $\langle p \rangle$ 是极大理想矛盾。因此 $p$ 是不可约元。
+\end{proof}
+
+\begin{cnproperty}
+如果 $R$ 是不仅是整环还是 PID，若 $p$ 不可约，则对应生成的理想 $\langle p \rangle$ 是极大理想。
+\end{cnproperty}
+\begin{proof}
+假设反命题 $\langle p \rangle$ 不是极大理想。由于 $R$ 是 PID，必定存在某个 $\alpha \in R$ 生成真包含了 $\langle p \rangle$ 的主要理想，即存在 $\langle \alpha \rangle$ 满足 $\langle p \rangle \subsetneq \langle \alpha \rangle \subsetneq R$。
+这意味着 $\alpha$ 不与 $p$ 相伴（否则两理想相等），并且 $p \in \langle \alpha \rangle$ 推导出 $\alpha \mid p$。由于 $\alpha$ 不是单位($\langle \alpha\rangle \neq R$)，这意味着 $p$ 含有一个非平凡因数 $\alpha$，说明 $p$ 可约，与前提矛盾。
+\end{proof}
+
+\begin{cntheorem}
+设 $R$ 为含幺交换环，$I$ 为其中的理想。那么：
+\begin{center}
+    $R/I$ 是域 $\iff$ $I$ 是极大理想。
+\end{center}
+\end{cntheorem}
+\begin{proof}
+根据商环理想对应定理，$R/I$ 中的理想结构与 $R$ 中包含 $I$ 的理想之间构成一一对应映射。
+($\implies$) 假设 $R/I$ 是域。因为域中仅存在两个平凡理想：零理想 $\langle \bar{0} \rangle$ 和域本身 $R/I$。这意味着在原环 $R$ 中，包含 $I$ 的理想只有 $I$ 和全环 $R$。不存在严格介于两者之间的理想，这正是极大理想的定义，因此 $I$ 为极大理想。
+($\impliedby$) 假设 $I$ 是极大理想，表明环 $R$ 中包含 $I$ 的理想只有 $I$ 和 $R$。映射至商环中意味着 $R/I$ 有且仅有零理想及其自身两个理想。取任一非零元素 $\bar{a} \in R/I$，则其生成的理想 $\langle \bar{a} \rangle$ 并非零理想，故必等于 $R/I$。因此必存在 $\bar{b} \in R/I$ 使得 $\bar{a}\bar{b} = \bar{1}$，意味着每个非零元素都可逆，故 $R/I$ 构成域。
+\end{proof}
+
+\begin{cnproperty}
+域中仅含有平凡的零理想和全环自身两个理想。
+\end{cnproperty}
+\begin{proof}
+设 $F$ 为域，且 $I$ 是 $F$ 的一个理想。假设 $I$ 不是零理想，则存在一个非零元素 $a \in I$。
+由于 $F$ 是域，非零元素 $a$ 必存在乘法逆元 $a^{-1} \in F$。
+根据理想的吸收律（环中的元素与理想中的元素的乘积仍属于理想），必有 $a^{-1}a = 1 \in I$。
+既然单位元 $1 \in I$，那么对于 $F$ 中的任意元素 $r$，都有 $r = r \cdot 1 \in I$，从而 $I = F$。
+综上，域 $F$ 的理想只能是 $\{0\}$ 或其自身。
+\end{proof}
+
+\noindent \textbf{动机例子：} $\mathbb{Z}$ 是整环，若 $p$ 为素数，$p\mathbb{Z} = \langle p \rangle$ 是极大理想，故 $\mathbb{Z}/p\mathbb{Z} = \mathbb{Z}_p$ 是有限域；这恰好满足了商环理想对应定理（在原环中介于 $p\mathbb{Z}$ 和 $\mathbb{Z}$ 之间的理想不存在，紧密对应于商环 $\mathbb{Z}_p$ 中只具有平凡的两个理想）。
+
+\begin{cndefinition}[素理想]
+设 $R$ 为整环，理想 $I \neq R$ 称为素理想，如果对于存在乘积 $ab \in I$ ，必然隐含着 $a \in I$ 或者 $b \in I$。
+\end{cndefinition}
+\noindent \textbf{理解：} 它由素元整除性抽象而来。显然有 $\langle p\rangle$ 为素理想 $\iff$ $p$ 为素元。证明直白：等价于 $ab \in \langle p\rangle \iff p \mid ab \implies p\mid a \text{ or } p\mid b \iff a \in \langle p\rangle \text{ or } b\in \langle p\rangle$。
+
+\begin{cntheorem}
+设 $R$ 为含幺交换环，$I$ 为其中的理想。那么：
+\begin{center}
+    $R/I$ 是整环 $\iff$ $I$ 是素理想。
+\end{center}
+\end{cntheorem}
+\begin{proof}
+设 $\bar{a}, \bar{b} \in R/I$，使得它们的乘积 $\bar{a}\bar{b} = \bar{0}$。
+在商环形式下，这也表示为 $(a+I)(b+I) = ab + I = 0 + I = I$，等价表明了 $ab \in I$。
+($\implies$) 若 $R/I$ 是整环，则其内部没有零因子。因此 $\bar{a}\bar{b} = \bar{0} \implies \bar{a} = \bar{0}$ 或 $\bar{b} = \bar{0}$。对应地，这意味着 $a \in I$ 或 $b \in I$。由于这适用于所有满足 $ab \in I$ 的元素，由定义 $I$ 满足素理想属性。
+($\impliedby$) 若 $I$ 定为一个素理想，若 $ab \in I$，则命题强制 $a \in I$ 或 $b \in I$。在商环世界中这转换为：倘若 $\bar{a}\bar{b} = \bar{0}$，则必须有 $\bar{a} = \bar{0}$ 或 $\bar{b} = \bar{0}$。因此 $R/I$ 不存在零因子，形成整环。
+\end{proof}
+\begin{cncorollary}
+从域一定是整环的结论可以立刻得到：所有的极大理想必然是素理想。
+\end{cncorollary}
+\begin{proof}
+由前者定理知，“$I$ 是极大理想”等价于“$R/I$ 是域”。又知任何域皆因不存在零因子而自动作为“整环”。再依据判定定理推导回理想界，得出结论必然有等价端“$I$ 是素理想”。因此极大理想必然为素理想。
+\end{proof}
+
+\section{补充：理想运算与唯一分解 (Dedekind 域概念瞥见)}
+
+理想不仅为同态核提供了结构上的描述，它本身的代数运算也深刻地反映了环的更精细的结构。
+
+\subsection{理想之和 $I+J$ 的构造逻辑}
+\begin{cndefinition}[理想之和]
+给定环 $R$ 中的理想 $I = \langle a_1, \dots, a_n \rangle$ 和 $J = \langle b_1, \dots, b_m \rangle$。\\
+定义它们之和为： $I+J = \{x + y \mid x \in I, y \in J\}$。
+\end{cndefinition}
+\begin{cnproperty}
+$I+J$ 是包含 $I$ 和 $J$ 的最小理想。且容易验证其生成元为 $I+J = \langle a_1, \dots, a_n, b_1, \dots, b_m \rangle$。
+\end{cnproperty}
+\begin{proof}
+由于任何 $x \in I$ 都可以表示为 $\sum r_i a_i$，任何 $y \in J$ 都可以表示为 $\sum s_j b_j$，那么 $x+y$ 显然可以由集合 $\{a_1, \dots, a_n, b_1, \dots, b_m\}$ 线性组合而成。因此，$I+J$ 是包含所有这些生成元的理想。同时由于理想对加法和纯量乘法封闭，任何包含 $I$ 和 $J$ 的理想也必须包含所有的 $x+y$ 形式。因此 $I+J$ 是包含它们的最小理想。
+\end{proof}
+\noindent \textbf{意义：} 在主理想整环（PID）中，若 $I=\langle a \rangle, J=\langle b \rangle$，则 $I+J = \langle \text{gcd}(a,b) \rangle$。但在非 UFD 环（如 $\mathbb{Z}[\sqrt{-5}]$）中，$I+J$ 可能不再是主理想，这说明我们找到了比原环元素更精细的理想结构。
+
+\subsection{理想乘积 $IJ$ 的构造逻辑}
+\begin{cndefinition}[理想乘积]
+定义理想的乘积为乘积的有限和： $IJ = \left\{ \sum_{k=1}^{p} x_k y_k \mid x_k \in I, y_k \in J, p \in \mathbb{N}_+ \right\}$。
+\end{cndefinition}
+\noindent \textbf{为什么需要有限和：} 如果仅定义为集合 $\{xy \mid x \in I, y \in J\}$，该集合对加法不封闭。例如，考虑 $x_1 y_1 + x_2 y_2$，它可能无法表示为单个 $x_3 y_3$ 的形式。为了满足理想对加法的封闭性，必须取所有此类乘积的有限和。
+\begin{cnproperty}
+设 $I = \langle a_1, \dots, a_n \rangle$，$J = \langle b_1, \dots, b_m \rangle$，则 $IJ = \langle a_1 b_1, a_1 b_2, \dots, a_n b_m \rangle$。
+\end{cnproperty}
+\begin{proof}
+由于 $x = \sum r_i a_i$ 且 $y = \sum s_j b_j$，它们的乘积 $xy = \sum_{i,j} (r_i s_j) a_i b_j$。所有的积元素 $xy$ 及其有限和都可以由 $\{a_i b_j\}$ 生成。因此，$IJ$ 由所有 $a_i b_j$ 的组合生成。
+\end{proof}
+
+\subsection{理想交集 $I \cap J$ 的性质}
+\begin{cndefinition}[理想交集]
+定义理想交集为： $I \cap J = \{ x \in R \mid x \in I \text{ 且 } x \in J \}$。
+\end{cndefinition}
+\begin{cnproperty}
+理想运算之间存在层级包含关系：$IJ \subseteq I \cap J \subseteq I \subseteq I+J$。
+\end{cnproperty}
+\begin{proof}
+仅需证明非显然的 $IJ \subseteq I \cap J$：因为 $IJ$ 中的每个生成元 $a_i b_j$ 既可以看作是 $a_i$ 的倍数（属于 $I$），又可以看作是 $b_j$ 的倍数（属于 $J$）。因此它们的有限和也在 $I \cap J$ 中。
+\end{proof}
+\noindent \textbf{意义：} 在 PID 中，$I \cap J = \langle \text{lcm}(a,b) \rangle$。
+
+\subsection{在 $\mathbb{Z}[\sqrt{-5}]$ 中解决分解不唯一性}
+\begin{cnexample}
+在 $\mathbb{Z}[\sqrt{-5}]$ 中，以 $6$ 的分解为例：$6 = 2 \cdot 3 = (1+\sqrt{-5})(1-\sqrt{-5})$。
+在理想层面，我们不再关注元素 $2, 3$ 等是否可约，而是定义如下理想：
+\begin{align*}
+\mathfrak{p}_1 &= \langle 2, 1+\sqrt{-5} \rangle \\
+\mathfrak{p}_2 &= \langle 2, 1-\sqrt{-5} \rangle \\
+\mathfrak{p}_3 &= \langle 3, 1+\sqrt{-5} \rangle \\
+\mathfrak{p}_4 &= \langle 3, 1-\sqrt{-5} \rangle
+\end{align*}
+
+通过上述理想乘法定义进行计算（以 $\mathfrak{p}_1 \mathfrak{p}_2$ 为例）：
+\begin{equation*}
+\begin{aligned}
+\mathfrak{p}_1 \mathfrak{p}_2 &= \langle 2, 1+\sqrt{-5} \rangle \langle 2, 1-\sqrt{-5} \rangle \\
+&= \langle 4, 2(1-\sqrt{-5}), 2(1+\sqrt{-5}), (1+\sqrt{-5})(1-\sqrt{-5}) \rangle \\
+&= \langle 4, 2-2\sqrt{-5}, 2+2\sqrt{-5}, 6 \rangle
+\end{aligned}
+\end{equation*}
+由于 $4$ 和 $6$ 都在理想中，其差 $6-4=2$ 也在理想中。又因为理想中所有的生成元都是 $2$ 的倍数，所以该理想简化为：$\mathfrak{p}_1 \mathfrak{p}_2 = \langle 2 \rangle$。
+
+同理可以验证：
+\begin{align*}
+\langle 3 \rangle &= \mathfrak{p}_3 \mathfrak{p}_4 \\
+\langle 1+\sqrt{-5} \rangle &= \mathfrak{p}_1 \mathfrak{p}_3 \\
+\langle 1-\sqrt{-5} \rangle &= \mathfrak{p}_2 \mathfrak{p}_4
+\end{align*}
+
+结论：元素层面的两种分解方案，在理想层面都统一指向了同一种素理想集合的乘积：
+$$ \langle 6 \rangle = \mathfrak{p}_1 \mathfrak{p}_2 \mathfrak{p}_3 \mathfrak{p}_4 $$
+这种唯一性是由戴德金整环的性质保证的：每一个非零理想都可以唯一地分解为素理想的乘积。
+\end{cnexample}
+
+\end{document}
