@@ -1,0 +1,198 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ctex}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\input{../preamable/preamable_sep.tex}
+
+\declaretheorem[style=thmgreenbox, name=定义]{cndefinition}
+\declaretheorem[style=thmredbox, name=定理]{cntheorem}
+\declaretheorem[style=thmbluebox, name=性质]{cnproperty}
+\declaretheorem[style=thmredbox, name=引理]{cnlemma}
+\declaretheorem[style=thmredbox, numbered=no, name=推论]{cncorollary}
+\declaretheorem[style=thmbluebox, numbered=no, name=例]{cnexample}
+
+\title{近世代数笔记(Lec 10)：中国剩余定理、商域与局部化}
+\author{Raysance}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{中国剩余定理 (CRT) }
+
+\subsection{环的直积 / 直和}
+在讨论中国剩余定理之前，我们首先引入环的直积（直和）的概念。
+
+\begin{cndefinition}[环的直积]
+设 $R_1, R_2, \dots, R_n$ 为环。它们的直积定义为笛卡尔积集合 $R_1 \times R_2 \times \dots \times R_n$，在其上定义逐分量的加法和乘法：
+\begin{itemize}
+    \item 加法：$(a_1, a_2, \dots, a_n) + (b_1, b_2, \dots, b_n) = (a_1+b_1, a_2+b_2, \dots, a_n+b_n)$
+    \item 乘法：$(a_1, a_2, \dots, a_n) \cdot (b_1, b_2, \dots, b_n) = (a_1 b_1, a_2 b_2, \dots, a_n b_n)$
+\end{itemize}
+\end{cndefinition}
+
+\begin{cnproperty}
+设 $R = R_1 \times R_2 \times \dots \times R_n$ 为上述直积，则：
+\begin{enumerate}
+    \item $R$ 中的零元为：$(0, 0, \dots, 0)$。
+    \item 若每个 $R_i$ 都有幺元 $1_{R_i}$，则 $R$ 也有幺元，为：$(1_{R_1}, 1_{R_2}, \dots, 1_{R_n})$。
+    \item 即使所有的 $R_i$ 都是整环，只要 $n \ge 2$，直积 $R$ 就\textbf{不是整环}。因为存在零分子，例如取 $(1, 0, \dots, 0)$ 与 $(0, 1, \dots, 0)$，它们均非零元，但乘积为 $(0, 0, \dots, 0)$。
+\end{enumerate}
+\end{cnproperty}
+
+\subsection{中国剩余定理}
+中国剩余定理在环论中有一般的形式，它将一个商环同构于若干个商环的直积。
+
+\begin{cntheorem}[中国剩余定理, CRT]
+设 $R$ 为含有幺元的交换环，$I_1, I_2, \dots, I_n$ 为 $R$ 中的理想。若这些理想两两互素，即对于任意 $i \neq j$，都有 $I_i + I_j = R$。
+令 $I = \bigcap_{k=1}^n I_k$，则 $I$ 也是一个理想，且商环 $R/I$ 同构于商环直积：
+$$R/I \cong R/I_1 \times R/I_2 \times \dots \times R/I_n$$
+同构映射定义为 $f: \alpha \bmod I \mapsto (\alpha \bmod I_1, \alpha \bmod I_2, \dots, \alpha \bmod I_n)$。
+\end{cntheorem}
+
+\begin{proof}
+定义映射 $\varphi: R \to R/I_1 \times R/I_2 \times \dots \times R/I_n$，使得 $\varphi(a) = (a \bmod I_1, a \bmod I_2, \dots, a \bmod I_n)$。
+
+我们可以验证 $\varphi$ 是一个环同态：
+对于 $R$ 中的任意元素 $a, b$，有：
+\begin{itemize}
+    \item 加法保持：$\varphi(a+b) = (a+b \bmod I_1, \dots, a+b \bmod I_n) = \varphi(a) + \varphi(b)$
+    \item 乘法保持：$\varphi(ab) = (ab \bmod I_1, \dots, ab \bmod I_n) = \varphi(a) \cdot \varphi(b)$
+    \item 幺元映射：$\varphi(1) = (1 \bmod I_1, \dots, 1 \bmod I_n)$，该结果正是直积环中的幺元。
+\end{itemize}
+因此 $\varphi$ 确实保持了环的加法和乘法结构。
+
+\textbf{1. 证明核 (Kernel) 为 $I$：}
+$$ \ker \varphi = \{ a \in R \mid a \bmod I_k = 0, \forall k \} = \{ a \in R \mid a \in I_k, \forall k \} = \bigcap_{k=1}^n I_k = I $$
+由第一同构定理可知，若 $\varphi$ 是满射，则必能诱导出同构映射 $f: R/I \to R/I_1 \times \dots \times R/I_n$，且 $f$ 是单射。
+
+\textbf{2. 证明满射 (Surjectivity) ：}
+由 $I_i + I_j = R$ ($i \neq j$)，存在 $x_{ij} \in I_i$ 和 $y_{ij} \in I_j$ 使得 $x_{ij} + y_{ij} = 1$。
+固定 $i$，对所有的 $j \neq i$，考虑 $\prod_{j \neq i} (x_{ji} + y_{ji}) = 1$。
+展开该式，除了 $\prod_{j \neq i} y_{ji}$ 属于 $\bigcap_{j \neq i} I_j$ 外，其余项都属于 $I_i$。
+令 $e_i = \prod_{j \neq i} y_{ji}$，则我们有 $e_i \in \bigcap_{j \neq i} I_j$ 且 $e_i \equiv 1 \pmod{I_i}$。
+此时，对于任意给定的目标元素 $(a_1 \bmod I_1, \dots, a_n \bmod I_n)$，只需取：
+$$ a = a_1 e_1 + a_2 e_2 + \dots + a_n e_n \in R $$
+对于每个 $k$，当 $i \neq k$ 时 $e_i \in I_k$ 即 $e_i \equiv 0 \pmod{I_k}$，而 $e_k \equiv 1 \pmod{I_k}$。因此 $a \equiv a_k \pmod{I_k}$，即 $\varphi(a) = (a_1 \bmod I_1, \dots, a_n \bmod I_n)$。这就证明了满射性。
+综上，$R/I \cong R/I_1 \times \dots \times R/I_n$。
+\end{proof}
+
+\subsection{RSA 算法与其正确性证明}
+RSA是公钥密码学的经典算法，中国剩余定理在证明其解密正确性时发挥了关键作用。
+
+\begin{cnproperty}[RSA算法原理]
+1. 密钥生成：
+\begin{itemize}
+    \item 随机选择两个不同的素数 $p$ 和 $q$。
+    \item 计算模数 $n = pq$，以及欧拉函数 $\varphi(n) = (p-1)(q-1)$。
+    \item 选择一个整数 $e$，使得 $1 < e < \varphi(n)$ 且 $\gcd(e, \varphi(n)) = 1$。
+    \item 计算 $d$ 使得 $ed \equiv 1 \pmod{\varphi(n)}$。
+    \item 公钥为 $(n, e)$，私钥为 $(n, d)$。
+\end{itemize}
+2. 加密：密文 $c \equiv m^e \pmod{n}$。 (其中 $m$ 是明文，$m < n$)
+3. 解密：明文 $m \equiv c^d \pmod{n}$。
+\end{cnproperty}
+
+\textbf{CRT 证明RSA正确性：}
+需要证明对任意 $m < n$，有 $m^{ed} \equiv m \pmod{n}$。
+由 $ed \equiv 1 \pmod{\varphi(n)}$，存在整数 $k$ 使得 $ed = 1 + k(p-1)(q-1)$。
+我们分别在模 $p$ 和模 $q$ 的情况下证明。
+\begin{itemize}
+    \item 若 $m \equiv 0 \pmod{p}$，显然 $m^{ed} \equiv 0 \equiv m \pmod{p}$。
+    \item 若 $m \not\equiv 0 \pmod{p}$，由费马小定理，$m^{p-1} \equiv 1 \pmod{p}$。从而 $m^{ed} = m \cdot (m^{p-1})^{k(q-1)} \equiv m \cdot 1 \equiv m \pmod{p}$。
+\end{itemize}
+同理可证 $m^{ed} \equiv m \pmod{q}$。
+由于 $p, q$ 是不同的素数，它们互素。由中国剩余定理（令 $R=\mathbb{Z}$, $I_1=p\mathbb{Z}$, $I_2=q\mathbb{Z}$），同余方程组 
+$\begin{cases} x \equiv m \pmod p \\ x \equiv m \pmod q \end{cases}$ 
+在模 $pq$ 下有唯一解。由于 $m^{ed}$ 和 $m$ 均满足该方程组，故必定有 $m^{ed} \equiv m \pmod{n}$，这就是解密的正确性。
+
+\section{整环的商域（分式域）}
+对于一般的整环，我们可以仿照整数环 $\mathbb{Z}$ 构造有理数域 $\mathbb{Q}$ 的方式，构造包含它的“最小”的域，称为分式域（商域）。
+
+\begin{cndefinition}[商域 / 分式域]
+设 $A$ 为一个整环，令 $A^* = A \setminus \{0\}$ 为其非零元构成的乘法集合。
+定义在笛卡尔积 $A \times A^*$ 上的等价关系 $\sim$：
+$$ (a, b) \sim (a', b') \iff a b' = a' b $$
+将其等价类表示为分数形式 $\frac{a}{b}$，集合 $K = \left\{ \frac{a}{b} \mid a \in A, b \in A^* \right\}$ 构成域，称为 $A$ 的商域。
+\end{cndefinition}
+
+\begin{cntheorem}
+在集合 $K$ 上定义如下加法和乘法：
+\begin{itemize}
+    \item $\frac{a}{b} + \frac{c}{d} = \frac{ad + bc}{bd}$
+    \item $\frac{a}{b} \cdot \frac{c}{d} = \frac{ac}{bd}$
+\end{itemize}
+则 $K$ 构成一个域。而且 $K$ 是包含 $A$ 的最小的域。
+\end{cntheorem}
+
+\begin{proof}
+\textbf{1. 运算的良好定义 (Well-definedness)：} 
+以乘法为例，假设 $\frac{a_1}{b_1} = \frac{a_2}{b_2}$ ，且 $\frac{c_1}{d_1} = \frac{c_2}{d_2}$。我们需要证明 $\frac{a_1c_1}{b_1d_1} = \frac{a_2c_2}{b_2d_2}$。
+这等价于 $a_1 c_1 b_2 d_2 = a_2 c_2 b_1 d_1$。
+由于 $a_1 b_2 = a_2 b_1$ 和 $c_1 d_2 = c_2 d_1$，左右两边分别相乘即得。因为 $A$ 是整环且 $b_i, d_i \neq 0$，分母 $b_1d_1 \neq 0$。同理可证加法也是良好定义的。
+
+\textbf{2. 域的结构：}
+零元显然是 $\frac{0}{1}$，幺元是 $\frac{1}{1}$。
+对于任意非零元 $\frac{a}{b} \in K$（此时因其非零，$a \neq 0$ 即 $a \in A^*$），它的乘法逆元显然是 $\frac{b}{a} \in K$。因此 $K$ 为域。
+
+\textbf{3. 包含整环及最小性：}
+定义映射 $i: A \to K$, $i(a) = \frac{a}{1}$，容易验证 $i$ 为单同态。因而可以将 $A$ 视作 $K$ 的子环，即 $a \leftrightarrow \frac{a}{1}$ 嵌入其中。
+若有域 $F$ 并且包含 $A$ (通过单射 $j: A \to F$)，对于 $A$ 中任意元素 $a, b(b \neq 0)$，在 $F$ 中 $b$ 作为非零元必有逆元 $b^{-1}$，因而在 $F$ 必能构造元素 $ab^{-1}$。可以定义嵌入同态从 $K \to F$ 把 $\frac{a}{b}$ 映射为 $j(a)j(b)^{-1}$。在此意义下，$K$ 是“包含整环的最‘小’的域”。
+\end{proof}
+
+\section{局部化}
+商域的构造考虑了所有的非零元素。如果我们只取一部分指定的元素做分母，我们能得到一个称为“局部化”的环，这一操作在代数几何和交换代数中极为重要。
+
+\begin{cndefinition}[局部化]
+设 $A$ 为一个整环， $S \subset A \setminus \{0\}$ 是一个\textbf{乘法封闭子集}（即 $1 \in S$ 且对于 $\forall s_1, s_2 \in S$，都有 $s_1 s_2 \in S$）。
+令 $K$ 为 $A$ 的商域。定义 $A$ 在 $S$ 处的局部化为：
+$$ AS^{-1} = \left\{ \frac{a}{b} \in K \mid a \in A, b \in S \right\} $$
+$AS^{-1}$ (也常记作 $S^{-1}A$) 为 $K$ 的子环。这可以视作为商域的一个延展定义，仅仅允许分母在集合 $S$ 中取值。
+\end{cndefinition}
+\textbf{注：}例如，如果 $P$ 是 $A$ 中的一个素理想，则 $A \setminus P$ 就是一个乘法封闭且不含0的子集。此时定义 $S = A \setminus P$，并且局部化 $S^{-1}A$ 通常记作 $A_P$。
+
+\subsection{局部化中的理想及其对应关系}
+局部化操作不仅不改变整环的基本性质，还可以将不包含 $S$ 交集的理想“原封不动”地带入新的局部化环中，特别地，两者关于素理想有非常优美的对应关系。
+
+\begin{cnproperty}[局部化环中的素理想]
+对于 $AS^{-1}$ 和 $A$ 中的素理想，我们有如下几条性质：
+\begin{enumerate}
+    \item （延拓）若 $P$ 是 $A$ 中的素理想，且与其分母集 $S$ 不交（即 $P \subseteq A \setminus S$），则 $P$ 在 $AS^{-1}$ 中生成的理想 $PS^{-1} = \{ \frac{p}{s} \mid p \in P, s \in S \}$，也是 $AS^{-1}$ 中的一个素理想。记 $Q = PS^{-1}$。
+    \item （收缩一致）接上一条，我们有 $Q \cap A = P$。这意味着扩回局部化环后其原来的基础不被破坏。 % 这里用 \cap A 意为 Q 在嵌入映射 i(A) 下的原像。
+    \item （收缩）反过来，若任意取定 $AS^{-1}$ 中的素理想 $Q$，考虑其在原环境中的收缩，记 $P = Q \cap A$（即原像），则 $P$ 是 $A$ 的一个素理想，且 $P \subseteq A \setminus S$。
+\end{enumerate}
+\end{cnproperty}
+
+\begin{proof}
+此处将元素 $a \in A$ 等同于 $\frac{a}{1} \in AS^{-1}$ 进行讨论（考虑自然嵌入映射）。
+\begin{enumerate}
+    \item \textbf{证明性质1（延拓）：} 首先证明 $PS^{-1}$ 是理想：对任意 $\frac{p}{s} \in PS^{-1}$, $\frac{a}{t} \in AS^{-1}$，有 $\frac{a}{t} \frac{p}{s} = \frac{ap}{ts} \in PS^{-1}$ (由于 $P$ 是理想有 $ap \in P$，由于 $S$ 乘法封闭有 $ts \in S$)，加法同理封闭。这就说明了它是理想。
+    
+    接着证明它是素理想：假设 $\frac{a}{s_1} \frac{b}{s_2} \in PS^{-1}$，则存在 $p \in P, s \in S$ 使得 $\frac{ab}{s_1 s_2} = \frac{p}{s}$。由分式相等定义（整环中）有 $abs = ps_1 s_2 \in P$。因为 $P$ 是素理想且已知 $S \cap P = \emptyset$（即 $s \notin P$），故 $ab \in P$。由于 $P$ 也是素理想，故有 $a \in P$ 或 $b \in P$。因此 $\frac{a}{s_1} \in PS^{-1}$ 或是 $\frac{b}{s_2} \in PS^{-1}$。
+    
+    最后还要证 $PS^{-1} \neq AS^{-1}$：若等同于全环，则 $\frac{1}{1} \in PS^{-1}$，即 $1/1 = p/s \implies s = p \in P$，这与 $P \cap S = \emptyset$ 矛盾。因此 $PS^{-1}$ 是素理想。
+
+    \item \textbf{证明性质2（收缩一致）：} 比较 $\frac{a}{1} \in PS^{-1}$ 与 $a \in P$。若 $a \in P$，显然 $\frac{a}{1} \in PS^{-1}$，故 $P \subseteq PS^{-1} \cap A$。反方向，若 $a \in PS^{-1} \cap A$，则存在 $p \in P, s \in S$ 使得 $\frac{a}{1} = \frac{p}{s}$，即 $as = p \in P$。由于 $P$ 是素理想且 $s \notin P$ ($s \in S$)，必然得出 $a \in P$。故 $PS^{-1} \cap A \subseteq P$。两方面结合即得到 $Q \cap A = P$。
+
+    \item \textbf{证明性质3（收缩）：} 设 $a, b \in A$ 使得 $ab \in P = Q \cap A$。在 $AS^{-1}$ 的运算中有 $\frac{ab}{1} = \frac{a}{1} \frac{b}{1} \in Q$。由于 $Q$ 本身是 $AS^{-1}$ 中的素理想，必有 $\frac{a}{1} \in Q$ 或者 $\frac{b}{1} \in Q$。回溯至 $A$ 则意味着 $a \in Q \cap A = P$ 或者 $b \in Q \cap A = P$。这就证明了 $P$ 是素理想。
+    
+    此外需证不交：若 $P \cap S \neq \emptyset$，则可取元素 $s \in P \cap S$，于是 $\frac{s}{1} \in Q$。但在 $AS^{-1}$ 中 $s \in S$ 即表明 $\frac{s}{1}$ 存在逆元 $\frac{1}{s}$。由于理想包含了可逆元就会变成整个全环，这也就会导致 $Q = AS^{-1}$，这与 $Q$ 为素理想矛盾。因此必有 $P \cap S = \emptyset$。
+\end{enumerate}
+\end{proof}
+
+由上述所有的性质，我们立马能总结出一个一一映射定理。
+\begin{cntheorem}[素理想的双射对应]
+设 $S$ 为整环 $A$ 的乘法封闭集，不含零。
+则 $A$ 中满足 $P \cap S = \emptyset$（即 $P \subseteq A \setminus S$）的素理想 $P$ 的集合，与局部化环 $AS^{-1}$ 中的全体素理想集合之间，存在一对互逆的一一映射（双射）：
+\begin{center}
+    $P \xmapsto{\text{延拓}} PS^{-1} = Q$ \\
+    $Q \xmapsto{\text{收缩}} Q \cap A = P$
+\end{center}
+\end{cntheorem}
+这个定理告诉我们，所有的在 $S$ 外的部分都被局部化以类似于一种“放大镜”的形式原模原样地保留下来，这也就是为什么这个操作被称作“局部化（Localization）”。
+
+\end{document}

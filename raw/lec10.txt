@@ -1,0 +1,32 @@
+中国剩余定理（CRT）
+环的直积/直和: (a1,a2,...,an)+(b1,...bn)=(a1+b1,...,an+bn), (a1,a2,...,an)·(b1,...bn)=(a1·b1,...,an·bn),
+0元：(0,...,0)
+幺元:(1,...,1)
+不是整环（(0,0)(0,a)=(0,0)）
+定理（CRT），R位含幺交换环，I1,..,In为理想，Ii+Ij=R（i\neq j）,令I=\cap Ii, I也为理想，则R/I同构于R/Ii的直和
+f:α mod I --> (α mod I1,...,α mod In)
+证明：......定义映射 $f: R \to R/I_1 \times \dots \times R/I_n$：,证明单射 (Injectivity),证明满射 (Surjectivity)
+
+RSA:选择p,q 计算n=pq,φ(n)=(p-1)(q-1),人选择(e,φ(n))=1,计算ed=1 mod φ(n),....,CRT证明RSA正确性....
+
+整环的商域（分式域）
+A为整环：A*=A-{0},K==def=={a/b,a\in A, b\in A*}
+a/b=a'/b' if ab'=a'b （well-defined）
+a/b+c/d==def==(ad+bc)/bd
+a/b · c/d==def==ac/bd
+零元0/1 幺元1/1
+并且非零元都有逆元==>K为域
+a <--> a/1
+K是包含A的域，并且K是包含A的最小的域(包含整环的最小域为其分式域)
+proof......
+
+局部化
+S\subset a-{0}
+AS^{-1}==def=={a/b\in K|a\in A, b\in S}
+S满足乘法封闭性，\forall s1,s2\in S, s1s2\in S
+AS^{-1}为环
+例如：S=A-P 素理想，则AS^{-1}中的素理想域P中所有素理想一一对应
+性质1：P是A中的素理想，P\subset A-S, P-->PS^{-1}={p/s|p\in P, s\in S}，记Q=PS^{-1}，则Q是AS^{-1}中的素理想
+性质2：Q\cap A=P
+性质3：任意的AS^{-1}中的素理想Q，记P=Q\cap A, 则P是包含于A-S中的A的素理想
+定理：A-S中A的素理想集与AS^{-1}的素理想集，存在一对互逆的一一映射P---(PS^{-1})--->Q, Q---(Q\cap A)--->P
