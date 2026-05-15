@@ -1,0 +1,44 @@
+多项式环 R含幺交换环/整环/域
+define：R上的多项式环，R[x]==def=={f(x)|f(x)=\sigma_{i=0}^n a_i x^i, n>=0, a_i\in R}
+f(x)+g(x)==def==\sigma_{i=1}^{max(m,n)}(a_i+b_i)x^i
+f(x)·g(x)==def==\sigma_{k=0}^{n+m}c_k x^k (c_k=\sigma_{i+j=k}a_i b_j)
+(R[x],+,·)为环
+Comments: 
+1.R[x]为交换，如果R可交换
+2.定义deg(f)=n ,a_n\neq 0
+如果f(x)=a_0 如果a_0\neq 0 deg(f)=0 否则deg(f)=-\inf
+a_n\neq 0称为首系数， a_n=1称为首1
+3.零元/幺元，units
+4.deg(f+g)<=max(deg(f),deg(g))
+deg(fg)<=deg(f)+deg(g),如果f,g首系数非零因子，则取等
+若R为整环，则U(R[x])=U(R)
+5.不可约元/素元：不可约多项式/素多项式
+6.R为整环/UFD：R[x]也为整环/UFD，省略proof
+7.R:UFD，  R[X]的商域 R(x)={f/g|f,g\in R[x],g\neq 0}
+define:c\in D (R<D), f(c)=\sigma_{i=0}^n a_i c^i, 若f(c)=0，称c为f在D上的根
+Comments:0-多项式：0\in F[x]；0-函数：f(x)\in F[x], f(c)=0 (\forall c\in F)。两个概念不等价，F={0,1},在Z_2上，x^2+x为0-函数，但是不是0-多项式
+带余除法：
+theorem: R含幺，f,g\in R[x]，g首系数为unit，存在唯一的q,r\in R[x],f=q·g+r, deg(r)<deg(g)
+proof:归纳
+Comments: 1.R=F, F[x] \forall f,g\in F[x], g\neq 0,存在唯一的g,r\in F[x], f=q·g+r deg(r)<deg(g)
+2.F[x] 令V(f)=2^{deg(f)}>=0 v(f)=0\iff f=0， f[x]为ED、PID、UFD
+3.Z[x] PID? <2,x>=<f> f|2, f|x, f=±1， 1不在2·Z[x]+x·Z[x]中，Z[x]非PID
+4.构造p_n个元素的域：
+5.设f不可约 deg(f)=0 <f>为极大理想，Z_p[x]/<f>为域，g=q·f+r, g-r=q·f\in <f>, g+<f>=r+<f>, r1+<f>=r2+<f> (r1\neq r2), r1-r2\in <f> f|(r1-r2)矛盾，因此 r1+<f>\neq r2+<f>。因此Z_p[x]/<f>={r+<f>|deg(r)<n,r=\sigma_{i=0}^{n-1]a_i x^i}，域中有p_n个元素
+（PID中不可约元生成的理想为极大理想）
+6.\forall f,g\in F[x], f,g互素，<f,g>=<d>, d|f, d|g, d=gcd(f,g)
+(f,g)=1 ==> \exists u,v f·u+g·v=1
+带余除法的性质
+1.R含幺交换：f(x)=g(x)h(x), f(c)=g(c)h(c)
+\forall f\in R[x], g=x-c, f=q(x)(x-c)+r f(c)=r \implies f=q(x)(x-c)+f(c)
+若f(c)=0, c为f的根，则f=q(x)(x-c), 即x-c|f
+2.根的个数，R为整环，f\in R[x], c\in R, 如果(x-c)^m|f, (x-c)^{m-1}不整除f，则c为m次重根，
+theorem:f\in F[x], deg(f)=n>=0,则f在F上至多有n个根（重根计算在内）。
+proof: 归纳（域如果为整环定理也成立）
+prop: f\in F[x], def(f)=n 若f有n+1个根==>f=0
+def: f的形式微商/导数： f=\sigma_{i=0}^n a_i x^i a_i\in R整环
+f'(x)==def==\sigma_{i=1}^n i a_i x^{i-1}
+prop: 往常的加法/常数/乘法/幂次仍然适用
+prop: f有一个m重根c (m>=2)，f(c)=0, f'(c)=0,反着也成立
+prop: F[x], (f,f')=1, <==> f无重根
+e.g. Q[x] f不可约，f'\neq 0

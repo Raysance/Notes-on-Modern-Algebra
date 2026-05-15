@@ -1,0 +1,178 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ctex}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\input{../preamable/preamable_sep.tex}
+
+\declaretheorem[style=thmgreenbox, name=定义]{cndefinition}
+\declaretheorem[style=thmredbox, name=定理]{cntheorem}
+\declaretheorem[style=thmbluebox, name=性质]{cnproperty}
+\declaretheorem[style=thmredbox, name=引理]{cnlemma}
+\declaretheorem[style=thmredbox, numbered=no, name=推论]{cncorollary}
+\declaretheorem[style=thmbluebox, numbered=no, name=例]{cnexample}
+\title{近世代数笔记(Lec 11)：多项式环}
+\author{Raysance}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{多项式环的基本定义与性质}
+
+\begin{cndefinition}[多项式与多项式环]
+设 $R$ 为一个含幺交换环（或整环、域）。定义 $R$ 上的多项式环 $R[x]$ 如下：
+$$ R[x] = \left\{ f(x) \;\middle|\; f(x) = \sum_{i=0}^n a_i x^i, n \ge 0, a_i \in R \right\} $$
+其中加法与乘法运算定义为：
+\begin{itemize}
+    \item \textbf{加法}：假设 $f(x) = \sum_{i=0}^n a_i x^i$，$g(x) = \sum_{i=0}^m b_i x^i$，则
+    $$ f(x) + g(x) = \sum_{i=0}^{\max(m,n)} (a_i + b_i)x^i $$
+    （其中当某个指标超出其原多项式的最高次幂时，对应系数视作 $0$）
+    \item \textbf{乘法}：
+    $$ f(x) \cdot g(x) = \sum_{k=0}^{n+m} c_k x^k, \quad \text{其中 } c_k = \sum_{i+j=k} a_i b_j $$
+\end{itemize}
+在该运算下，$(R[x], +, \cdot)$ 构成一个环。
+\end{cndefinition}
+
+关于多项式及多项式环，有如下基本性质与结论：
+\begin{cnproperty}[多项式的基本概念与性质]
+\begin{enumerate}
+    \item \textbf{交换性}：当且仅当 $R$ 是交换环时，$R[x]$ 也是交换环。
+    \item \textbf{度数（次）}：若 $f(x) \neq 0$ 且最高次项不为 $0$，即 $a_n \neq 0$，则定义多项式 $f$ 的度数 $\deg(f) = n$。
+    \begin{itemize}
+        \item 系数 $a_n$ 称为\textbf{首系数}。当 $a_n = 1$ 时，称该多项式为\textbf{首一多项式}。
+        \item 对于常数多项式 $f(x) = a_0$：若 $a_0 \neq 0$，则 $\deg(f) = 0$；若 $f(x) \equiv 0$，通常规定 $\deg(0) = -\infty$。
+    \end{itemize}
+    \item \textbf{零元、幺元与可逆元（units）}：$R[x]$ 中的零元即为多项式 $0$，幺元即为常数多项式 $1$（因为 $R$ 含幺）。若 $R$ 为整环，则其多项式环的可逆元群满足 $U(R[x]) = U(R)$（即只有 $R$ 中的可逆元素在 $R[x]$ 中可逆）。
+    \item \textbf{度数的不等式与等式}：
+    $$ \deg(f + g) \le \max(\deg(f), \deg(g)) $$
+    $$ \deg(fg) \le \deg(f) + \deg(g) $$
+    如果要使得 $\deg(fg) = \deg(f) + \deg(g)$，则需要 $f$ 和 $g$ 的首系数不是零因子（例如 $R$ 为整环时，必然取等号）。
+    \item \textbf{不可约元与素元}：在 $R[x]$ 中，不可约元即为不可约多项式，素元即为素多项式。
+    \item \text{(省略证明)} 若 $R$ 为整环（Integral Domain）或唯一分解整环（UFD），则 $R[x]$ 同样是整环或 UFD。
+    \item \textbf{商域}：若 $R$ 为 UFD，$R$ 的多项式环 $R[x]$ 可以构造出它的商域（即有理分式域），记作：
+    $$ R(x) = \left\{ \frac{f}{g} \;\middle|\; f, g \in R[x], g \neq 0 \right\} $$
+\end{enumerate}
+\end{cnproperty}
+
+\section{多项式的根与带余除法}
+
+\begin{cndefinition}[多项式的根]
+设 $R \subset D$（$D$ 为包含 $R$ 的环），对于 $c \in D$ 以及多项式 $f(x) = \sum_{i=0}^n a_i x^i \in R[x]$，定义代入运算：
+$$ f(c) = \sum_{i=0}^n a_i c^i $$
+若 $f(c) = 0$，则称 $c$ 为 $f$ 在 $D$ 上的一个\textbf{根}。
+\end{cndefinition}
+
+需要注意的是：\textbf{0-多项式}与\textbf{0-函数}是两个不同的概念。0-多项式是指系数全为 $0$ 的多项式 $0 \in F[x]$；而 0-函数是指对所有 $c \in F$ 均满足 $f(c) = 0$ 的多项式。这两个概念并不等价。
+\begin{cnexample}
+在二元域 $F = \mathbb{Z}_2 = \{0, 1\}$ 上，令 $f(x) = x^2 + x \in \mathbb{Z}_2[x]$。
+代入 $x=0$ 和 $x=1$，都有 $f(0) = f(1) = 0$ 且因此在代数意义上这是一个 0-函数；但是由于其系数不全为 $0$，它显然不是一个 0-多项式。
+\end{cnexample}
+
+\begin{cntheorem}[多项式的带余除法]
+设 $R$ 为含幺环，$f, g \in R[x]$，且 $g$ 的首系数为 $R$ 中的可逆元。那么存在唯一的 $q, r \in R[x]$，使得
+$$ f = q \cdot g + r, \quad \text{其中 } \deg(r) < \deg(g) $$
+\end{cntheorem}
+\begin{proof}
+\textbf{存在性}：对 $f$ 的度数 $\deg(f)$ 进行数学归纳法。
+若 $\deg(f) < \deg(g)$，则取 $q=0$, $r=f$ 即可满足条件。
+假设对于所有度数小于 $n$ 的多项式，带余除法均成立。现在考虑 $\deg(f) = n \ge m = \deg(g)$ 的情况。
+设 $f(x) = a_n x^n + \cdots + a_0$，$g(x) = b_m x^m + \cdots + b_0$。因为 $g$ 的首系数 $b_m$ 是可逆元，所以可以构造多项式：
+$$ f_1(x) = f(x) - a_n b_m^{-1} x^{n-m} g(x) $$
+显然，由于消去了最高次项，有 $\deg(f_1) < n$。根据归纳假设，存在 $q_1, r_1 \in R[x]$ 使得 $f_1 = q_1 g + r_1$，且 $\deg(r_1) < \deg(g)$。
+将 $f_1$ 代回，得到：
+$$ f(x) = (a_n b_m^{-1} x^{n-m} + q_1(x)) g(x) + r_1(x) $$
+令 $q = a_n b_m^{-1} x^{n-m} + q_1$, $r = r_1$ 即证存在性。
+
+\textbf{唯一性}：假设存在两组满足条件的商和余数，即 $f = q_1 g + r_1 = q_2 g + r_2$，且 $\deg(r_1) < \deg(g)$, $\deg(r_2) < \deg(g)$。
+相减可得 $(q_1 - q_2)g = r_2 - r_1$。
+若 $q_1 \neq q_2$，则 $q_1 - q_2 \neq 0$。由于 $g$ 的首系数是可逆元（在环中非零因子），所以乘积的最高次项不会被相消，从而：
+$$ \deg((q_1 - q_2)g) = \deg(q_1 - q_2) + \deg(g) \ge \deg(g) $$
+但是等式右边 $\deg(r_2 - r_1) \le \max(\deg(r_1), \deg(r_2)) < \deg(g)$。
+这导致矛盾，因此只能是 $q_1 - q_2 = 0 \implies q_1 = q_2$，进而 $r_1 = r_2$。唯一性得证。
+\end{proof}
+
+对于带余除法及多项式环在域上的特殊性质，我们有以下相关的 \textbf{Comments}：
+\begin{itemize}
+    \item 若 $R$ 推广为一个域 $F$，对于任意 $f, g \in F[x]$ 且 $g \neq 0$，则必定存在唯一商 $q$ 及其余数 $r$（因域 $F$ 中的非零元均为可逆元）。
+    \item 对 $f \in F[x]$，若定义赋范 $V(f) = 2^{\deg(f)}$ （且 $v(f) = 0 \iff f = 0$），那么 $F[x]$ 就构成一个欧几里得整环（ED）。从而 $F[x]$ 也必然是主理想整环（PID）以及唯一分解整环（UFD）。
+    \item 但是，$Z[x]$ \textbf{不是 PID}：考虑理想 $I = \langle 2, x \rangle$。若假设存在主生成元 $f$ 使得 $I = \langle f \rangle$，则必须满足 $f|2$ 且 $f|x$，故 $f$ 只能是 $\pm 1$。然而，1 显然并不属于 $2\cdot\mathbb{Z}[x] + x\cdot\mathbb{Z}[x]$，因此 $\langle 2, x \rangle$ 不能由单个元素生成，$\mathbb{Z}[x]$ 非 PID。
+    \item 在主理想整环（PID）中可以利用带余法说明，\textbf{不可约元生成的理想为极大理想}。设 $\deg(f)=n$ 为不可约多项式，那么商环 $F = \mathbb{Z}_p[x]/\langle f \rangle$ 构成一个域（其元素形式为 $r + \langle f \rangle$，其中 $\deg(r) < n$）。域中每个元素的形如：
+    $$ r_1 + \langle f \rangle, \text{ 其中 } r_1 = \sum_{i=0}^{n-1} a_i x^i, \quad a_i \in \mathbb{Z}_p $$
+    一共有 $p^n$ 个元素（每项的系数均在 $\mathbb{Z}_p$ 中取值可能），这就展示了如何\textbf{构造 $p^n$ 个元素的有限域}。
+    \item 对于域 $F$ 上的多项式，任意两个互素的多项式 $f, g \in F[x]$，其生成的理想必定为 $\langle f, g \rangle = \langle 1 \rangle = F[x]$。这等价于可以找到多项式（裴蜀等式）：
+    $$ \exists u, v \in F[x], \quad f \cdot u + g \cdot v = 1 $$
+\end{itemize}
+
+\section{整环上的根与形式微商}
+
+带余除法的一个最经典的性质就是与根紧密相连：
+\begin{cnproperty}[根与因式的带余除法性质]
+对于任意 $f \in R[x]$ 和 $c \in R$，令 $g = x-c$，应用带余除法有：
+$$ f(x) = q(x)(x-c) + r $$
+其中 $\deg(r) < \deg(x-c) = 1$，故 $r$ 为常数。代入 $x=c$ 得到 $f(c) = r$。即：
+$$ f(x) = q(x)(x-c) + f(c) $$
+特别地，如果 $c$ 为 $f$ 的根，即 $f(c) = 0$，则有 $f(x) = q(x)(x-c)$，说明 $(x-c) \mid f(x)$（即多项式含有该线性因子）。
+\end{cnproperty}
+
+关于整环上多项式根的数量定理如下：
+\begin{cndefinition}[重根]
+若 $R$ 为整环，$f \in R[x]$，且对于某个 $c \in R$，满足 $(x-c)^m \mid f$ 但是 $(x-c)^{m+1} \nmid f$，则称 $c$ 为 $f$ 的 \textbf{$m$ 次重根}。
+\end{cndefinition}
+
+\begin{cntheorem}[代数基本定理的推论]
+若域 $F$（或整环 $R$），有 $f \in F[x]$ 且 $\deg(f) = n \ge 0$，则 $f$ 在 $F$ 上至多有 $n$ 个根（计算重根的重复次数在内）。
+\end{cntheorem}
+\begin{proof}
+对多项式的度数 $n = \deg(f)$ 进行数学归纳法。
+当 $n = 0$ 时，$f$ 为非零常数多项式，没有根，命题成立（$0 \le 0$）。
+当 $n = 1$ 时，$f(x) = ax+b$ 且 $a \neq 0$，易知其至多有 $1$ 个根，命题成立。
+假设对于度数小于 $n$ 的多项式定理均成立，现在考虑 $\deg(f) = n$ ($n \ge 1$) 的情况：
+若 $f$ 在 $F$ 中没有根，则其根数为 $0 \le n$，显然成立。
+若 $f$ 在 $F$ 中至少有一个根 $c$，根据带余除法性质，存在 $q \in F[x]$ 使得 $f(x) = (x-c)q(x)$。
+由于域 $F$（或整环）没有零因子，所以 $\deg(f) = \deg(q) + 1 \implies \deg(q) = n-1$。
+假设 $d$ 是 $f$ 的除了 $c$ 之外的其他根，即 $f(d) = (d-c)q(d) = 0$。考虑到整环或域无零因子，且 $d \neq c \implies d-c \neq 0$，则必然有 $q(d) = 0$。
+这意味着 $f$ 的其它根必然是 $q$ 的根。根据归纳假设，$q$ 至多有 $n-1$ 个根，因此 $f$ 至多有 $(n-1) + 1 = n$ 个根。
+命题得证。
+\end{proof}
+
+\begin{cncorollary}
+若 $f \in F[x]$ ，且 $\deg(f) = n$，如果发现 $f$ 在 $F$ 上具有 $n+1$ 个（及以上）个根，则必有 $f=0$（零多项式）。
+\end{cncorollary}
+
+为了更为分析方便地研究重根的特征，引入函数的\textbf{形式导数}。在这里，“形式”二字强调它不仅适用于带有极限定义的实数或复数，也仅仅是纯粹代数上对系数的一套映射操作。
+\begin{cndefinition}[多项式的形式导数]
+设 $R$ 为整环，对于多项式 $f = \sum_{i=0}^n a_i x^i \in R[x]$，定义其形式导数 $f'(x)$ 为：
+$$ f'(x) = \sum_{i=1}^n i a_i x^{i-1} $$
+\end{cndefinition}
+
+\begin{cnproperty}[微商的运算法则]
+该定义下的形式导数，沿袭了微积分中的常规导数运算法则（如加法、常数乘法、函数乘积法则以及链式法则等均仍适用）。
+\end{cnproperty}
+
+重根最核心的判定法与函数及其导数具有密切关联：
+\begin{cnproperty}[多项式的重根判定]
+设 $c$ 至少是 $F[x]$ 中多项式 $f$ 的一个 2 重根（$m \ge 2$）。那么：
+$$ f(c) = 0, \quad \text{且} \quad f'(c) = 0 $$
+反过来也是成立的。特别地：
+$$ (f, f') = 1 \iff \langle f, f' \rangle = F[x] \iff f \text{ 无重根} $$
+\end{cnproperty}
+\begin{proof}
+若 $c$ 至少是 $2$ 重根，则 $f(x) = (x-c)^m q(x)$ ($m \ge 2$)。代入 $x=c$ 显然有 $f(c) = 0$。
+对其求形式导数可得：
+$$ f'(x) = m(x-c)^{m-1} q(x) + (x-c)^m q'(x) = (x-c)^{m-1} \left[ m q(x) + (x-c) q'(x) \right] $$
+因为 $m \ge 2 \implies m-1 \ge 1$，因此 $f'(x)$ 包含因式 $(x-c)$，代入 $x=c$ 得到 $f'(c) = 0$。
+
+反之，若 $f(c) = 0$，则 $f(x) = (x-c) h(x)$。
+求导得到 $f'(x) = h(x) + (x-c) h'(x)$。
+此时又已知 $f'(c) = 0$，将其代入得 $f'(c) = h(c) + 0 = 0 \implies h(c) = 0$。
+说明 $c$ 也是 $h(x)$ 的根，即 $h(x) = (x-c) q(x)$。带回原式得 $f(x) = (x-c)^2 q(x)$，这就意味着 $c$ 至少是 $2$ 重根。
+\end{proof}
+
+\begin{cnexample}
+在有理数域 $\mathbb{Q}[x]$ 中，如果 $f$ 已经不可约，不可约意味着除了 1 和其本身不会再被更低次数的多项式分解，所以显然 $(f, f')=1$。因为 $f'$ 不能恒等于零（由于我们域特征值为零且一次导数未消除首系数），所以不可约多项式必定无重根。
+\end{cnexample}
+
+\end{document}
