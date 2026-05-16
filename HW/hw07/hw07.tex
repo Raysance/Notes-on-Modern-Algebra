@@ -1,0 +1,106 @@
+\documentclass[12pt, a4paper]{article}
+
+% --- 常用宏包 ---
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{bm}
+\usepackage{tcolorbox}
+
+% --- 页面设置 ---
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\today}
+\lhead{近世代数作业}
+\cfoot{\thepage}
+
+% --- 环境定义 ---
+\newtcolorbox{problem}[1]{
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    fonttitle=\bfseries,
+    title=题目 #1
+}
+
+\newenvironment{solution}{
+    \begin{proof}[\textbf{解}]
+}{
+    \end{proof}
+}
+
+% --- 个人信息 ---
+\title{近世代数作业 07}
+\author{李睿阳 (524120910059)}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\begin{problem}{1}
+    设 $\mathbb{Z}_n$ 是模 $n$ 剩余类环，证明 $I$ 是 $\mathbb{Z}_n$ 的理想 $\iff I$ 是 $\mathbb{Z}_n$ 的加法子群。
+\end{problem}
+\begin{solution}
+    $(\implies)$ 由理想定义，$I$ 是 $\mathbb{Z}_n$ 的加法子群。
+
+    $(\impliedby)$ 设 $I$ 是 $\mathbb{Z}_n$ 的加法子群。对 $\forall r \in \mathbb{Z}_n, a \in I$，
+    由于 $r = \underbrace{1 + 1 + \dots + 1}_{r \text{ 个}}$。
+    则 $ra = \underbrace{a + a + \dots + a}_{r \text{ 个}}$。
+    由加法封闭性，$ra \in I$。由于 $\mathbb{Z}_n$ 是交换环，故 $ar = ra \in I$。
+    因此 $I$ 是理想。
+\end{solution}
+
+
+\begin{problem}{2}
+    使用题 1 的结论，求 $\mathbb{Z}_6$ 的所有理想。
+\end{problem}
+\begin{solution}
+    由(1) $\mathbb{Z}_6$ 的理想与其加法子群相同，并且由于 $\mathbb{Z}_6$ 为循环群，它的加法子群也都是循环群。
+    它的理想为：
+    \begin{itemize}
+        \item $\langle 0 \rangle = \{0\}$
+        \item $\langle 1 \rangle = \{0, 1, 2, 3, 4, 5\}$
+        \item $\langle 2 \rangle = \{0, 2, 4\}$
+        \item $\langle 3 \rangle = \{0, 3\}$
+    \end{itemize}
+\end{solution}
+
+
+\begin{problem}{3}
+    设 $\langle a \rangle, \langle b \rangle$ 是整数环 $\mathbb{Z}$ 的两个理想，证明：
+    (1) $\langle a \rangle \cap \langle b \rangle = \langle [a, b] \rangle$
+    (2) $\langle a \rangle + \langle b \rangle = \langle (a, b) \rangle$
+\end{problem}
+\begin{solution}
+    (1) $k \in \langle a \rangle \cap \langle b \rangle \iff a|k$ 且 $b|k \iff [a, b] | k \iff k \in \langle [a, b] \rangle$。
+    故 $\langle a \rangle \cap \langle b \rangle = \langle [a, b] \rangle$。
+
+    (2) 因为 $(a, b) | a$ 且 $(a, b) | b$，故 $a, b \in \langle (a, b) \rangle$，从而 $\langle a \rangle + \langle b \rangle \subseteq \langle (a, b) \rangle$。
+    反之，由裴蜀定理，存在 $x, y \in \mathbb{Z}$ 使得 $(a, b) = xa + yb$。
+    故 $(a, b) \in \langle a \rangle + \langle b \rangle$，从而 $\langle (a, b) \rangle \subseteq \langle a \rangle + \langle b \rangle$。
+    故 $\langle a \rangle + \langle b \rangle = \langle (a, b) \rangle$。
+\end{solution}
+    
+
+\begin{problem}{4}
+    在环 $\mathbb{Z}[\sqrt{-5}]$ 中，设 $I = \langle 3, 1 + \sqrt{-5} \rangle$，证明对任意的 $a + b\sqrt{-5} \in I$，有 $3 | a - b$。
+\end{problem}
+\begin{solution}
+    对任意 $a + b\sqrt{-5} \in I$，存在 $x + y\sqrt{-5}, u + v\sqrt{-5} \in \mathbb{Z}[\sqrt{-5}]$，使得
+    \begin{align*}
+        a + b\sqrt{-5} &= 3(x + y\sqrt{-5}) + (1 + \sqrt{-5})(u + v\sqrt{-5}) \\
+        &= (3x + u - 5v) + (3y + u + v)\sqrt{-5}
+    \end{align*}
+    由此可得：
+    $a = 3x + u - 5v, \quad b = 3y + u + v$
+    则 $a - b = (3x + u - 5v) - (3y + u + v) = 3x - 3y - 6v = 3(x - y - 2v)$。
+    所以 $3 | a - b$。
+\end{solution}
+
+
+\end{document}

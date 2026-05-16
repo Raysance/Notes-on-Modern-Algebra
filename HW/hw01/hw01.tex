@@ -1,0 +1,111 @@
+\documentclass[12pt, a4paper]{article}
+
+% --- 常用宏包 ---
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{bm}
+\usepackage{tcolorbox}
+
+% --- 页面设置 ---
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\today}
+\lhead{近世代数作业}
+\cfoot{\thepage}
+
+% --- 环境定义 ---
+\newtcolorbox{problem}[1]{
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    fonttitle=\bfseries,
+    title=题目 #1
+}
+
+\newenvironment{solution}{
+    \begin{proof}[\textbf{解}]
+}{
+    \end{proof}
+}
+
+% --- 个人信息 ---
+\title{近世代数作业 01}
+\author{李睿阳 (524120910059)}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{problem}{1}
+    任意多子群的交仍为子群。
+\end{problem}
+
+\begin{solution}
+    设 $\{H_i\}_{i \in I}$ 是群 $G$ 的一组子群，记 $H = \bigcap_{i \in I} H_i$。
+    \begin{enumerate}[(1)]
+        \item \textbf{封闭性}：对任意 $a, b \in H$，则对每个 $i \in I$，有 $a, b \in H_i$。由于 $H_i$ 是子群，故 $ab \in H_i$。因此 $ab \in \bigcap_{i \in I} H_i = H$。
+        \item \textbf{结合律}：由于 $H \subseteq G$，且 $G$ 满足结合律，故 $H$ 自然满足结合律。
+        \item \textbf{单位元}：对每个 $i \in I$，单位元 $e \in H_i$，故 $e \in \bigcap_{i \in I} H_i = H$。
+        \item \textbf{逆元}：对任意 $a \in H$，则对每个 $i \in I$，$a \in H_i$。由于 $H_i$ 是子群，故 $a^{-1} \in H_i$。因此 $a^{-1} \in \bigcap_{i \in I} H_i = H$。
+    \end{enumerate}
+    综上所述，$H$ 仍为 $G$ 的子群。
+\end{solution}
+
+\begin{problem}{2}
+    设 $A, B$ 是群 $G$ 的子群，如果存在 $a, b \in G$，使得 $Aa = Bb$，证明：$A = B$。
+\end{problem}
+\begin{solution}
+    由已知 $Aa = Bb$。
+    因为 $A$ 是子群，所以 $e \in A$，从而 $a = ea \in Aa$。
+    由于 $Aa = Bb$，所以 $a \in Bb$。
+    根据右陪集的性质，若 $a \in Bb$，则 $Ba = Bb$。
+    从而 $Aa = Ba$。
+    两边同时右乘 $a^{-1}$，得 $Aaa^{-1} = Baa^{-1}$，即 $A = B$。
+\end{solution}
+\begin{problem}{3}
+   设 $f: G_1 \to G_2$ 为群同构，证明 $f^{-1}: G_2 \to G_1$ 也为群同构。
+\end{problem}
+\begin{solution}
+    由于 $f$ 是群同构，故 $f$ 是双射，从而其逆映射 $f^{-1}: G_2 \to G_1$ 存在且也是双射。
+    下面证明 $f^{-1}$ 保持群运算：
+    对任意 $x, y \in G_2$，令 $a = f^{-1}(x), b = f^{-1}(y)$，则 $a, b \in G_1$ 且 $f(a) = x, f(b) = y$。
+    由于 $f$ 是同构，有 $f(ab) = f(a)f(b) = xy$。
+    两边取 $f^{-1}$ 得 $ab = f^{-1}(xy)$。
+    即 $f^{-1}(x)f^{-1}(y) = f^{-1}(xy)$。
+    因此 $f^{-1}$ 是群同构。
+\end{solution}
+\begin{problem}{4}
+    求加法群 $\mathbb{Z}_8$ 的每个元素的阶。
+\end{problem}
+\begin{solution}
+    \begin{itemize}
+        \item $|0| = 1$
+        \item $|1| = 8/\gcd(1,8) = 8$
+        \item $|2| = 8/\gcd(2,8) = 4$
+        \item $|3| = 8/\gcd(3,8) = 8$
+        \item $|4| = 8/\gcd(4,8) = 2$
+        \item $|5| = 8/\gcd(5,8) = 8$
+        \item $|6| = 8/\gcd(6,8) = 4$
+        \item $|7| = 8/\gcd(7,8) = 8$
+    \end{itemize}
+\end{solution}
+\begin{problem}{5}
+   写出 $\langle 3 \rangle$ 在加法群 $\mathbb{Z}_{18}$ 中的所有陪集，并求其index。
+\end{problem}
+\begin{solution}
+    子群 $\langle 3 \rangle = \{0, 3, 6, 9, 12, 15\}$。
+    在 $\mathbb{Z}_{18}$ 中的所有陪集为：
+    \begin{itemize}
+        \item $0 + \langle 3 \rangle = \{0, 3, 6, 9, 12, 15\}$
+        \item $1 + \langle 3 \rangle = \{1, 4, 7, 10, 13, 16\}$
+        \item $2 + \langle 3 \rangle = \{2, 5, 8, 11, 14, 17\}$
+    \end{itemize}
+    index: $ = 18 / 6 = 3$。
+\end{solution}
+\end{document}

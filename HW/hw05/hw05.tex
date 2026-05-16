@@ -1,0 +1,91 @@
+\documentclass[12pt, a4paper]{article}
+
+% --- 常用宏包 ---
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{bm}
+\usepackage{tcolorbox}
+
+% --- 页面设置 ---
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\today}
+\lhead{近世代数作业}
+\cfoot{\thepage}
+
+% --- 环境定义 ---
+\newtcolorbox{problem}[1]{
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    fonttitle=\bfseries,
+    title=题目 #1
+}
+
+\newenvironment{solution}{
+    \begin{proof}[\textbf{解}]
+}{
+    \end{proof}
+}
+
+% --- 个人信息 ---
+\title{近世代数作业 05}
+\author{李睿阳 (524120910059)}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\begin{problem}{1}
+    设P是有限群G的Sylow p子群，证明：P是G的唯一Sylow p子群的充要条件是P为G的正规子群。
+\end{problem}
+\begin{solution}
+    必要性：若 $P$ 是 $G$ 的唯一 Sylow $p$-子群，则对于 $\forall g \in G$，$gPg^{-1}$ 也是 $G$ 的 Sylow $p$-子群。由唯一性知 $gPg^{-1} = P$，故 $P \trianglelefteq G$。
+
+    充分性：若 $P \trianglelefteq G$，则对于 $G$ 的任一 Sylow $p$-子群 $Q$，由 Sylow 第二定理知存在 $g \in G$ 使得 $Q = gPg^{-1}$。由于 $P$ 是正规子群，故 $Q = gPg^{-1} = P$，即 $P$ 是唯一的。
+\end{solution}
+
+
+\begin{problem}{2}
+    设 $p,q$ 是不同素数，证明：任一 $pq$ 阶群都不是单群。
+\end{problem}
+\begin{solution}
+    设 $|G| = pq$，不妨设 $p > q$。
+    设 $n_p$ 为 $G$ 的 Sylow $p$-子群的个数。由 Sylow 第三定理：
+    $n_p \equiv 1 \pmod p$ 且 $n_p \mid q$。
+    由于 $q$ 是素数且 $q < p$，则 $n_p$ 只能为 $1$。
+    由问题 1 知，该唯一的 Sylow $p$-子群 $P$ 是 $G$ 的正规子群。
+    又 $|P| = p \neq 1, pq$，故 $P$ 是 $G$ 的非平凡正规子群，即 $G$ 不是单群。
+\end{solution}
+
+
+\begin{problem}{3}
+    已知 $(a_1,\dots,a_n)$ 在 $G_1 \oplus \dots \oplus G_n$ 中的阶等于所有 $|a_i|$ 的最小公倍数。计算 $\mathbb{Z}_{45} \oplus \mathbb{Z}_{18}$ 中元素 $(40,12)$ 的阶。
+\end{problem}
+\begin{solution}
+    $40$ 在 $\mathbb{Z}_{45}$ 中的阶为：$|40| = \frac{45}{\gcd(40,45)} = \frac{45}{5} = 9$。
+    $12$ 在 $\mathbb{Z}_{18}$ 中的阶为：$|12| = \frac{18}{\gcd(12,18)} = \frac{18}{6} = 3$。
+    故 $(40,12)$ 的阶为：$\operatorname{lcm}(9,3) = 9$。
+\end{solution}
+    
+
+\begin{problem}{4}
+    同构意义下列出所有 $1089$ 阶阿贝尔群。
+\end{problem}
+\begin{solution}
+    $1089 = 3^2 \cdot 11^2$。
+    由有限阿贝尔群基本定理
+    \begin{enumerate}
+        \item $\mathbb{Z}_{9} \oplus \mathbb{Z}_{121}$
+        \item $\mathbb{Z}_{9} \oplus \mathbb{Z}_{11} \oplus \mathbb{Z}_{11}$
+        \item $\mathbb{Z}_{3} \oplus \mathbb{Z}_{3} \oplus \mathbb{Z}_{121}$
+        \item $\mathbb{Z}_{3} \oplus \mathbb{Z}_{3} \oplus \mathbb{Z}_{11} \oplus \mathbb{Z}_{11}$
+    \end{enumerate}
+\end{solution}
+\end{document}

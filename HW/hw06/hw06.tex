@@ -1,0 +1,127 @@
+\documentclass[12pt, a4paper]{article}
+
+% --- 常用宏包 ---
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{bm}
+\usepackage{tcolorbox}
+
+% --- 页面设置 ---
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\today}
+\lhead{近世代数作业}
+\cfoot{\thepage}
+
+% --- 环境定义 ---
+\newtcolorbox{problem}[1]{
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    fonttitle=\bfseries,
+    title=题目 #1
+}
+
+\newenvironment{solution}{
+    \begin{proof}[\textbf{解}]
+}{
+    \end{proof}
+}
+
+% --- 个人信息 ---
+\title{近世代数作业 06}
+\author{李睿阳 (524120910059)}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\begin{problem}{1}
+    在 $\mathbb{Z} \times \mathbb{Z}$ 中定义加法与乘法如下：$(a,b)+(c,d)=(a+c,b+d)$，$(a,b)(c,d)=(ac,bd)$。对任意的 $a,b,c,d \in \mathbb{Z}$。证明 $\mathbb{Z} \times \mathbb{Z}$ 是有零因子的含幺交换环。
+\end{problem}
+\begin{solution}
+    \begin{enumerate}[1.]
+        \item \textbf{环}：
+        继承自整数运算的封闭性、结合律、交换律及分配律。具体而言：
+        加法构成阿贝尔群，零元为 $(0,0)$，$(a,b)$ 的逆元为 $(-a,-b)$。
+        乘法满足结合律。
+        分配律：
+        \[ (a,b)((c,d)+(e,f))=(a,b)(c+e,d+f)=(a(c+e),b(d+f))=(ac+ae,bd+bf) \]
+        \[ (a,b)(c,d)+(a,b)(e,f)=(ac,bd)+(ae,bf)=(ac+ae,bd+bf) \]
+        故 $(a,b)((c,d)+(e,f))=(a,b)(c,d)+(a,b)(e,f)$。同理可证另一侧分配律。
+        乘法满足交换律：$(a,b)(c,d)=(ac,bd)=(ca,db)=(c,d)(a,b)$。
+
+        \item \textbf{含幺}：
+        幺元为 $(1,1)$。
+        验证：$(1,1)(a,b)=(1 \cdot a, 1 \cdot b)=(a,b)$。
+
+        \item \textbf{零因子}：
+        该环中零元为 $\mathbf{0}=(0,0)$。
+        取 $x=(1,0) \neq \mathbf{0}$，$y=(0,1) \neq \mathbf{0}$，有 $xy=(1\cdot 0, 0\cdot 1)=(0,0)=\mathbf{0}$。
+        因此 $\mathbb{Z} \times \mathbb{Z}$ 是有零因子的含幺交换环。
+    \end{enumerate}
+\end{solution}
+
+
+\begin{problem}{2}
+    设 $\mathbb{Q}[\sqrt{3}]=\{a+b\sqrt{3} \mid a,b\in \mathbb{Q}\}$，证明 $\mathbb{Q}[\sqrt{3}]$ 关于普通实数上的加法和乘法构成一个域。
+\end{problem}
+\begin{solution}
+    加法：\\
+    封闭性：$x=a+b\sqrt{3}, y=c+d\sqrt{3} \in \mathbb{Q}[\sqrt{3}]$，则 $x+y=(a+c)+(b+d)\sqrt{3} \in \mathbb{Q}[\sqrt{3}]$。\\
+    结合律、交换律：继承自实数加法。\\
+    零元：$0+0\sqrt{3} = 0$。\\
+    逆元：$a+b\sqrt{3}$ 的加法逆元为 $(-a)+(-b)\sqrt{3} \in \mathbb{Q}[\sqrt{3}]$。
+
+    乘法：\\
+    封闭性：$xy = (a+b\sqrt{3})(c+d\sqrt{3}) = (ac+3bd)+(ad+bc)\sqrt{3} \in \mathbb{Q}[\sqrt{3}]$。\\
+    结合律、交换律：继承自实数乘法。\\
+    幺元：$1+0\sqrt{3} = 1$。\\
+    逆元：对于 $a+b\sqrt{3} \neq 0$，由于 $3$ 不是有理数的平方，故 $a^2-3b^2 \neq 0$。\\
+    其乘法逆元为 $\frac{1}{a+b\sqrt{3}} = \frac{a-b\sqrt{3}}{a^2-3b^2} = \frac{a}{a^2-3b^2} - \frac{b}{a^2-3b^2}\sqrt{3} \in \mathbb{Q}[\sqrt{3}]$。
+
+    分配律：继承自实数运算。\\
+    综上所述，$\mathbb{Q}[\sqrt{3}]$ 构成一个域。
+\end{solution}
+
+
+\begin{problem}{3}
+    设 $\phi: R \to R'$ 是环同态，证明：对任意 $a \in R, n \in \mathbb{Z}, \phi(na)=n\phi(a)$。
+\end{problem}
+\begin{solution}
+    \begin{enumerate}[1.]
+        \item 当 $n=0$ 时：
+        $0a = 0_R$。由环同态性质知 $\phi(0_R) = 0_{R'}$，故 $\phi(0a) = 0_{R'} = 0\phi(a)$。
+
+        \item 当 $n > 0$ 时：
+        $na = \sum_{i=1}^n a$。由同态性质 $\phi(x+y) = \phi(x) + \phi(y)$，经归纳可得：
+        $\phi(na) = \phi(\sum_{i=1}^n a) = \sum_{i=1}^n \phi(a) = n\phi(a)$。
+
+        \item 当 $n < 0$ 时：
+        令 $n = -m$ ($m > 0$)。则 $na = - (ma)$。
+        $\phi(na) = \phi(-(ma))$。由 $\phi(x+(-x)) = \phi(0_R) = 0_{R'} \implies \phi(x) + \phi(-x) = 0_{R'}$，得 $\phi(-x) = -\phi(x)$。
+        故 $\phi(na) = -\phi(ma) = -m\phi(a) = n\phi(a)$。
+    \end{enumerate}
+\end{solution}
+
+
+\begin{problem}{4}
+    给出 $\mathbb{Z}_{10}$ 的所有子环，指出它们各自的特征。
+\end{problem}
+\begin{solution}
+    % $\mathbb{Z}_{10}$ 的子环由其加法子群（即 $10$ 的约数生成的循环群）决定：
+    \begin{enumerate}[1.]
+        \item $S_1 = \mathbb{Z}_{10} = \{0, 1, 2, 3, 4, 5, 6, 7, 8, 9\}$，特征为 $10$。
+        \item $S_2 = \langle 2 \rangle = \{0, 2, 4, 6, 8\}$，特征为 $5$。
+        \item $S_3 = \langle 5 \rangle = \{0, 5\}$，特征为 $2$。
+        \item $S_4 = \langle 0 \rangle = \{0\}$，特征为 $1$。
+    \end{enumerate}
+\end{solution}
+
+\end{document}

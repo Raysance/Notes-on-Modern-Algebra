@@ -1,0 +1,96 @@
+\documentclass[12pt, a4paper]{article}
+
+% --- 常用宏包 ---
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{bm}
+\usepackage{tcolorbox}
+
+% --- 页面设置 ---
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\today}
+\lhead{近世代数作业}
+\cfoot{\thepage}
+
+% --- 环境定义 ---
+\newtcolorbox{problem}[1]{
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    fonttitle=\bfseries,
+    title=题目 #1
+}
+
+\newenvironment{solution}{
+    \begin{proof}[\textbf{解}]
+}{
+    \end{proof}
+}
+
+% --- 个人信息 ---
+\title{近世代数作业 09}
+\author{李睿阳 (524120910059)}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\begin{problem}{1}
+    求 $x$ 的所有整数解：
+    $x \equiv 2 \pmod 3$, $x \equiv 3 \pmod 4$, $x \equiv 1 \pmod 5$
+\end{problem}
+\begin{solution}
+    $3, 4, 5$ 互素，
+    $m = 3 \times 4 \times 5 = 60$。
+
+    $M_1 = 20, M_2 = 15, M_3 = 12$。
+
+    $20 \times 2 \equiv 1 \pmod 3$
+
+    $15 \times 3 \equiv 1 \pmod 4$
+
+    $12 \times 3 \equiv 1 \pmod 5$
+
+    $x \equiv 2 \times 20 \times 2 + 3 \times 15 \times 3 + 1 \times 12 \times 3 \pmod{60} \equiv 11 \pmod{60}$。
+\end{solution}
+
+\begin{problem}{2}
+    设 $n=143$，分解 $n$ 得到素因子，构造模 $n$ 的 RSA 公钥算法：
+    \begin{enumerate}[(1)]
+        \item 取公钥 $e=7$，则私钥 $d=?$
+        \item 对消息 $m=10$ 加密，密文是什么？
+    \end{enumerate}
+\end{problem}
+\begin{solution}
+    \begin{enumerate}[(1)]
+        \item $n = 11 \times 13$，$\varphi(n) = 10 \times 12 = 120$。
+        公钥 $e = 7$，由于 $ed \equiv 1 \pmod{120}$，可得 $d \equiv 103 \pmod{120}$，故 $d=103$。
+        \item 密文 $c \equiv m^e \pmod{143} \equiv 10^7 \pmod{143} \equiv 10$。
+    \end{enumerate}
+\end{solution}
+
+\begin{problem}{3}
+    整环 $A$ 相对于 $S \subset A \setminus \{0\}$ 的局部化环 $AS^{-1}$。本题将 $A$ 实例化为整数环 $\mathbb{Z}$，令 $S = A \setminus \mathfrak{p}$，这里的 $\mathfrak{p}$ 是 $\mathbb{Z}$ 的任一非零素理想（因此，$\mathfrak{p}$ 的形式为 $p\mathbb{Z}$，$p$ 为素数），此时记局部化环 $AS^{-1}$ 为 $\mathbb{Z}_p$，回答以下问题：
+    \begin{enumerate}[(1)]
+        \item 写出 $\mathbb{Z}_p$ 中元素形式。
+        \item 写出 $\mathfrak{p}S^{-1}$ 的元素形式（$\mathfrak{p}$ 为 $\mathbb{Z}$ 的素理想，因此 $\mathfrak{p}S^{-1}$ 为 $\mathbb{Z}_p$ 的唯一极大理想）。
+        \item 写出 $\mathbb{Z}_p$ 中 units 的形式。
+    \end{enumerate}
+\end{problem}
+\begin{solution}
+    \begin{enumerate}[(1)]
+        \item $\mathbb{Z}_p = \left\{ \frac{a}{b} \mathrel{\Big|} a \in \mathbb{Z}, b \not\equiv 0 \pmod p \right\}$
+        \item $\mathfrak{p}S^{-1} = \left\{ \frac{a}{b} \mathrel{\Big|} a \equiv 0 \pmod p, b \not\equiv 0 \pmod p \right\}$
+        \item units: $\left\{ \frac{a}{b} \mathrel{\Big|} a \not\equiv 0 \pmod p, b \not\equiv 0 \pmod p \right\}$
+    \end{enumerate}
+\end{solution}
+
+
+\end{document}

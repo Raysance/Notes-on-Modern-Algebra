@@ -1,0 +1,99 @@
+\documentclass[12pt, a4paper]{article}
+
+% --- 常用宏包 ---
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{bm}
+\usepackage{tcolorbox}
+
+% --- 页面设置 ---
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\today}
+\lhead{近世代数作业}
+\cfoot{\thepage}
+
+% --- 环境定义 ---
+\newtcolorbox{problem}[1]{
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    fonttitle=\bfseries,
+    title=题目 #1
+}
+
+\newenvironment{solution}{
+    \begin{proof}[\textbf{解}]
+}{
+    \end{proof}
+}
+
+% --- 个人信息 ---
+\title{近世代数作业 04}
+\author{李睿阳 (524120910059)}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\begin{problem}{1}
+    设 $G$作用在集合 $X$上，对任意的 $a,b\in X$, 设存在 $g\in G$ 使得 $ga=b$，证明 $G_a=g^{-1}G_bg$.($G_a$即是 $a$的稳定子群$\operatorname{Stab}(a)$).
+\end{problem}
+\begin{solution}
+    (1) 对任意 $h \in G_b$:
+    \[ (g^{-1}hg)a = g^{-1}h(ga) = g^{-1}(hb) = g^{-1}b = a \]
+    由稳定子群定义: $g^{-1}hg \in G_a$，即 $g^{-1}G_b g \subset G_a$。
+
+    (2) 对任意 $k \in G_a$:
+    \[ (gkg^{-1})b = gk(g^{-1}b) = g(ka) = ga = b \]
+    由稳定子群定义: $gkg^{-1} \in G_b$，即 $k \in g^{-1}G_b g$，故 $G_a \subset g^{-1}G_b g$。
+
+    综上 $G_a=g^{-1}G_bg$。
+\end{solution}
+
+
+\begin{problem}{2}
+    求 $\{1,2,...,8\}$ 在 $S_8$ 的循环子群 $\langle(1,3,5,6)\rangle$ 作用下的轨道数。
+\end{problem}
+\begin{solution}
+    群 $G = \langle(1,3,5,6)\rangle = \{(1,3,5,6), (1,5)(3,6), (1,6,5,3), e\}$。
+    集合 $\{1,2,3,4,5,6,7,8\}$。
+    根据轨道的定义 $\operatorname{Orb}(x) = \{gx \mid g \in G\}$：
+    \begin{itemize}
+        \item $\operatorname{Orb}(1) = \{1,3,5,6\}$
+        \item $\operatorname{Orb}(2) = \{2\}$
+        \item $\operatorname{Orb}(4) = \{4\}$
+        \item $\operatorname{Orb}(7) = \{7\}$
+        \item $\operatorname{Orb}(8) = \{8\}$
+    \end{itemize}
+    轨道数为 5。
+\end{solution}
+
+
+\begin{problem}{3}
+    利用群作用定理 $|G|=|\operatorname{Stab}(a)||\operatorname{Orb}(a)|$ 证明：设 $G$ 为群，$A$ 为 $G$ 的子集，则 $A$ 的共轭子集个数等于 $[G:N_G(A)]$。
+\end{problem}
+\begin{solution}
+    定义 $G$ 在其幂集上的作用为共轭作用：$g \cdot A = gAg^{-1}$。
+
+    共轭作用满足群在集合上作用的定义：$e \cdot A = A$；且 $(gh) \cdot A = (gh)A(gh)^{-1} = g(hAh^{-1})g^{-1} = g \cdot (h \cdot A)$。
+
+    由正规化子的定义：$N_G(A) = \{g \in G \mid gAg^{-1} = A\}$。
+
+    由稳定子群定义：$\operatorname{Stab}(A) = \{g \in G \mid g \cdot A = A\} = \{g \in G \mid gAg^{-1} = A\} = N_G(A)$。
+
+    由轨道定义：$\operatorname{Orb}(A) = \{g \cdot A \mid g \in G\} = \{gAg^{-1} \mid g \in G\}$，即 $A$ 的共轭子集全体。
+
+    由群作用定理：$|G| = |\operatorname{Stab}(A)||\operatorname{Orb}(A)| = |N_G(A)| \times (\text{共轭子集个数})$。
+    
+    故共轭子集个数 $= |G|/|N_G(A)| = [G:N_G(A)]$。
+\end{solution}
+
+
+\end{document}

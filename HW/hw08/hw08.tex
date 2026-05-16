@@ -1,0 +1,125 @@
+\documentclass[12pt, a4paper]{article}
+
+% --- 常用宏包 ---
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{bm}
+\usepackage{tcolorbox}
+
+% --- 页面设置 ---
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\today}
+\lhead{近世代数作业}
+\cfoot{\thepage}
+
+% --- 环境定义 ---
+\newtcolorbox{problem}[1]{
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    fonttitle=\bfseries,
+    title=题目 #1
+}
+
+\newenvironment{solution}{
+    \begin{proof}[\textbf{解}]
+}{
+    \end{proof}
+}
+
+% --- 个人信息 ---
+\title{近世代数作业 08}
+\author{李睿阳 (524120910059)}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\begin{problem}{1}
+    设 $R$ 为含幺交换环，$I = \langle a_1, \dots, a_m \rangle$，$J = \langle b_1, \dots, b_n \rangle$，证明：
+    
+    (1) $I + J = \langle a_1, \dots, a_m, b_1, \dots, b_n \rangle$；
+    
+    (2) $IJ = \langle a_1b_1, a_1b_2, \dots, a_1b_n, \dots, a_mb_1, \dots, a_mb_n \rangle$。
+\end{problem}
+\begin{solution}
+    (1) 由定义 $I + J = \{x + y \mid x \in I, y \in J\}$。\\
+    由于 $R$ 为含幺交换环，$I = \left\{\sum_{i=1}^m s_i a_i \mid s_i \in R\right\}$，$J = \left\{\sum_{j=1}^n t_j b_j \mid t_j \in R\right\}$。\\
+    则 
+    \[
+        I + J = \left\{\sum_{i=1}^m s_i a_i + \sum_{j=1}^n t_j b_j \mathrel{\Big|} s_i, t_j \in R\right\} = \langle a_1, \dots, a_m, b_1, \dots, b_n \rangle.
+    \]
+
+    (2) 由定义 $IJ = \left\{\sum_{k=1}^p x_k y_k \mid x_k \in I, y_k \in J, p \in \mathbb{N}^+\right\}$。\\
+    由于 $x_k, y_k$ 分别为 $a_i$ 与 $b_j$ 的线性组合，则 $x_k y_k$ 在分配律下都可以写为 $a_i b_j$ 的线性组合。因此 $IJ$ 也可以由 $a_i b_j$（$i \in [m], j \in [n]$）的线性组合生成，即
+    \[
+        IJ = \langle a_1b_1, a_1b_2, \dots, a_1b_n, \dots, a_mb_1, \dots, a_mb_n \rangle.
+    \]
+\end{solution}
+
+
+\begin{problem}{2}
+    在环 $\mathbb{Z}[\sqrt{-5}]$ 中，设 $\alpha = \langle 3, 1+\sqrt{-5} \rangle$，证明：$\alpha$ 不是主理想。
+\end{problem}
+\begin{solution}
+    若 $\alpha$ 为主理想，则存在 $k \in \mathbb{Z}[\sqrt{-5}]$ 使得 $\alpha = \langle k \rangle$。\\
+    因为 $3 \in \alpha$ 且 $1+\sqrt{-5} \in \alpha$，所以 $k \mid 3$ 且 $k \mid (1+\sqrt{-5})$。
+    
+    利用范数 $N(a+b\sqrt{-5}) = a^2+5b^2$：\\
+    $N(3) = 9$，$N(1+\sqrt{-5}) = 1+5 = 6$。\\
+    因此 $N(k)$ 必须同时整除 $9$ 和 $6$，即 $N(k) \mid 3$。
+    
+    由于方程 $a^2+5b^2 = 3$ 在整数中无解，故 $\mathbb{Z}[\sqrt{-5}]$ 中不存在范数为 $3$ 的元素。\\
+    所以 $N(k) = 1$，推出 $k = \pm 1$。
+    
+    若 $k = \pm 1$，则 $\alpha = \langle 1 \rangle = \mathbb{Z}[\sqrt{-5}]$，因此 $1 \in \alpha$。即存在 $a,b,c,d \in \mathbb{Z}$ 使得：
+    \[
+        1 = 3(a+b\sqrt{-5}) + (1+\sqrt{-5})(c+d\sqrt{-5}) = (3a+c-5d) + (3b+c+d)\sqrt{-5}.
+    \]
+    
+    比较实虚部可得 $3b+c+d=0$ ，代入实部得 $3a + c - 5(-3b-c) = 1$，整理得 $3(a+15b) + 6c = 1$，左侧为 $3$ 的倍数，而右侧不是，产生矛盾。
+    
+    由矛盾假设不成立，$\alpha$ 不是主理想。
+\end{solution}
+
+
+\begin{problem}{3}
+    找出 $\mathbb{Z}_6$ 和 $\mathbb{Z}_{12}$ 的所有素理想和极大理想。
+\end{problem}
+\begin{solution}
+    由于$\mathbb{Z}_i$为循环群，其子群必须也为循环群，即其理想至少为循环群，又因为$R/I$为整环等价于$I$为素理想,$R/I$为域等价于$I$为极大理想：
+    
+    $\mathbb{Z}_6$ 的理想（加法子群+吸收率）：$\{0,1,2,3,4,5\}, \{0,2,4\}, \{0,3\}, \{0\}$。\\
+    $\mathbb{Z}_6$ 的素理想（$\mathbb{Z}_6/I$ 为整环）：$\{0,2,4\}, \{0,3\}$。\\
+    $\mathbb{Z}_6$ 的极大理想（$\mathbb{Z}_6/I$ 为域）：$\{0,2,4\}, \{0,3\}$。\\
+
+    $\mathbb{Z}_{12}$ 的理想（加法子群+吸收率）：$\{0,1,2,3,4,5,6,7,8,9,10,11\}, \{0,2,4,6,8,10\}, \{0,3,6,9\}, \{0,4,8\}, \{0,6\}, \{0\}$。\\
+    $\mathbb{Z}_{12}$ 的素理想（$\mathbb{Z}_{12}/I$ 为整环）：$\{0,2,4,6,8,10\}, \{0,3,6,9\}$。\\
+    $\mathbb{Z}_{12}$ 的极大理想（$\mathbb{Z}_{12}/I$ 为域）：$\{0,2,4,6,8,10\}, \{0,3,6,9\}$。
+\end{solution}
+    
+
+\begin{problem}{4}
+    使用欧氏环上的欧几里得算法，求 $22471$ 和 $3266$ 的最大公约数。
+\end{problem}
+\begin{solution}
+    \begin{align*}
+        22471 &= 6 \times 3266 + 2875 \\
+        3266 &= 1 \times 2875 + 391 \\
+        2875 &= 7 \times 391 + 138 \\
+        391 &= 2 \times 138 + 115 \\
+        138 &= 1 \times 115 + 23 \\
+        115 &= 5 \times 23 + 0
+    \end{align*}
+    最大公约数为 $23$。
+\end{solution}
+
+
+\end{document}

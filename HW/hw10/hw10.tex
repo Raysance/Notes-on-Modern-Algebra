@@ -1,0 +1,103 @@
+\documentclass[12pt, a4paper]{article}
+
+% --- 常用宏包 ---
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{bm}
+\usepackage{tcolorbox}
+
+% --- 页面设置 ---
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\today}
+\lhead{近世代数作业}
+\cfoot{\thepage}
+
+% --- 环境定义 ---
+\newtcolorbox{problem}[1]{
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    fonttitle=\bfseries,
+    title=题目 #1
+}
+
+\newenvironment{solution}{
+    \begin{proof}[\textbf{解}]
+}{
+    \end{proof}
+}
+
+% --- 个人信息 ---
+\title{近世代数作业 10}
+\author{李睿阳 (524120910059)}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\begin{problem}{1}
+    使用长除法，对 $\mathbb{Z}_7[x]$ 中的 $f(x)=x^6+3x^5+4x^2-3x+2$，$g(x)=x^2+2x-3$，计算欧式除法算式中的 $q(x)$ 和 $r(x)$。
+\end{problem}
+\begin{solution}
+    \begin{align*}
+        f(x) &= x^4 g(x) + (x^5+3x^4+4x^2-3x+2) \\
+        (x^5+3x^4+4x^2-3x+2) &= x^3 g(x) + (x^4+3x^3+4x^2-3x+2) \\
+        (x^4+3x^3+4x^2-3x+2) &= x^2 g(x) + (x^3+7x^2-3x+2) \\
+        (x^3+7x^2-3x+2) &= x g(x) + (5x^2+2) \\
+        (5x^2+2) &= 5 g(x) + (-10x+17)
+    \end{align*}
+    故 $f(x) = (x^4+x^3+x^2+x+5)g(x) + (-10x+17)$。
+    在 $\mathbb{Z}_7[x]$ 中，$-10 \equiv 4 \pmod 7$，$17 \equiv 3 \pmod 7$。
+    \\
+    则 $q(x) = x^4+x^3+x^2+x+5$，$r(x) = 4x+3$。
+\end{solution}
+
+
+\begin{problem}{2}
+    已知 $\mathbb{Z}_5[x]$ 中多项式 $x^4+4$ 可以分解成一次因式乘积（素因子），求该分解。
+\end{problem}
+\begin{solution}
+    在 $\mathbb{Z}_5[x]$ 中，$4 \equiv -1 \pmod 5$，有：
+    \[ x^4+4 \equiv x^4-1 = (x^2+1)(x^2-1) \pmod 5 \]
+    又 $x^2+1 \equiv x^2-4 = (x+2)(x-2) \pmod 5$，且 $x^2-1 = (x+1)(x-1)$。
+    因此
+    \[ x^4+4 = (x+1)(x+2)(x+3)(x+4) \pmod 5 \]
+\end{solution}
+
+
+\begin{problem}{3}
+    设 $K$ 为域，任取 $f(x) \in K[x]$，证明：
+    \begin{enumerate}[(1)]
+        \item 当 $K$ 的特征为 $0$，$f'(x)=0 \iff f(x) \in K$。
+        \item 当 $K$ 的特征为 $p$，$f'(x)=0 \iff f(x)=g(x^p)$，对某个 $g(x) \in K[x]$。
+    \end{enumerate}
+\end{problem}
+\begin{solution}
+    \begin{enumerate}
+        \item[(1)] $\Longleftarrow$: 若 $f(x) = a_0 \in K$，由导数定义知其导数为 $0$。
+        
+        $\Longrightarrow$: 设 $f(x) = \sum_{i=0}^n a_i x^i$。则 $f'(x) = \sum_{i=1}^n ia_i x^{i-1} = 0$。
+        这意味着对于所有 $1 \le i \le n$，都有 $ia_i = 0$。
+        由于 $\text{char}(K) = 0$，对于 $i > 0$ 有 $i \cdot 1_K \neq 0$，故必有 $a_i = 0$ ($i=1,\dots,n$)。
+        因此 $f(x) = a_0 \in K$。
+        
+        \item[(2)] $\Longleftarrow$: 若 $f(x) = g(x^p) = \sum b_i (x^p)^i = \sum b_i x^{pi}$，
+        则 $f'(x) = \sum b_i (pi) x^{pi-1}$。
+        在特征为 $p$ 的域中 $pi \equiv 0 \pmod p$，故 $f'(x) = 0$。
+        
+        $\Longrightarrow$: 设 $f(x) = \sum a_i x^i$。则 $f'(x) = \sum ia_i x^{i-1} = 0 \implies ia_i = 0$ 对所有 $i \ge 1$ 成立。
+        若 $p \nmid i$，则 $i \cdot 1_K \neq 0 \implies a_i = 0$。
+        故 $f(x)$ 中只有 $p$ 的倍数次幂项系数可能不为零，即 $f(x) = \sum a_{pk} x^{pk} = \sum a_{pk} (x^p)^k$。
+        取 $g(y) = \sum a_{pk} y^k$，则 $f(x) = g(x^p)$。
+    \end{enumerate}
+\end{solution}
+    
+
+\end{document}
