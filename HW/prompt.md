@@ -2,7 +2,7 @@
 
 ## 任务目标
 
-对 `hw0x.tex` 中的作业题 (problem) 与解答 (solution) 进行 LaTeX 格式修复与数学错误订正。
+对 `hwxx.tex` 中的作业题 (problem) 与解答 (solution) 进行 LaTeX 格式修复与数学错误订正。
 
 ## 具体要求
 

@@ -1,0 +1,117 @@
+\documentclass[12pt, a4paper]{article}
+
+% --- 常用宏包 ---
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{bm}
+\usepackage{tcolorbox}
+
+% --- 页面设置 ---
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\today}
+\lhead{近世代数作业}
+\cfoot{\thepage}
+
+% --- 环境定义 ---
+\newtcolorbox{problem}[1]{
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    fonttitle=\bfseries,
+    title=题目 #1
+}
+
+\newenvironment{solution}{
+    \begin{proof}[\textbf{解}]
+}{
+    \end{proof}
+}
+
+% --- 个人信息 ---
+\title{近世代数作业 11}
+\author{李睿阳 (524120910059)}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\begin{problem}{1}
+    用爱森斯坦判别法及高斯引理证明：$f(x)=x^2+x+2$ 在 $\mathbb{Q}[x]$ 中不可约。
+\end{problem}
+\begin{solution}
+    $f(x)$ 的各次项系数为 $a_0=2, a_1=1, a_2=1$，则 $\text{content}(f)=1$，$f$ 为本原多项式。\\
+    由高斯引理：由于整数域 $\mathbb{Z}$ 为唯一分解整环，且有理数域 $\mathbb{Q}$ 为 $\mathbb{Z}$ 的分式域，$f(x) \in \mathbb{Z}[x]$ 且 $\deg(f) \ge 1$ 且 $f$ 为本原多项式，故 $f(x)$ 在 $\mathbb{Q}[x]$ 中不可约 $\iff$ $f(x)$ 在 $\mathbb{Z}[x]$ 中不可约。\\
+    由爱森斯坦准则：取 $g(x) = f(x+3) = (x+3)^2 + (x+3) + 2 = x^2 + 7x + 14$。取 $p=7$，有 $p \mid 7, p \mid 14, p \nmid 1$ 且 $p^2 \nmid 14$，则 $g(x)$ 在 $\mathbb{Z}[x]$ 中不可约，即 $f(x)$ 在 $\mathbb{Z}[x]$ 中不可约。\\
+    综上，$f(x)$ 在 $\mathbb{Q}[x]$ 中不可约。
+\end{solution}
+
+
+\begin{problem}{2}
+    证明 $\mathbb{Q}(\sqrt{2},\sqrt{3})=\mathbb{Q}(\sqrt{2}+\sqrt{3})$
+\end{problem}
+\begin{solution}
+    左包含右：显然 $\sqrt{2}+\sqrt{3} \in \mathbb{Q}(\sqrt{2}, \sqrt{3})$，由域的封闭性 $\mathbb{Q}(\sqrt{2}+\sqrt{3}) \subseteq \mathbb{Q}(\sqrt{2}, \sqrt{3})$。\\
+    右包含左：令 $\alpha = \sqrt{2}+\sqrt{3} \in \mathbb{Q}(\alpha)$。由 $\mathbb{Q}(\alpha)$ 是一个域，对除法封闭，因此：
+    $$\frac{1}{\alpha} = \frac{1}{\sqrt{3} + \sqrt{2}} = \frac{\sqrt{3} - \sqrt{2}}{(\sqrt{3} + \sqrt{2})(\sqrt{3} - \sqrt{2})} = \sqrt{3} - \sqrt{2} \in \mathbb{Q}(\alpha)$$
+    因此 $\mathbb{Q}(\alpha)$ 中同时包含 $\alpha = \sqrt{3} + \sqrt{2}$ 和 $\frac{1}{\alpha} = \sqrt{3} - \sqrt{2}$，利用加减法封闭性可得：
+    $$\sqrt{3} = \frac{1}{2} \left( \alpha + \frac{1}{\alpha} \right) \in \mathbb{Q}(\alpha), \quad \sqrt{2} = \frac{1}{2} \left( \alpha - \frac{1}{\alpha} \right) \in \mathbb{Q}(\alpha)$$
+    故 $\mathbb{Q}(\sqrt{2}, \sqrt{3}) \subseteq \mathbb{Q}(\alpha) = \mathbb{Q}(\sqrt{2}+\sqrt{3})$。\\
+    综上，$\mathbb{Q}(\sqrt{2}, \sqrt{3}) = \mathbb{Q}(\sqrt{2} + \sqrt{3})$。
+\end{solution}
+
+
+\begin{problem}{3}
+    令 $\alpha=\sqrt[3]{\sqrt{3}+1}$，求 $\text{min}(\alpha, \mathbb{Q})$ 和 $[\mathbb{Q}(\alpha): \mathbb{Q}]$
+\end{problem}
+\begin{solution}
+    由 $\alpha = \sqrt[3]{\sqrt{3}+1}$ 可得 $\alpha^3 - 1 = \sqrt{3}$，两边平方得 $(\alpha^3 - 1)^2 = 3$，即 $\alpha^6 - 2\alpha^3 - 2 = 0$。\\
+    令 $f(x) = x^6 - 2x^3 - 2$。显然 $f(\alpha) = 0$。由爱森斯坦判别法（取 $p=2$）可知 $f(x)$ 在 $\mathbb{Q}[x]$ 上不可约。\\
+    根据极小多项式的定义，$\text{min}(\alpha, \mathbb{Q}) = x^6 - 2x^3 - 2$。\\
+    扩域的度等于极小多项式的次数，即 $[\mathbb{Q}(\alpha): \mathbb{Q}] = \deg(f) = 6$。
+\end{solution}
+    
+
+\begin{problem}{4}
+    求以下扩张的扩度和扩域的一组 $\mathbb{Q}$-基：$\mathbb{Q}(\sqrt{2},i) / \mathbb{Q}$
+\end{problem}
+\begin{solution}
+    考虑扩张链 $\mathbb{Q} \subset \mathbb{Q}(\sqrt{2}) \subset \mathbb{Q}(\sqrt{2}, i)$：
+    \begin{enumerate}[(1)]
+        \item 对于 $\mathbb{Q}(\sqrt{2}) / \mathbb{Q}$：
+        $\sqrt{2}$ 是 $x^2 - 2 \in \mathbb{Q}[x]$ 的根。由爱森斯坦判别法（$p=2$）可知该多项式在 $\mathbb{Q}$ 上不可约，故为 $\sqrt{2}$ 的极小多项式。因此 $[\mathbb{Q}(\sqrt{2}) : \mathbb{Q}] = 2$，一组 $\mathbb{Q}$-基为 $\{1, \sqrt{2}\}$。
+        
+        \item 对于 $\mathbb{Q}(\sqrt{2}, i) / \mathbb{Q}(\sqrt{2})$：
+        $i$ 是 $x^2 + 1 \in \mathbb{Q}(\sqrt{2})[x]$ 的根。若该多项式可约，则其根 $i \in \mathbb{Q}(\sqrt{2})$。设 $i = a + b\sqrt{2} \in \mathbb{R}$（其中 $a, b \in \mathbb{Q}$），这与 $i$ 是纯虚数矛盾，故该多项式在 $\mathbb{Q}(\sqrt{2})$ 上不可约。因此 $[\mathbb{Q}(\sqrt{2}, i) : \mathbb{Q}(\sqrt{2})] = 2$，一组基为 $\{1, i\}$。
+        
+        \item 综上，由扩度乘法公式可知：
+        $$[\mathbb{Q}(\sqrt{2}, i) : \mathbb{Q}] = [\mathbb{Q}(\sqrt{2}, i) : \mathbb{Q}(\sqrt{2})] \cdot [\mathbb{Q}(\sqrt{2}) : \mathbb{Q}] = 2 \times 2 = 4$$
+        由于全扩张的基由子扩张基底的积构成，得扩域的一组 $\mathbb{Q}$-基为 $\{1, \sqrt{2}, i, i\sqrt{2}\}$。
+    \end{enumerate}
+\end{solution}
+
+
+\begin{problem}{5}
+    设有域扩张 $F<E, \alpha \in E$ 在 $F$ 上代数，$p(x)$ 是 $\alpha$ 在 $F$ 上的极小多项式，证明 $F(\alpha) \cong F[x] / \langle p(x) \rangle$。
+\end{problem}
+\begin{solution}
+    取映射 $\varphi: F[x] \to F(\alpha)$ 为 $\varphi(f(x)) = f(\alpha)$。\\
+    对于任何 $g(x), h(x) \in F[x]$，有：
+    \begin{itemize}
+        \item $\varphi(g(x)+h(x)) = (g+h)(\alpha) = g(\alpha)+h(\alpha) = \varphi(g(x)) + \varphi(h(x))$；
+        \item $\varphi(g(x) \cdot h(x)) = (g \cdot h)(\alpha) = g(\alpha) \cdot h(\alpha) = \varphi(g(x)) \cdot \varphi(h(x))$；
+        \item $\varphi(1) = 1$。
+    \end{itemize}
+    因此 $\varphi$ 是从 $F[x]$ 到 $F(\alpha)$ 的环同态。由于 $\alpha$ 在 $F$ 上代数，有 $F(\alpha) = F[\alpha]$，即 $F(\alpha)$ 中的元素均可表示为 $\alpha$ 的多项式，故 $\varphi$ 是满同态。\\
+    它的核 $\ker(\varphi) = \{f(x) \in F[x] \mid f(\alpha) = 0\}$。根据极小多项式的定义和性质，$\ker(\varphi) = \langle p(x) \rangle$。\\
+    由环同态基本定理：$F[x] / \langle p(x) \rangle \cong \text{Im}(\varphi) = F(\alpha)$。
+\end{solution}
+
+
+\end{document}
