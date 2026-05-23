@@ -1,0 +1,55 @@
+多项式环
+D为UFD，f\in D[x], f系数为a0,a1,...,an，c=gcd(a0,a1,...,an),记为容量content，记为c(f)。
+如果c(f)~1，称f为本原
+性质1：c(fg)=c(f)c(g)。特别的 fg本原\iff f与g均本原
+性质2：高斯引理，F为D的分式域，f\in D[x], deg(f)>=1, f为本原，则f在D[x]中不可约\iff f在F[x]中不可约
+e.g. 对于Z(UFD)及其分式域Q，若f为本原，则可以相互转换
+爱森斯坦准则，D为UDF，f\in D[x], deg(f)>=1,f为本原，且f系数为a0,...,an，如果不可约元p，p|ai(0<=i<=n-1) 且p不整除an，p^2不整除a0，则f在D[x]中不可约
+反证：f=gh, g系数为b次数为r，h系数为c次数为s, r,s<=n-1,p|b0c0\implies p|b0(不妨)，又p^2不整除b0c0\implies p不整除c0
+e.g. $f(x) = 3x^5 + 10x^4 - 25x^2 + 15$在Q[x]不可约
+e.g. x^n-p在Q[x]不可约
+e.g. f(x)=x^{p-1}+x^{p}+...+1=(x^p-1)/(x-1), f(x+1)=(x+1)^p-1/x=x^{p-1}+\sigma C(p,i)x^{i-1}, 不可约元p符合爱森斯坦准则，在Q[x]不可约
+
+域
+域的扩张,F<E, E/F
+Recap 线性空间，(v,+)为阿贝尔群
+F在V上作用（记为标量乘·）\forall r\in F, v\in V, F×V->V， rv\in V
+V称为F上线性空间，如果\forall r,s\in F, u,v\in V, (1) (r±s)·v=rv+sv (2)r(u+v)=ru+rv (3) (r·s)u=r(su) (4)1·v=v
+
+F<E, E看作V,+·均看作E上的+·
+[E:F]称E在F上的维度（F基的个数），又称为E/F的扩度
+定理： F<K<E，则[E:F]=[E:K][K:F]
+{α_i|i\in I}为E的K-基，{β_i|i\in I}为K的F-基，{α_iβ_i|i\in I}为E的F基
+e.g. R<C [C:R]=2
+有限生成域 F<E α\in E,定义F[α]表示E中包含F,α的最小的环，F(α)表示E中包含F,α的最小的域。F[α]={f(α)|f\in F[x]}, F(α)={f(α)/g(α)|f,g\in F[x], g(α)\neq 0}
+定义：F<E,α1,...,αn\in E
+F[α1,...,αn]为E中包含F,α1,...,αn的最小的环
+F(α1,...,αn)为E中包含F,α1,...,αn的最小的域
+F[α1,...,αn]={f(α1...αn)|f\in F[x1...xn]}
+F(α1,...,αn)={f(α1...αn)/g(α1...αn)|f,g\in F[x1...xn],g\neq 0}
+
+定义：F<E, α\in E,如果有f\in F[x], f(α)=0，则称α在F上代数，否则称为超越
+定义：F<E, \forall α\in E均在F上代数，则称E/F为代数的，否则称为超越的
+e.g. Q<R, \sqrt{2}\in R
+e.g. Q<C, w=e^{2/3\pi i}
+e.g. 证明e,pi在Q上超越
+定义：F<E， α\in E 在F上代数，一个P(x)\in F[x]，如果首一，P(α)=0，且为P(α)=0中度最低的(唯一)，称P(x)为α在F上的极小多项式，记为P_α(x)
+e.g. Q<C, i的极小多项式为x^2+1
+定理：以下关于极小多项式的等价定义：
+1.首一，P(α)=0, deg最小
+2.首一，P(α)=0, P不可约
+3.首一， 令I={f\in F[x]|f(α)=0}, <p>=I
+
+简单代数扩张
+1.F<E α\in E在F上代数，则F<F(α),单代数扩张
+F[α]={f(α)/g(α)|g(α)\neq 0}
+p不整除g\implies (p,g)=1 \exists a(x), b(x) ap+bg=1\implies b(α)=1/g(α)
+F(α)={f(α)b(α)}
+F[α]=F(α)
+\forall f(α)\in F[α], f(x)=q(x)p(x)+r(x) f(α)=r(α) deg(r)<d
+F(α)=F[α]={f(α)|f\in F[x]}={r(α)|r\in F[x], deg(r)<d}
+[F(α):F]=d=deg(p)
+e.g. [Q(2开三次方):Q]=3
+e.g. [Q(2开三次方,1的三次单位根):Q]=[Q(2开三次方,1的三次单位根):Q(2开三次方)][Q(2开三次方):Q]=6
+\forall β\in F(α), β在F上的代数？
+1,β,β^2,β^3,...，\exists n 1,β,β^2,...,β^n线性相关， 即a_i不全为0, \sigma a_iβ^i=0==>β代数

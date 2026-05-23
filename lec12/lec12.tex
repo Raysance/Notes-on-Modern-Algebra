@@ -1,0 +1,237 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ctex}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\input{../preamable/preamable_sep.tex}
+
+\declaretheorem[style=thmgreenbox, name=定义]{cndefinition}
+\declaretheorem[style=thmredbox, name=定理]{cntheorem}
+\declaretheorem[style=thmbluebox, name=性质]{cnproperty}
+\declaretheorem[style=thmredbox, name=引理]{cnlemma}
+\declaretheorem[style=thmredbox, numbered=no, name=推论]{cncorollary}
+\declaretheorem[style=thmbluebox, numbered=no, name=例]{cnexample}
+\title{近世代数笔记(Lec 12)：多项式环的因式分解与域论基础}
+\author{Raysance}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{多项式环的因式分解}
+
+在唯一分解整环（UFD）上，我们关心多项式的分解性质。
+
+\begin{cndefinition}[容量与本原多项式]
+设 $D$ 为一个唯一分解整环（UFD），$f(x) = a_n x^n + \cdots + a_1 x + a_0 \in D[x]$。
+\begin{enumerate}
+    \item 称 $f$ 的系数的最大公因子 $c = \gcd(a_0, a_1, \dots, a_n)$ 为 $f$ 的\textbf{容量 (Content)}，记为 $c(f)$。注意容量在相差一个单位（unit）的意义下是唯一的。
+    \item 若 $c(f) \sim 1$（即容量为单位），则称 $f(x)$ 为\textbf{本原多项式 (Primitive Polynomial)}。
+\end{enumerate}
+\end{cndefinition}
+
+本原多项式在 UFD 上的多项式分解中起到核心作用。任一多项式 $f \in D[x]$ 都可以表示为 $f(x) = c(f) \cdot f^*(x)$，其中 $f^*$ 是本原多项式。
+
+\begin{cnproperty}[容量的乘法性质]
+设 $D$ 为 UFD，$f, g \in D[x]$，则 $c(fg) = c(f)c(g)$。
+特别地，$fg$ 是本原多项式当且仅当 $f$ 与 $g$ 均为本原多项式。
+\end{cnproperty}
+\begin{proof}
+我们可以将多项式写为其容量与一本原多项式的乘积，即 $f = c(f)f^*$，$g = c(g)g^*$。则 $fg = c(f)c(g) f^*g^*$。要证明 $c(fg) = c(f)c(g)$，只需证明两个本原多项式的乘积仍为本原多项式。
+
+采用反证法：假设 $f^*g^*$ 不是本原的，由于 $D$ 是 UFD，则存在一个不可约元 $p \in D$ 整除 $f^*g^*$ 的所有系数。
+考虑商环上的多项式环 $(D/\langle p \rangle)[x]$。由于 $p$ 是不可约元，$D/\langle p \rangle$ 是一个整环，从而 $(D/\langle p \rangle)[x]$ 也是整环。
+令 $\bar{f^*}, \bar{g^*}$ 为 $f^*, g^*$ 在该环中的投影。因为 $f^*, g^*$ 本原，故 $p$ 不全整除它们的系数，即 $\bar{f^*} \neq 0$ 且 $\bar{g^*} \neq 0$。
+根据整环性质，$\bar{f^*} \cdot \bar{g^*} \neq 0$，即 $p$ 不能整除 $f^*g^*$ 的所有系数，产生矛盾。故 $f^*g^*$ 必为本原。
+\end{proof}
+
+\begin{cnlemma}[高斯引理 (Gauss's Lemma)]
+设 $D$ 为 UFD，$F$ 为其分式域。设 $f(x) \in D[x]$ 且 $\deg(f) \ge 1$。
+若 $f$ 是本原多项式，则 $f$ 在 $D[x]$ 中不可约当且仅当 $f$ 在 $F[x]$ 中不可约。
+\end{cnlemma}
+
+\begin{remark}
+高斯引理的直观意义在于，对于系数在 $D$ 中的本原多项式，如果你无法在较大的分式域 $F$ 中找到它的非平凡因子，那么你在原本的 $D$ 中也绝对找不到。这为我们将 $\mathbb{Q}[x]$ 中的分解问题转化为咨询 $\mathbb{Z}[x]$ 提供了理论基础。
+\end{remark}
+
+\section{爱森斯坦准则 (Eisenstein's Criterion)}
+
+爱森斯坦准则是判断一个多项式在 UFD（尤其是 $\mathbb{Z}$）上是否不可约的强有力工具。
+
+\begin{cntheorem}[爱森斯坦准则]
+设 $D$ 为 UFD，$f(x) = a_n x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0 \in D[x]$ 是一个度数 $\deg(f) = n \ge 1$ 的本原多项式。若存在 $D$ 中的一个不可约元 $p$，满足：
+\begin{enumerate}
+    \item $p \mid a_i$ 对于所有 $0 \le i \le n-1$；
+    \item $p \nmid a_n$；
+    \item $p^2 \nmid a_0$。
+\end{enumerate}
+则 $f(x)$ 在 $D[x]$ 中不可约（从而在 $F[x]$ 中也不可约）。
+\end{cntheorem}
+
+\begin{proof}
+（反证法）假设 $f(x)$ 在 $D[x]$ 中可约，由于 $f$ 是本原的，它不能分解为一个常数和另一个多项式，因此必有 $f(x) = g(x)h(x)$，其中：
+$$ g(x) = b_r x^r + \cdots + b_1 x + b_0, \quad h(x) = c_s x^s + \cdots + c_1 x + c_0 $$
+且 $r, s \ge 1$，$r + s = n$。
+考虑常数项 $a_0 = b_0 c_0$。由条件可知 $p \mid a_0$ 且 $p^2 \nmid a_0$。根据唯一分解性，这说明 $p$ 只能整除 $b_0$ 和 $c_0$ 中的某一个。
+不妨设 $p \mid b_0$ 且 $p \nmid c_0$。
+由于 $p \nmid a_n = b_r c_s$，可知 $p \nmid b_r$。
+令 $k$ 是使得 $p \nmid b_k$ 的最小下标，其中 $1 \le k \le r \le n-1 < n$。考虑 $a_k$ 的表达式：
+$$ a_k = b_k c_0 + b_{k-1} c_1 + \cdots + b_0 c_k $$
+观察式子：
+\begin{itemize}
+    \item 由 $k$ 的选取，$p \mid b_0, b_1, \dots, b_{k-1}$。因此 $p \mid (b_{k-1} c_1 + \cdots + b_0 c_k)$。
+    \item 由题目条件，$k < n$，故 $p \mid a_k$。
+\end{itemize}
+这就要求 $p \mid b_k c_0$。
+但由于 $p$ 为不可约元且 $p \nmid c_0$，$p \nmid b_k$，根据 $p \mid b_k c_0$ 可推出 $p \mid b_k$ 或 $p \mid c_0$，产生矛盾。
+故原假设不成立，$f(x)$ 不可约。
+\end{proof}
+
+\begin{cnexample}
+1. 判断 $f(x) = 3x^5 + 10x^4 - 25x^2 + 15$ 在 $\mathbb{Q}[x]$ 中的性状。
+取 $p = 5$，$p$ 整除 $10, 0, -25, 15$，且 $5 \nmid 3$，$5^2 = 25 \nmid 15$。由爱森斯坦准则，$f(x)$ 在 $\mathbb{Q}[x]$ 中不可约。
+
+2. $x^n - p$ 在 $\mathbb{Q}[x]$ 中不可约（其中 $p$ 为素数）。
+
+3. $p$-次分圆多项式 $\Phi_p(x) = \frac{x^p - 1}{x - 1} = x^{p-1} + x^{p-2} + \cdots + x + 1$。
+令 $x = y + 1$，则
+$$ \Phi_p(y+1) = \frac{(y+1)^p - 1}{(y+1) - 1} = \frac{\sum_{i=1}^p \binom{p}{i} y^i}{y} = y^{p-1} + \binom{p}{p-1} y^{p-2} + \cdots + \binom{p}{1} $$
+由于对于 $1 \le i \le p-1$，$p \mid \binom{p}{i}$，且末项 $\binom{p}{1} = p$ 不被 $p^2$ 整除，首项系数为 $1$ 不被 $p$ 整除。
+由爱森斯坦准则，$\Phi_p(y+1)$ 不可约，故 $\Phi_p(x)$ 在 $\mathbb{Q}[x]$ 中不可约。
+\end{cnexample}
+
+\section{域的扩张 (Field Extensions)}
+
+域论研究的核心问题是域的扩张。
+
+\begin{cndefinition}[域的扩张]
+若域 $F$ 是域 $E$ 的子域，则称 $E$ 是 $F$ 的一个\textbf{扩张 (Extension)}，记作 $E/F$ 或 $F \le E$。
+\end{cndefinition}
+
+\subsection{线性空间综述 (Recap of Vector Spaces)}
+
+在研究域扩张之前，我们需要回顾线性空间的概念，因为 $E$ 可以自然地看作 $F$ 上的一个线性空间。
+设 $V$ 是一个加法阿贝尔群，域 $F$ 在 $V$ 上有标量乘法作用 $\cdot : F \times V \to V$。若满足以下公理，则称 $V$ 为 $F$ 上的线性空间：
+\begin{enumerate}
+    \item $(r+s)v = rv + sv$；
+    \item $r(u+v) = ru + rv$；
+    \item $(rs)u = r(su)$；
+    \item $1_F v = v$。
+\end{enumerate}
+
+对于扩张 $E/F$，$E$ 的加法即为向量加法，扩域 $E$ 中的乘法限制在 $F \times E$ 上即为标量乘法。
+\begin{enumerate}
+    \item 我们定义扩张的\textbf{度数 (Degree)} 为 $E$ 作为 $F$-线性空间的维数，记作 $[E:F] = \dim_F E$。
+    \item 若 $[E:F] < \infty$，称 $E/F$ 为\textbf{有限扩张}。
+\end{enumerate}
+
+\begin{cntheorem}[扩度乘法法则 / 塔定理 (Tower Law)]
+若有域的链 $F \le K \le E$，则 $[E:F] = [E:K][K:F]$。
+\end{cntheorem}
+\begin{proof}
+设 $\{\alpha_i\}_{i \in I}$ 是 $E$ 关于 $K$ 的一组基，$\{\beta_j\}_{j \in J}$ 是 $K$ 关于 $F$ 的一组基。
+我们可以证明 $\{\alpha_i \beta_j\}_{(i,j) \in I \times J}$ 是 $E$ 关于 $F$ 的一组基。
+\begin{itemize}
+    \item \textbf{生成性}：任取 $e \in E$，由于 $e = \sum k_i \alpha_i$（其中 $k_i \in K$），而每个 $k_i = \sum f_{ij} \beta_j$（其中 $f_{ij} \in F$）。
+    代入得 $e = \sum_{i,j} f_{ij} (\alpha_i \beta_j)$。
+    \item \textbf{线性无关性}：若 $\sum f_{ij} \alpha_i \beta_j = 0$，则 $\sum_i (\sum_j f_{ij} \beta_j) \alpha_i = 0$。
+    由于 $\alpha_i$ 在 $K$ 上无关，故对每个 $i$ 有 $\sum_j f_{ij} \beta_j = 0$。
+    再由 $\beta_j$ 在 $F$ 上无关，推得所有 $f_{ij} = 0$。
+\end{itemize}
+因此结论成立。此定理类似于复合维度的乘法，体现了结构的层级性。
+\end{proof}
+
+\subsection{扩域的生成}
+
+设 $F \le E$ 且 $\alpha_1, \dots, \alpha_n \in E$：
+\begin{enumerate}
+    \item $F[\alpha_1, \dots, \alpha_n]$ 表示包含 $F$ 和 $\alpha_i$ 的最小的\textbf{子环}。它是所有关于 $\alpha_i$ 的多项式之集。
+    \item $F(\alpha_1, \dots, \alpha_n)$ 表示包含 $F$ 和 $\alpha_i$ 的最小的\textbf{子域}。它是所有关于 $\alpha_i$ 的有理分式之集。
+\end{enumerate}
+
+\section{代数扩张与极小多项式}
+
+\begin{cndefinition}[代数元与超越元]
+设 $F \le E$，$\alpha \in E$。
+\begin{enumerate}
+    \item 若存在非零多项式 $f(x) \in F[x]$ 使得 $f(\alpha) = 0$，则称 $\alpha$ 在 $F$ 上是\textbf{代数的 (Algebraic)}。
+    \item 否则，称 $\alpha$ 为\textbf{超越的 (Transcendental)}。
+    \item 若 $E$ 中的每一个元素在 $F$ 上都是代数的，则称扩域 $E/F$ 是\textbf{代数扩张}。
+\end{enumerate}
+\end{cndefinition}
+
+\begin{cnexample}
+1. $Q < R$ 中，$\sqrt{2}$ 是代数元，其在 $\mathbb{Q}$ 上的极小多项式为 $x^2 - 2$。
+2. $Q < C$ 中，$i$ 是代数元，其极小多项式为 $x^2 + 1$；$\omega = e^{2\pi i / 3}$ 的极小多项式为 $x^2 + x + 1$。
+3. \textbf{超越数}：$\pi$ 和 $e$ 在 $\mathbb{Q}$ 上都被证明是超越的（Lindemann-Weierstrass 定理）。即不存在以它们为根的有理系数多项式。
+\end{cnexample}
+
+\begin{cndefinition}[极小多项式]
+设 $\alpha$ 在 $F$ 上是代数元。定义其\textbf{极小多项式 (Minimal Polynomial)} $p_\alpha(x)$ 为满足以下条件的唯一的 $F[x]$ 中的多项式：
+\begin{enumerate}
+    \item $p_\alpha(x)$ 是首一多项式（首系数为 $1$）；
+    \item $p_\alpha(\alpha) = 0$；
+    \item 在所有以 $\alpha$ 为根的非零多项式中，$p_\alpha$ 的度数最小。
+\end{enumerate}
+\end{cndefinition}
+
+\begin{cnproperty}[极小多项式的等价刻画]
+以下条件等价：
+\begin{enumerate}
+    \item $p(x)$ 是 $\alpha$ 在 $F$ 上的极小多项式。
+    \item $p(x)$ 首一，且 $p(x)$ 是 $F[x]$ 中的一个以 $\alpha$ 为根的不可约多项式。
+    \item $p(x)$ 生成了理想 $I = \{f(x) \in F[x] \mid f(\alpha) = 0\}$，即 $I = \langle p(x) \rangle$。
+\end{enumerate}
+\end{cnproperty}
+\begin{proof}
+$(1) \implies (2)$: 若 $p(x)$ 可约，设 $p(x)=A(x)B(x)$。代入 $\alpha$ 得 $A(\alpha)B(\alpha)=0$。由于 $E$ 是域（无零因子），必有 $A(\alpha)=0$ 或 $B(\alpha)=0$。但 $A, B$ 的度数均小于 $p$，这与 $p$ 的度数极小性矛盾。故 $p$ 必不可约。
+
+$(2) \implies (3)$: 显然 $\langle p(x) \rangle \subseteq I$。任取 $f(x) \in I$，即 $f(\alpha)=0$。在 $F[x]$ 中，$p(x)$ 是不可约的。若 $p \nmid f$，则 $\gcd(f,p)=1$，存在 $u, v \in F[x]$ 使得 $up + vf = 1$。代入 $\alpha$ 得 $0=1$，矛盾。故 $p \mid f$，即 $I = \langle p(x) \rangle$。
+
+$(3) \implies (1)$: 若 $I = \langle p(x) \rangle$，则对于任何 $f \in I, f \neq 0$，由于 $f$ 是 $p$ 的倍数，必有 $\deg(f) \ge \deg(p)$。因此 $p$ 是 $I$ 中度数最小的非零多项式。结合首一性，$p$ 即为极小多项式。
+\end{proof}
+
+\section{单代数扩张}
+
+单代数扩张 $F(\alpha)$ 是域论中最基础的扩张形式。
+
+\begin{cntheorem}[单代数扩张的性质]
+若 $\alpha \in E$ 在 $F$ 上是代数的，设其极小多项式 $p(x)$ 的度数为 $d$，则：
+\begin{enumerate}
+    \item $F(\alpha) = F[\alpha]$。即任何包含 $\alpha$ 的子域必然等于包含 $\alpha$ 的子环。
+    \item $[F(\alpha):F] = d = \deg(p)$。
+    \item $\{1, \alpha, \alpha^2, \dots, \alpha^{d-1}\}$ 构成 $F(\alpha)$ 作为 $F$-线性空间的一组基。
+\end{enumerate}
+\end{cntheorem}
+
+\begin{proof}
+考虑理想 $I = \{f \in F[x] \mid f(\alpha) = 0\}$。由于 $\alpha$ 代数，$I = \langle p(x) \rangle \neq \{0\}$。
+由于 $p(x)$ 是不可约的，$F[x]$ 是 PID，故 $\langle p(x) \rangle$ 是极大理想。
+因此商环 $F[x]/\langle p(x) \rangle$ 是一个域。
+定义评价同态 $\phi: F[x] \to E, f \mapsto f(\alpha)$。其像 $\text{Im}(\phi) = F[\alpha]$，核 $\text{ker}(\phi) = \langle p(x) \rangle$。
+由环同构基本定理，$F[\alpha] \cong F[x]/\langle p(x) \rangle$。
+由于商环是域，$F[\alpha]$ 也是域，从而 $F(\alpha) = F[\alpha]$。
+根据带余除法，该域中任一元素 $f(\alpha)$ 都可以由次数小于 $d$ 的多项式 $r(\alpha)$ 表示，且线性无关性由极小多项式的最小度数保证。故基的结论成立。
+\end{proof}
+
+\begin{cnexample}
+1. $[\mathbb{Q}(\sqrt[3]{2}) : \mathbb{Q}] = 3$，因为 $x^3 - 2$ 是其极小多项式。
+2. 考虑 $\mathbb{Q}(\sqrt[3]{2}, \omega)$，其中 $\omega = e^{2\pi i / 3}$。
+我们有链 $\mathbb{Q} \le \mathbb{Q}(\sqrt[3]{2}) \le \mathbb{Q}(\sqrt[3]{2}, \omega)$。
+$[\mathbb{Q}(\sqrt[3]{2}, \omega) : \mathbb{Q}(\sqrt[3]{2})] = 2$（因为 $\omega$ 的极小多项式在该域上仍为 $x^2 + x + 1$）。
+故全扩度为 $3 \times 2 = 6$。
+\end{cnexample}
+
+\begin{cntheorem}
+有限扩张必为代数扩张。
+\end{cntheorem}
+\begin{proof}
+设 $[E:F] = n$。对于任一 $\beta \in E$，考虑集合 $\{1, \beta, \beta^2, \dots, \beta^n\}$。
+该集合包含 $n+1$ 个元素，这多于空间的维度 $n$，因此它们必在 $F$ 上线性相关。
+即存在不全为零的 $a_i \in F$ 使得 $\sum_{i=0}^n a_i \beta^i = 0$。
+这意味着 $\beta$ 是多项式 $f(x) = \sum a_i x^i$ 的根，故 $\beta$ 在 $F$ 上是代数的。
+\end{proof}
+
+\end{document}
