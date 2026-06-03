@@ -1,0 +1,189 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ctex}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\input{../preamable/preamable_sep.tex}
+
+\declaretheorem[style=thmgreenbox, name=定义]{cndefinition}
+\declaretheorem[style=thmredbox, name=定理]{cntheorem}
+\declaretheorem[style=thmbluebox, name=性质]{cnproperty}
+\declaretheorem[style=thmredbox, name=引理]{cnlemma}
+\declaretheorem[style=thmredbox, numbered=no, name=推论]{cncorollary}
+\declaretheorem[style=thmbluebox, numbered=no, name=例]{cnexample}
+
+\title{近世代数笔记(Lec 13)：有限扩张、代数闭包与正规扩张}
+\author{Raysance}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{有限扩张 (Finite Extensions)}
+
+在研究域论时，我们将目光从单个元素的代数性转向整个域扩张的结构。有限扩张是最基本且最重要的一种扩张形式。
+
+\begin{cndefinition}[有限扩张]
+    设 $F \subset E$ 是一个域扩张。如果 $E$ 作为 $F$ 上的向量空间的维数是有限的，则称 $E$ 为 $F$ 的\textbf{有限扩张}。其维数记作 $[E:F]$。
+\end{cndefinition}
+
+有限扩张与代数扩张有着紧密的联系：
+
+\begin{cntheorem}
+    域扩张 $F \subset E$ 是有限扩张的充分必要条件是 $E$ 可由有限个代数元生成，即 $E = F(\alpha_1, \alpha_2, \dots, \alpha_n)$，其中每个 $\alpha_i$ 都在 $F$ 上代数。
+\end{cntheorem}
+
+\begin{proof}
+    $(\Rightarrow)$ 若 $[E:F] = n < \infty$，设 $\{v_1, \dots, v_n\}$ 是 $E$ 作为 $F$-向量空间的一组基。则 $E = F(v_1, \dots, v_n)$。由于每个 $v_i$ 都在有限扩张中，根据后续定理可知每个 $v_i$ 均为代数元。 \\
+    $(\Leftarrow)$ 考虑单代数扩张 $F(\alpha_i)$。若 $\alpha_i$ 在 $F$ 上代数，则 $[F(\alpha_i) : F] = \deg(\min(\alpha_i, F)) < \infty$。由有限扩张的性质（塔公式）： $[F(\alpha_1, \dots, \alpha_n) : F] = [F(\alpha_1, \dots, \alpha_n) : F(\alpha_1, \dots, \alpha_{n-1})] \dots [F(\alpha_1) : F]$。由于每个中间扩张也由代数元生成，因而维数有限。故总扩张维数有限。
+\end{proof}
+
+\begin{cntheorem}
+    若 $F \subset E$ 是有限扩张，则 $E/F$ 是代数扩张。
+\end{cntheorem}
+
+\begin{proof}
+    设 $[E:F] = n < \infty$。取 $E$ 中任意元素 $\alpha$。考虑集合 $\{1, \alpha, \alpha^2, \dots, \alpha^n\}$。
+    由于该集合包含 $n+1$ 个元素，而 $E$ 作为 $F$-向量空间的维数为 $n$，因此这 $n+1$ 个元素在 $F$ 上线性相关。
+    存在不全为零的 $a_i \in F$，使得：
+    \[ a_n \alpha^n + a_{n-1} \alpha^{n-1} + \dots + a_1 \alpha + a_0 = 0 \]
+    记 $f(x) = \sum_{i=0}^n a_i x^i \in F[x]$，则 $f(\alpha) = 0$ 且 $f(x) \neq 0$。故 $\alpha$ 在 $F$ 上代数。根据 $\alpha$ 的任意性，$E/F$ 是代数扩张。
+\end{proof}
+
+\begin{cntheorem}
+    设 $F \subset E$ 是一个域扩张。令 $K = \{\alpha \in E \mid \alpha \text{ 在 } F \text{ 上代数}\}$ 为 $E$ 中对 $F$ 代数元的集合，则 $K$ 是 $E$ 的一个子域。$K$ 称为 $F$ 在 $E$ 中的\textbf{代数闭包}（相对闭包）。
+\end{cntheorem}
+
+\begin{proof}
+    任取 $\alpha, \beta \in K$，需证 $\alpha \pm \beta, \alpha\beta, \alpha/\beta (\beta\neq 0) \in K$。
+    考虑域扩张 $F \subset F(\alpha, \beta)$。由于 $\alpha, \beta$ 均在 $F$ 上代数，由前述定理知 $[F(\alpha, \beta) : F]$ 是有限扩张。
+    由有限扩张必为代数扩张，$F(\alpha, \beta)$ 中的所有元素都在 $F$ 上代数。
+    由于 $\alpha \pm \beta, \alpha\beta, \alpha/\beta$ 均属于 $F(\alpha, \beta)$，因此它们都在 $F$ 上代数，即属于 $K$。故 $K$ 是域。
+\end{proof}
+
+\begin{cnexample}
+    令 $\mathbb{A}$ 为有理数域 $\mathbb{Q}$ 在复数域 $\mathbb{C}$ 中的代数闭包。$\mathbb{A}$ 称为\textbf{代数数域}，它是一个域，且包含所有代数数。注意 $\mathbb{A}$ 本身是代数闭的，这体现了代数元的代数扩张仍是代数元的性质。
+\end{cnexample}
+
+\section{代数闭域与代数闭包 (Algebraically Closed Fields)}
+
+当我们希望在某个域中解决所有多项式方程时，就引出了代数闭域的概念。
+
+\begin{cndefinition}[代数闭域]
+    称域 $E$ 是\textbf{代数闭}的，如果 $E$ 中任意非常数多项多项式 $f(x) \in E[x]$ 都在 $E$ 中分裂（即所有根都在 $E$ 中）。
+\end{cndefinition}
+
+等价地，$E$ 是代数闭域当且仅当 $E$ 没有次数大于 1 的代数扩张。
+
+\begin{cnexample}
+    根据代数基本定理，复数域 $\mathbb{C}$ 是代数闭域。
+\end{cnexample}
+
+\begin{cntheorem}[阿廷定理]
+    对于任意域 $F$，存在一个包含 $F$ 的代数闭域 $E$。
+\end{cntheorem}
+
+\begin{proof}[直观理解]
+    阿廷的证明思路是构造一个巨大的多项式环 $F[X_{\mathcal{F}}]$，其中每个变量对应一个多项式的根，然后通过极大理想的商域逐步逼近代数闭球。这利用了 Zorn 引理来保证这种“极大”对象的存在性。
+\end{proof}
+
+基于此，我们可以定义域的代数闭包。
+
+\begin{cndefinition}[代数闭包]
+    设 $F \subset E$ 是一个域扩张。如果满足：
+    \begin{enumerate}
+        \item $E/F$ 是代数扩张；
+        \item $E$ 是代数闭域。
+    \end{enumerate}
+    则称 $E$ 是 $F$ 的一个\textbf{代数闭包}，常记作 $\overline{F}$。
+\end{cndefinition}
+
+\begin{cntheorem}
+    设 $F \subset E$ 且 $E$ 为代数闭域。令 $A = \{\alpha \in E \mid \alpha \text{ 在 } F \text{ 上代数}\}$，则 $A$ 是 $F$ 在 $E$ 中唯一的代数闭包。
+\end{cntheorem}
+
+\begin{proof}
+    由前面的定理，$A$ 是一个域且 $A/F$ 是代数扩张。需证 $A$ 是代数闭的。
+    任取 $f(x) \in A[x]$。由于 $E$ 是代数闭的，$f(x)$ 在 $E$ 中有根 $\beta \in E$。
+    由于 $\beta$ 是 $A$ 上某个多项式的根，故 $\beta$ 在 $A$ 上代数。又 $A$ 在 $F$ 上代数，由代数扩张的传递性，$\beta$ 在 $F$ 上代数。
+    因此 $\beta \in A$。故 $A$ 中任意多项式的根都在 $A$ 中，即 $A$ 是代数闭域。
+\end{proof}
+
+\section{分裂域 (Splitting Fields)}
+
+分裂域是使给定多项式集合的所有根都存在的最小扩张。
+
+\begin{cndefinition}[分裂域]
+    设 $f(x) \in F[x]$，根为 $\alpha_1, \dots, \alpha_n \in \overline{F}$。称 $F(\alpha_1, \dots, \alpha_n)$ 为 $f(x)$ 在 $F$ 上的\textbf{分裂域}。
+    更一般地，对于多项式族 $\mathcal{F} = \{f_i(x) \in F[x] \mid i \in I\}$，若 $R$ 为其所有根的集合，则 $F(R)$ 称为 $\mathcal{F}$ 在 $F$ 上的分裂域。
+\end{cndefinition}
+
+\textbf{注：} 若 $R$ 是无限集，则 $F(R) = \bigcup_{\text{有限子集 } R' \subset R} F(R')$。
+
+\section{嵌入与拓展 (Embeddings and Extensions)}
+
+为了比较不同域扩张之间的关系，我们引入了嵌入（单同态）及其拓展。
+
+\begin{cndefinition}[嵌入与拓展]
+    \begin{itemize}
+        \item 域同态 $f: F \to R$ 总是单射（因为域只有平凡理想），称为\textbf{嵌入}。
+        \item 设 $F \subset E \subset \overline{F}$，$t: F \to \overline{F}$ 是一个嵌入。如果存在 $\sigma: E \to \overline{F}$ 使得 $\sigma|_F = t$，则称 $\sigma$ 是 $t$ 的一个\textbf{拓展}。
+        \item 若 $t = id_F$ 为恒等映射，则称 $\sigma$ 为 \textbf{$F$-嵌入}。
+    \end{itemize}
+\end{cndefinition}
+
+\begin{cntheorem}
+    设 $F \subset E$ 为代数扩张，$\sigma: E \to E$ 是一个 $F$-嵌入，则 $\sigma(E) = E$（即 $\sigma$ 是一个自同构）。
+\end{cntheorem}
+
+\begin{proof}[直观理解]
+    由于嵌入是单射，$\sigma(E)$ 是 $E$ 的一个同构于 $E$ 的子域。在代数扩张下，$\sigma$ 必须将某个多项式的根映成同一个多项式的根。由于根的个数有限，$\sigma$ 在每一组共轭根上形成置换，从而遍历整个域。
+\end{proof}
+
+\begin{cntheorem}[单代数扩张下的拓展]
+    设 $\alpha \in \overline{F}$，其在 $F$ 上的极小多项式为 $P(x)$。则恒等映射 $id_F$ 可拓展为 $\sigma: F(\alpha) \to \overline{F}$ 的 $F$-嵌入。
+    此类拓展的个数等于 $P(x)$ 在 $\overline{F}$ 中不同根的个数。
+\end{cntheorem}
+
+\begin{proof}
+    设 $P(x)$ 在 $\overline{F}$ 中的根为 $\beta_1, \dots, \beta_m$。
+    考虑同态 $\phi_j: F[x] \to \overline{F}$，由 $f(x) \mapsto f(\beta_j)$ 定义。
+    由于 $P(\beta_j)=0$，根据同态基本定理，$\phi_j$ 诱导了 $F[x]/(P(x)) \to \overline{F}$ 的嵌入。
+    又因为 $F(\alpha) \cong F[x]/(P(x))$（同构映射将 $\alpha$ 映成 $x \pmod{P(x)}$），
+    因此存在 $\sigma_j: F(\alpha) \to \overline{F}$ 满足 $\sigma_j(\alpha) = \beta_j$。
+    任一 $F$-嵌入 $\sigma$ 必须满足 $P(\sigma(\alpha)) = \sigma(P(\alpha)) = \sigma(0) = 0$，故 $\sigma(\alpha)$ 必须是 $P(x)$ 的根。不同的根对应不同的嵌入，故拓展个数等于不同根的个数。
+\end{proof}
+
+\section{正规扩张 (Normal Extensions)}
+
+正规扩张捕捉了“只要包含一个根，就包含所有根”的直观想法。
+
+\begin{cntheorem}[正规扩张的等价性]
+    设 $F \subset K \subset \overline{F}$ 为代数扩张。以下条件等价：
+    \begin{enumerate}
+        \item 对于任意 $K \to \overline{F}$ 的 $F$-嵌入 $\sigma$，都有 $\sigma(K) \subseteq K$。
+        \item 对于任意不可约多项式 $P(x) \in F[x]$，如果在 $K$ 中有一个根，则 $P(x)$ 在 $K$ 中分裂。
+        \item $K$ 是 $F$ 上某个多项式族 $\mathcal{F}$ 的分裂域。
+    \end{enumerate}
+\end{cntheorem}
+
+\begin{proof}
+    $(1) \Rightarrow (2)$: 设 $P(x) \in F[x]$ 不可约且在 $K$ 中有根 $\alpha$。令 $\beta$ 是 $P(x)$ 在 $\overline{F}$ 中的任一根。
+    由单代数扩张拓展定理，存在 $F$-嵌入 $\tau: F(\alpha) \to \overline{F}$ 使得 $\tau(\alpha) = \beta$。
+    将 $\tau$ 拓展为 $K \to \overline{F}$ 的 $F$-嵌入 $\sigma$（代数扩张总能拓展）。
+    依据条件(1)，$\sigma(K) \subseteq K$。因为 $\alpha \in K$，故 $\beta = \sigma(\alpha) \in K$。故 $P(x)$ 的所有根都在 $K$ 中。 \\
+    $(2) \Rightarrow (3)$: 取 $\mathcal{F}$ 为所有极小多项式 $\{ \min(\alpha, F) \mid \alpha \in K \}$。由(2)知，这些多项式都在 $K$ 中分裂，且 $K$ 显然由它们的根生成。 \\
+    $(3) \Rightarrow (1)$: 设 $K = F(R)$，其中 $R$ 是多项式族 $\mathcal{F}$ 的所有根。
+    任一 $F$-嵌入 $\sigma$ 必然将 $R$ 中的根映成 $\mathcal{F}$ 中多项式的根。
+    由于 $\mathcal{F}$ 在 $F$ 上定义，其根集在 $\sigma$ 作用下必然保持（或置换）。
+    因为 $K$ 由 $R$ 生成，且 $\sigma(R) \subseteq R \subseteq K$，故 $\sigma(K) \subseteq K$。
+\end{proof}
+
+\begin{proof}[动力与意义]
+    正规性保证了我们在研究 Galois 理论时，域的对称性能被完整保留在域内部，而不必“跑到外面去”。它是定义 Galois 扩张的两个核心支柱之一（另一个是可分性）。
+\end{proof}
+
+\end{document}

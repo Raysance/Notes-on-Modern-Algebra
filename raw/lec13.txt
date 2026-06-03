@@ -1,0 +1,35 @@
+有限扩张
+Def: F<E称为有限扩张，如果[E:F]<\inf
+定理：F<E是有限的，当且仅当E=F(α1,...,αn)
+定理：F<E是有限的，则E/F是代数的
+定理：F<E,令K为E中所有在F上代数元构成的集合，则K是域（K称为F在E中的代数闭包）
+例：令A为Q在C中的代数闭包，A是域，A代数数域
+Def：E为域，E称为是代数闭，如果\forall f\in E[x]在E中分裂，也就是说f(x)=a(x-a1)...(x-an)(ai\in E)
+例：C是代数闭域，\forall f\in C[x]在C中分裂（代数基本定理）
+定理：（阿廷）：\forall 域F，存在代数闭域E,F<E
+Def: F<E，E称为是F的代数闭包，如果E/F代数，且E是代数闭的
+定理：F<E,E为代数闭，令A为E中F的代数闭包 ，则A是E中唯一的F的代数闭包
+记号：F<E<\overline{F},E/F为代数的
+定义：\forall f\in F[x],记f在\overline{F}中的根记为α1,...,αn.定义F(α1,...,αn)是f在F上的分裂域。
+
+
+定义：令\mathcal{F}={f_i\in F[x]||i\in I},令R为\mathcal{F}中所有多项式在\overline{F}中的根，定义F(R)为\mathcal{F}在F上的分裂域。
+comment：|R|=\inf F(R)=\cup_{α1,...,αn\in R}F(α1,...,αn)
+嵌入与拓展
+f:F-->R,ker(f)=<0>
+f是单射，嵌入
+F<E<\overline{F}，t:F->\overline{F}, \exists \sigma E->\overline{F},s.t.\sigma|_F=t,则\sigma称为t的拓展
+l:F->F 恒等映射
+\sigma: E->\overline{F} \sigma|_F=l,记F-嵌入
+定理：F<E为代数的，\sigma是E->E的F-嵌入，则\sigma(E)=E
+l:F->F 恒等，α\in F, P(x),\sigma F(α)->\overline{F}的F-嵌入
+f(α)=\Sigma(a_iα^i)
+\sigma(f(α))=\sigma a_i\sigma(α)^i, \sigma(P(α))=0,P(\sigma(α))=0
+设β是P(x)在、overline{F}上的一个根
+定义\sigma:F(α)->\overline{F} α->β,σ(f(α))=f(β)
+单代数扩张下的拓展
+定理：l:F->F α\in \overline{F}, P(x)，则l可拓展为σ:F(α)->\overline{F}的F-嵌入，拓展的个数为P(x)的不同根的个数
+定理：l:F->F F<E<\overline{F}，则有l可拓展为σ：E->\overline{F}的F-嵌入，且\forall α\in E, P(x),P(x)在\overline{F}中的任一根β，σ(α)=β
+正规扩张： F<E<\overline{F}
+1.对\forall σ  k->\overline{F}的F-嵌入，有σ(K)<K，则\forall 不可约P(x)\in F[x]，如果P(x)在K上有一个跟σ，则P(x)在K上分裂，
+2.\forall P\in F[x],如果P有一个根α\in K,则P在K上分裂，则K时某一个\mathcal{F}在F上的分裂域，\mathcal{F}={min(α,F)|α\in K}
