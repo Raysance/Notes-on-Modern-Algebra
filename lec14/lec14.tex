@@ -1,0 +1,172 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ctex}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\input{../preamable/preamable_sep.tex}
+
+\declaretheorem[style=thmgreenbox, name=定义]{cndefinition}
+\declaretheorem[style=thmredbox, name=定理]{cntheorem}
+\declaretheorem[style=thmbluebox, name=性质]{cnproperty}
+\declaretheorem[style=thmredbox, name=引理]{cnlemma}
+\declaretheorem[style=thmredbox, numbered=no, name=推论]{cncorollary}
+\declaretheorem[style=thmbluebox, numbered=no, name=例]{cnexample}
+
+\title{近世代数笔记(Lec 14)：Galois 理论基础}
+\author{Raysance}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+在上节课中，我们讨论了正规扩张，它保证了多项式的根在扩张域内的完整性。本节课我们将引入可分性的概念，并最终结合这两者定义 Galois 扩张。Galois 理论的核心在于建立域扩张与群论之间的深刻联系。
+
+\section{Galois 群 (Galois Group)}
+
+我们关心一个域扩张 $E/F$ 的“对称性”，这种对称性由保持 $F$ 不变的自同构所刻画。
+
+\begin{cndefinition}[$F$-自同构与 Galois 群]
+    设 $E/F$ 是域扩张，一个自同构 $\sigma: E \to E$ 称为\textbf{$F$-自同构}，如果 $\sigma$ 保持 $F$ 中元素不动，即对于任意 $a \in F$，有 $\sigma(a) = a$。
+    
+    所有 $E$ 的 $F$-自同构全体构成一个群，称为 $E$ 在 $F$ 上的 \textbf{Galois 群}，记作 $\text{Aut}_F(E)$ 或 $\text{Gal}(E/F)$。
+    
+    值得注意的是，对于一般的代数扩张，$F$-嵌入 $\sigma: E \to \overline{F}$ 并不一定满足 $\sigma(E) \subseteq E$。正如我们在正规扩张中所述，$\sigma(E) \subseteq E$ 是扩张具有“正规性”的体现。在 Galois 理论中，我们主要研究满足此条件的扩张。
+\end{cndefinition}
+
+\begin{cnexample}
+    考虑扩张 $\Q(\sqrt[3]{2})/\Q$。
+    任何 $\sigma \in \text{Gal}(\Q(\sqrt[3]{2})/\Q)$ 必须将 $\sqrt[3]{2}$ 映至其极小多项式 $x^3-2$ 在 $\Q(\sqrt[3]{2})$ 中的根。
+    由于 $x^3-2$ 在实域中只有一个根 $\sqrt[3]{2}$，而在该扩张域（实域的子域）中没有其他根，故 $\sigma(\sqrt[3]{2})$ 只能为 $\sqrt[3]{2}$。
+    因此 $\text{Gal}(\Q(\sqrt[3]{2})/\Q) = \{id\}$，群的阶为 1。
+    注意此例中 $[E:F] = 3 \neq |\text{Gal}(E/F)|$，这说明并非所有扩张都能达到最大对称性。
+\end{cnexample}
+
+\section{可分扩张 (Separable Extensions)}
+
+为了使 $|\text{Gal}(E/F)| = [E:F]$ 成立，多项式不能有“重根”。
+
+\begin{cndefinition}[可分元与可分扩张]
+    设 $F \subset E$。
+    \begin{itemize}
+        \item $\alpha \in E$ 称为在 $F$ 上\textbf{可分}的，如果其在 $F$ 上的极小多项式 $\min(\alpha, F)$ 无重根。
+        \item 扩张 $E/F$ 称为\textbf{可分扩张}，如果 $E$ 中任意元素均在 $F$ 上可分。
+    \end{itemize}
+\end{cndefinition}
+
+\begin{cnproperty}[判别准则]
+    不可约多项式 $f(x) \in F[x]$ 无重根 $\iff f'(x) \neq 0$。
+\end{cnproperty}
+
+\begin{proof}
+    $f(x)$ 有重根当且仅当 $\gcd(f(x), f'(x)) \neq 1$。
+    由于 $f(x)$ 不可约，其唯一的因子只有常数或其自身。
+    若 $\gcd(f, f') \neq 1$，则必有 $f(x) \mid f'(x)$。
+    但 $\deg(f') < \deg(f)$，故这只有在 $f'(x) = 0$ 时才可能发生。
+\end{proof}
+
+\begin{cntheorem}[特征与可分性]
+    \begin{enumerate}
+        \item 若 $\text{char}(F) = 0$（如 $\Q, \R, \C$），则任意不可约多项式均可分。故特征为 0 的域之上的代数扩张必为可分扩张。
+        \item 若 $\text{char}(F) = p > 0$（如有限域 $\mathbb{F}_q$），不可约多项式不可分当且仅当 $f'(x) \equiv 0$，即 $f(x)$ 仅含有 $x^p$ 的项，形如 $g(x^p)$。
+    \end{enumerate}
+\end{cntheorem}
+
+\begin{proof}
+    在特征 $p$ 下，若 $f(x) = \sum a_i x^i$，则 $f'(x) = \sum i a_i x^{i-1}$。
+    $f'(x) = 0 \iff i a_i = 0$ 对于所有 $i$ 成立。而在特征 $p$ 域中，$i a_i = 0$ 意味着 $p \mid i$（若 $a_i \neq 0$）。
+    因此只有 $x^{0}, x^p, x^{2p}, \dots$ 这种幂次的项系数不为 0，故 $f(x) = g(x^p)$。
+\end{proof}
+
+\begin{cnproperty}[有限域是完美的]
+    若 $F$ 是有限域，则其上所有代数扩张均可分。
+\end{cnproperty}
+
+\begin{proof}[直观理解]
+    设 $F$ 的特征为 $p$。由于 Frobenius 映射 $x \mapsto x^p$ 是有限域的自同构，每个元素 $a \in F$ 都有一个 $p$ 次根 $b$ 使得 $b^p = a$。
+    如果有一个不可约多项式 $f(x) = g(x^p) = \sum a_i (x^p)^i$，我们可以写成 $\sum b_i^p (x^i)^p = (\sum b_i x^i)^p$。
+    这说明 $f(x)$ 是某个多项式的 $p$ 次幂，从而与 $f(x)$ 不可约矛盾。故在有限域上不存在这种不可分的不可约多项式。
+\end{proof}
+
+\section{Galois 扩张 (Galois Extensions)}
+
+\begin{cndefinition}[Galois 扩张]
+    域扩张 $E/F$ 称为 \textbf{Galois 扩张}，如果它既是正规扩张又是可分扩张。
+\end{cndefinition}
+
+\begin{cntheorem}
+    若 $E/F$ 是有限 Galois 扩张，其阶数等于群的阶数：
+    \[ |\text{Gal}(E/F)| = [E:F] \]
+\end{cntheorem}
+
+\begin{proof}[动机]
+    正规性确保了所有共轭根都在 $E$ 内部，而可分性确保了共轭根的数量恰好等于扩张的次数。这使得 $F$-嵌入的数量恰好达到理论上限。
+\end{proof}
+
+\section{Galois 理论基本定理 (Fundamental Theorem of Galois Theory)}
+
+本定理建立了子域与子群之间的一一对应关系，是代数理论的巅峰之一。
+
+\begin{cntheorem}[Galois Correspondence]
+    设 $E/F$ 是一个有限 Galois 扩张，记 $G = \text{Gal}(E/F)$。令 $\mathcal{F}$ 为 $E$ 和 $F$ 之间的所有中间域组成的集合，$\mathcal{G}$ 为 $G$ 的所有子群组成的集合。则存在以下双射关系：
+    \begin{align*}
+        \Phi: \mathcal{F} \to \mathcal{G}, & \quad L \mapsto G_L(E) = \{ \sigma \in G \mid \sigma(x) = x, \forall x \in L \} \\
+        \Psi: \mathcal{G} \to \mathcal{F}, & \quad H \mapsto \text{fix}(H) = \{ x \in E \mid \sigma(x) = x, \forall \sigma \in H \}
+    \end{align*}
+    这两个映射满足：
+    \begin{enumerate}
+        \item \textbf{互逆性}：$\Phi$ 与 $\Psi$ 互为逆映射。即对于任何中间域 $L$，有 $\text{fix}(\text{Gal}(E/L)) = L$；对于任何子群 $H$，有 $\text{Gal}(E/\text{fix}(H)) = H$。
+        \item \textbf{包含关系反转}：若 $L_1 \subset L_2$，则 $G_{L_2}(E) \subset G_{L_1}(E)$。这种对应是序反转的。
+        \item \textbf{扩张度与指标}：对于任意中间域 $L$，$E/L$ 也是 Galois 扩张，且 $[E:L] = |G_L(E)|$。同时，$[L:F] = [G : G_L(E)]$。
+        \item \textbf{正规扩张的刻画}：中间域 $L$ 是 $F$ 的正规扩张当且仅当 $G_L(E)$ 是 $G$ 的正规子群。在这种情况下，$\text{Gal}(L/F) \cong G / G_L(E)$。
+    \end{enumerate}
+\end{cntheorem}
+
+\begin{proof}[证明思路与严谨性说明]
+    该定理的证明依赖于两个核心结论：
+    \begin{itemize}
+        \item \textbf{Artin 引理}：若 $H$ 是 $E$ 的有限自同构群，则 $E/\text{fix}(H)$ 是 Galois 扩张，其 Galois 群恰为 $H$，且 $[E:\text{fix}(H)] = |H|$。
+        \item \textbf{正规扩张的性质}：由于 $E/F$ 是 Galois 扩张，对于任何中间域 $L$，$E/L$ 自动继承了正规性和可分性，因此 $E/L$ 也是 Galois 扩张。
+    \end{itemize}
+    通过 Artin 引理，我们有 $\text{Gal}(E/\text{fix}(H)) = H$，这直接证明了 $\Phi \circ \Psi = id_{\mathcal{G}}$。映射的另一半则通过比较扩张度 $[E:L]$ 与子群阶数得出。
+\end{proof}
+
+\section{案例分析：$\Q(\sqrt[3]{2}, \omega)/\Q$}
+
+这是一个经典的非交换 Galois 群案例。
+
+\subsection{扩张背景}
+多项式 $f(x) = x^3 - 2$ 在 $\Q$ 上不可约。其在 $\C$ 中的根为 $\alpha_1 = \sqrt[3]{2}, \alpha_2 = \omega \sqrt[3]{2}, \alpha_3 = \omega^2 \sqrt[3]{2}$，其中 $\omega = e^{2\pi i / 3}$ 是三次单位根。
+分裂域 $E = \Q(\sqrt[3]{2}, \omega)$。其扩张度为 $[E : \Q(\sqrt[3]{2})] [\Q(\sqrt[3]{2}) : \Q] = 2 \times 3 = 6$。
+
+\subsection{Galois 群的构造}
+由于 $E/\Q$ 是特征为 0 的分裂域，它是 Galois 扩张，故 $|G| = 6$。记 $G = \{ \iota, \sigma, \tau, \rho, \mu, \kappa \}$，其中每个元素由对 $\sqrt[3]{2}$ 和 $\omega$ 的作用决定：
+\begin{itemize}
+    \item $\iota$ (恒同映射)：$\iota(\sqrt[3]{2}) = \sqrt[3]{2}, \iota(\omega) = \omega$。
+    \item $\sigma$：$\sigma(\sqrt[3]{2}) = \omega \sqrt[3]{2}, \sigma(\omega) = \omega$。
+    \item $\tau$：$\tau(\sqrt[3]{2}) = \sqrt[3]{2}, \tau(\omega) = \omega^2$。
+    \item $\rho$：$\rho(\sqrt[3]{2}) = \omega \sqrt[3]{2}, \rho(\omega) = \omega^2$。
+    \item $\mu$：$\mu(\sqrt[3]{2}) = \omega^2 \sqrt[3]{2}, \mu(\omega) = \omega$。
+    \item $\kappa$：$\kappa(\sqrt[3]{2}) = \omega^2 \sqrt[3]{2}, \kappa(\omega) = \omega^2$。
+\end{itemize}
+观察可知 $G$ 是非交换群，且 $\mu = \sigma^2, \rho = \sigma\tau, \kappa = \sigma^2\tau$。该群同构于 $S_3$。
+
+\subsection{子群与中间域的对应}
+根据 Galois 理论，我们寻找 $G$ 的子群并确定其固定域：
+\begin{enumerate}
+    \item \textbf{平凡子群} $\{ \iota \}$：固定整个域 $E = \Q(\sqrt[3]{2}, \omega)$。
+    \item \textbf{3 阶子群} $H_1 = \{ \iota, \sigma, \mu \}$：由 $\sigma$ 生成。由于 $\sigma$ 固定 $\omega$，且 $[E : \Q(\omega)] = 3 = |H_1|$，根据双射关系可知 $\text{fix}(H_1) = \Q(\omega)$。
+    \item \textbf{2 阶子群} (共 3 个)：
+    \begin{itemize}
+        \item $H_2 = \{ \iota, \tau \}$：固定 $\sqrt[3]{2}$，故 $\text{fix}(H_2) = \Q(\sqrt[3]{2})$。
+        \item $H_3 = \{ \iota, \rho \}$：经计算 $\rho$ 固定 $\omega^2 \sqrt[3]{2}$，故 $\text{fix}(H_3) = \Q(\omega^2 \sqrt[3]{2})$。
+        \item $H_4 = \{ \iota, \kappa \}$：经计算 $\kappa$ 固定 $\omega \sqrt[3]{2}$，故 $\text{fix}(H_4) = \Q(\omega \sqrt[3]{2})$。
+    \end{itemize}
+    \item \textbf{全群} $G$：固定基域 $\Q$。
+\end{enumerate}
+
+这完美展示了群结构的复杂性如何反映子域塔的结构。
+
+\end{document}

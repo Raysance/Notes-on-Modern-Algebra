@@ -1,0 +1,56 @@
+t: F->F 恒同，\sigma: E->F F-嵌入，\sigma(E)\subset E, \sigma(E) \notsubset E,{所有σ: E->E为F-自同构}记为Aut_F(E)或者Gal(E/F)，E/F的galois群
+e.g. Q(\sqrt[3]{2})/Q的galois群，也记为G_F(E)，σ(\sqrt[3]{2})=任意于\sqrt[3]{2}共极小多项式的根，（a于b共轭 ，a与b共用一个极小多项式）
+|G_F(E)|=deg(p)=[E:F]
+伽罗瓦：不存在重根+正规扩张
+可分扩张：F\subset E,定义：α\in E在F上代数，如果min(α,F)无重根，则称α可分，否则不可分。（一个不可约p(x)\in F[x],称为可分，如果它无重根）
+定义：F\subset E\subset \bar{F}，\forall α\in E在F上可分，E/F称为可分扩张，
+Recall: f不可约，f在\bar{F}上无重根\iff f和f'互素\iff f'\neq 0
+prop: char(F)=0 ==> 非常f求导不为0 <==> f无重根
+F\subset E\subset \bar{F} α\in E min(α,F)无重根，α可分，E/F可分
+有理数上天然成立
+F有限域，f不可约，设f有重根\iff f'=0\implies f(x)=g(x^p)=a0+a1x^p+...+anx^{pn}=b0^p+b1^px^p+...+bn^px^{pn}=(b0+b1x+...+bnx^n)^p有重根
+
+
+|F|=q=p^r,|F*|=q-1, \forall α\in F, α^q=α, \exists β,β^p=α
+prop: F为有限域，F\subset E\subset \bar{F}，α\in E,min(α,F)无重根，α可分，E/F可分
+
+F(α)/F正规可分：|G_F(F(α))|=[F(α):F]
+定义：F<E<\bar{F}，如果E/F是正规可分，称E/F为galois扩张
+定理：F<E<\bar{F}是galois，则|G_F(E)|=[E:F]
+F<E<\bar{P}, F<L<E --> G_L(E)<G_F(E)
+fix(H)<--G_F(E)
+1.F<L<K<E --> G_K(E)<G_L(E)
+{l}<H<S<G_F(E) --> fix(s)<fix(H)
+L->G_L(E) fix(H)<--H
+fix(G_L(E))<---    -->G_{fix(H)}(E)
+
+定理：galois理论
+对于F<E有限Galois扩张
+\mathcal{F}={L|F<L<E},G={H|H<G_F(E)}
+1.\mathcal{F}与G存在一对互逆映射，G_.(E):\mathcal{F}->G， fix(E)
+\forall H<G: G_{fix(H)}(E)=H
+2.\forall F<L<K<E, [K:L]=(G_L(E):G_K(E))
+3.\forall {l}<H<S<<G_F(E) (S:H)=[fix(H):fix(S)]
+e.g. Q(\sqrt[3]{2},omega)/Q 是有限galois， σ:Q(\sqrt[3]{2},omega)->Q(\sqrt[3]{2},omega), σ\in G_Q(Q(\sqrt[3]{2},omega))，扩度为6
+l(\sqrt[3]{2})=\sqrt[3]{2} l(omega)=omega
+σ(\sqrt[3]{2})=omega\sqrt[3]{2} σ(omega)=omega
+t(\sqrt[3]{2})=\sqrt[3]{2} t(omega)=omega^2
+ρ(\sqrt[3]{2})=omega\sqrt[3]{2} ρ(omega)=omega^2
+μ(\sqrt[3]{2})=omega^2\sqrt[3]{2} μ(omeag)=omega
+κ(\sqrt[3]{2})=omega^2\sqrt[3]{2} κ(omega)=omega^2
+G={l,σ,t,ρ,μ,κ}, G不是循环群，order={1,2,3}
+order为3的sylow子群：<σ>={l,σ,μ}(μ=σ^2)
+order为2的sylow子群：<t>,<ρ>,<κ>
+order为1的sylow子群：{l}
+{l}---fix-->Q(\sqrt[3]{2},omega)
+G->Q
+<σ>->Q(omega)
+<t>->Q(\sqrt[3]{2})
+<ρ>->Q(omega^2\sqrt[3]{2})
+<κ>->Q(omega\sqrt[3]{2})
+σ fixes omega <σ> fixes Q(omega)
+令L=fix(<σ>) Q(omega)<L
+令E=Q(\sqrt[3]{2},omega)
+[L:Q]=(G_Q(E):G_L(E))=(G:<σ>)=2 ==> L=Q(omega)
+[Q(omega):Q]=2
+令L=fix(<t>),[L:Q]=（G:<t>）=3 ==> L=Q(\sqrt[3]{2})
