@@ -1,0 +1,110 @@
+\documentclass[12pt, a4paper]{article}
+
+% --- 常用宏包 ---
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{bm}
+\usepackage{tcolorbox}
+
+% --- 页面设置 ---
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\today}
+\lhead{近世代数作业}
+\cfoot{\thepage}
+
+% --- 环境定义 ---
+\newtcolorbox{problem}[1]{
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    fonttitle=\bfseries,
+    title=题目 #1
+}
+
+\newenvironment{solution}{
+    \begin{proof}[\textbf{解}]
+}{
+    \end{proof}
+}
+
+% --- 个人信息 ---
+\title{近世代数作业 13}
+\author{李睿阳 (524120910059)}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\begin{problem}{1}
+    查阅文献，证明：有限可分扩张都是单代数扩张（原根定理）。
+\end{problem}
+\begin{solution}
+    设 $E/F$ 为有限可分扩张。
+    若 $F$ 是有限域，则 $E$ 也是有限域。由于有限域的乘法群 $E^\times$ 是循环群，设其生成元为 $\alpha$，则 $E = F(\alpha)$ 是单扩张。
+    若 $F$ 是无限域，由于 $E/F$ 是有限扩张，可设 $E = F(\alpha_1, \alpha_2, \dots, \alpha_n)$。只需证明 $n=2$ 的情形，即 $E = F(\alpha, \beta)$，则由归纳法可得结论。
+    设 $\alpha, \beta$ 在 $F$ 上的极小多项式分别为 $f(x)$ 和 $g(x)$，其在分裂域中的根分别为 $\alpha = \alpha_1, \dots, \alpha_n$ 和 $\beta = \beta_1, \dots, \beta_m$。由于扩张是可分的，这些根互不相同。
+    由于 $F$ 是无限域，我们可以选取 $c \in F$，使得对于所有 $i$ 和 $j \neq 1$，都有 $c \neq \frac{\alpha_i - \alpha}{\beta - \beta_j}$。
+    即 $c\beta + \alpha \neq c\beta_j + \alpha_i$。令 $\theta = \alpha + c\beta \in E$，则 $F(\theta) \subseteq E$。
+    考虑多项式 $h(x) = f(\theta - cx) \in F(\theta)[x]$，则 $h(\beta) = f(\alpha) = 0$。且对于 $j \neq 1$，$h(\beta_j) = f(\alpha + c\beta - c\beta_j) \neq 0$（由 $c$ 的选取）。
+    所以 $\beta$ 是 $g(x)$ 与 $h(x)$ 的唯一公共根，从而其极小多项式在 $F(\theta)$ 上次数为 1，即 $\beta \in F(\theta)$。
+    进而 $\alpha = \theta - c\beta \in F(\theta)$，所以 $E = F(\alpha, \beta) = F(\theta)$。
+\end{solution}
+
+
+\begin{problem}{2}
+    求 $\mathrm{Gal}(\mathbb{Q}(\sqrt[3]{5})/\mathbb{Q})$。
+\end{problem}
+\begin{solution}
+    由 Galois 群的定义，$\sigma \in \mathrm{Gal}(\mathbb{Q}(\sqrt[3]{5})/\mathbb{Q})$ 必须为自同构，且在 $\mathbb{Q}$ 上为单位映射。
+    若 $\alpha$ 为 $\mathbb{Q}[x]$ 中多项式的根，则 $\sigma(\alpha)$ 也必须为该多项式的根。
+    $\sqrt[3]{5}$ 在 $\mathbb{Q}$ 上的最小多项式为 $x^3-5=0$。
+    则必须要求 $\sigma(\sqrt[3]{5})$ 也为 $x^3-5=0$ 的根，即 $\sigma(\sqrt[3]{5}) \in \{\sqrt[3]{5}, \sqrt[3]{5}\omega, \sqrt[3]{5}\omega^2\}$（其中 $\omega=e^{\frac{2}{3}i\pi}$）。
+    又由 $\sigma$ 为自同构，其值域为 $\mathbb{Q}(\sqrt[3]{5})$。而 $\mathbb{Q}(\sqrt[3]{5}) \subset \mathbb{R}$，且 $\sqrt[3]{5}\omega, \sqrt[3]{5}\omega^2 \notin \mathbb{R}$，因此 $\sigma(\sqrt[3]{5})$ 只能为 $\sqrt[3]{5}$。
+    由于 $\mathbb{Q}(\sqrt[3]{5})$ 中的任意元素都可以表示为 $a+b\sqrt[3]{5}+c\sqrt[3]{5}^2$（$a,b,c \in \mathbb{Q}$），由同构的性质，$\sigma$ 只能为恒等映射。
+    所以 $\mathrm{Gal}(\mathbb{Q}(\sqrt[3]{5})/\mathbb{Q}) = \{id\}$。
+\end{solution}
+
+
+\begin{problem}{3}
+    证明扩张 $F \subset E$ 为 Galois 扩张，其中 $F=\mathbb{Q}, E=\mathbb{Q}(\sqrt{2},i)$。求 Galois 群 $\mathrm{Gal}(E/F)$。
+    计算 $\mathrm{Gal}(E/F)$ 的所有子群，以及每个子群对应的固定（中间）域。
+\end{problem}
+\begin{solution}
+    (1) 正规扩张：考虑 $\mathbb{Q}$ 上的多项式 $f(x)=(x^2-2)(x^2+1)=x^4-x^2-2$，则 $f(x)$ 在复数域 $\mathbb{C}$ 上的所有根为 $\{\sqrt{2},-\sqrt{2},i,-i\}$。
+    由分裂域的定义，$f(x)$ 在 $\mathbb{Q}$ 上的分裂域为 $\mathbb{Q}(\sqrt{2},-\sqrt{2},i,-i)=\mathbb{Q}(\sqrt{2},i)$。
+    即 $E$ 为 $f(x)$ 的分裂域。
+    由正规扩张的等价定义，域扩张 $L/K$ 是正规扩张，当且仅当 $L$ 是 $K$ 上某个多项式的分裂域。
+    则 $E/F$ 为正规扩张。
+    可分扩张：由于 $\mathbb{Q}$ 的特征为 0，且任意特征为 0 的域上的代数扩张均为可分扩张，则 $E/F$ 为可分扩张。
+    
+    由 Galois 扩张的定义，$E/F$ 为 Galois 扩张。
+
+    (2) 对于 $\sigma \in \mathrm{Gal}(E/F)$，$\sigma(i)$ 为 $x^2+1$ 的根，$\sigma(\sqrt{2})$ 为 $x^2-2$ 的根。
+    则 $\sigma(i) \in \{i, -i\}$, $\sigma(\sqrt{2}) \in \{\sqrt{2}, -\sqrt{2}\}$。
+    定义如下自同构：
+    \begin{itemize}
+        \item $\sigma: \sqrt{2} \mapsto \sqrt{2}, i \mapsto i$
+        \item $\tau: \sqrt{2} \mapsto -\sqrt{2}, i \mapsto i$
+        \item $\rho: \sqrt{2} \mapsto \sqrt{2}, i \mapsto -i$
+        \item $\mu: \sqrt{2} \mapsto -\sqrt{2}, i \mapsto -i$
+    \end{itemize}
+    所以 $\mathrm{Gal}(E/F) = \{\sigma, \tau, \rho, \mu\}$。
+
+    (3) 子群与对应的中间域：
+    \begin{itemize}
+        \item $H_1 = \{\sigma\}$，$\mathrm{Fix}(H_1) = \mathbb{Q}(\sqrt{2},i)$
+        \item $H_2 = \{\sigma, \tau\}$，$\mathrm{Fix}(H_2) = \mathbb{Q}(i)$
+        \item $H_3 = \{\sigma, \rho\}$，$\mathrm{Fix}(H_3) = \mathbb{Q}(\sqrt{2})$
+        \item $H_4 = \{\sigma, \mu\}$，$\mathrm{Fix}(H_4) = \mathbb{Q}(\sqrt{2}i)$
+        \item $H_5 = \{\sigma, \tau, \rho, \mu\}$，$\mathrm{Fix}(H_5) = \mathbb{Q}$
+    \end{itemize}
+\end{solution}
+    
+\end{document}
